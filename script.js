@@ -82,13 +82,21 @@ function generarEvaluacion() {
     // Actualizar encabezados
     document.getElementById('cargoTitulo').textContent = `Cargo Objetivo: ${datosCargo.nombre}`;
 
-    // Descripción de la dinámica
+    // Descripción enriquecida con casos y guías de evaluación para el impreso
     document.getElementById('dinamicaDescripcion').innerHTML = `
         <p><strong>Dinámica:</strong> ${dinamicaSeleccionada.titulo}</p>
-        <p class="dynamics-list"><strong>Objetivo / Consigna:</strong> ${dinamicaSeleccionada.desc}</p>
+        <p class="dynamics-list"><strong>Descripción:</strong> ${dinamicaSeleccionada.desc}</p>
+        <div style="background: #f9f9f9; border-left: 3px solid #2980b9; padding: 10px; margin-top: 8px; font-size: 13px;">
+            <strong>📋 Caso o Consigna a Plantear:</strong><br>
+            ${dinamicaSeleccionada.caso_o_consigna}
+        </div>
+        <div style="background: #fdfefe; border-left: 3px solid #27ae60; padding: 10px; margin-top: 8px; font-size: 12px; color: #333;">
+            <strong>🔍 Guía Rápida de Observación para el Evaluador:</strong><br>
+            ${dinamicaSeleccionada.guia_evaluacion.replace(/\n/g, '<br>')}
+        </div>
     `;
 
-    // Construir filas de competencias
+    // Construir filas de competencias... (resto del código igual)
     let filasCompetenciasHTML = '';
     datosCargo.competencias.forEach(c => {
         filasCompetenciasHTML += `
@@ -100,7 +108,6 @@ function generarEvaluacion() {
         `;
     });
 
-    // Contenedor de postulantes
     let contenedorPost = document.getElementById('contenedorPostulantes');
     contenedorPost.innerHTML = '';
 

@@ -5,11 +5,15 @@
             "dinamicas": [
                 {
                     "titulo": "Prueba de Coordinación Visomotora y Resistencia al Esfuerzo Físico/Operativo",
-                    "desc": "Dinámica de circuito práctico o prueba de atención sostenida bajo presión de tiempo. Se evalúa la agilidad mental, prevención de riesgos y ritmo de trabajo."
+                    "desc": "Circuito práctico o test de atención sostenida bajo presión temporal.",
+                    "caso_o_consigna": "Consigna al postulante: 'Tiene 3 minutos para revisar este listado de 50 códigos de bultos y tachar los 12 que contienen etiquetas dañadas según el patrón de seguridad'.",
+                    "guia_evaluacion": "• Éxito: Alta velocidad y bajo índice de errores de omisión.\n• Alerta: Desesperación rápida, tacha al azar o abandono de la tarea bajo presión."
                 },
                 {
                     "titulo": "Dinámica Grupal: 'El Rompecabezas Logístico'",
-                    "desc": "Resolución colaborativa de un problema de ordenamiento físico de bultos o rutas. Se observa la comunicación en equipo y la tolerancia a la frustración."
+                    "desc": "Resolución colaborativa de un problema de ordenamiento físico y distribución de cargas.",
+                    "caso_o_consigna": "Caso planteado: 'La cuadrilla debe acomodar 10 cajas de distinto peso y volumen en un pallet virtual respetando que los pesos pesados van abajo y no pueden superar 1.5 metros de altura. Tienen 5 minutos para ponerse de acuerdo en el orden'.",
+                    "guia_evaluacion": "• Éxito: Escucha activa, asume roles operativos sin avasallar, propone métodos seguros.\n• Alerta: Discusiones agresivas, individualismo o pasividad total ante el equipo."
                 }
             ],
             "competencias": [
@@ -23,11 +27,15 @@
             "dinamicas": [
                 {
                     "titulo": "Prueba de Atención al Detalle y Carga de Datos",
-                    "desc": "Ejercicio de validación de alfanuméricos, detección de errores en planillas y ordenamiento alfabético/numérico rápido."
+                    "desc": "Validación de alfanuméricos, detección de discrepancias en planillas y ordenamiento rápido.",
+                    "caso_o_consigna": "Caso práctico: Comparar la Factura A-1042 (Monto: $45.200, RUT: 210493820012) contra el Registro de Sistema (Monto: $45.020, RUT: 210493820012). El postulante debe detectar la inversión de dígitos en los centavos/montos y notificar el procedimiento.",
+                    "guia_evaluacion": "• Éxito: Detecta la inconsistencia numérica de inmediato y propone el asiento o nota de crédito correspondiente.\n• Alerta: Pasa por alto diferencias numéricas sutiles por lectura superficial."
                 },
                 {
-                    "titulo": "Simulación de Atención al Cliente / Proveedores",
-                    "desc": "Role-playing resolviendo un conflicto administrativo menor o canalizando una solicitud urgente por vía telefónica/escrita."
+                    "titulo": "Simulación de Atención a Proveedores / Internos",
+                    "desc": "Role-playing resolviendo un reclamo administrativo urgente.",
+                    "caso_o_consigna": "Situación: Un proveedor llama enojado porque su pago lleva 5 días retrasado y amenaza con frenar despachos. El postulante debe contener la situación, verificar en sistema y dar una respuesta asertiva.",
+                    "guia_evaluacion": "• Éxito: Empatía inicial, tono calmo, no toma el enojo como personal y canaliza una solución temporal certera.\n• Alerta: Se pone a la defensiva, discute con el proveedor o promete plazos falsos."
                 }
             ],
             "competencias": [
@@ -41,11 +49,15 @@
             "dinamicas": [
                 {
                     "titulo": "Dinámica de Liderazgo Situacional y Delegación",
-                    "desc": "Se plantea un caso de falta imprevista de personal en plena jornada. El candidato debe organizar los turnos y resolver prioridades operativas."
+                    "desc": "Gestión de imprevistos operativos críticos de dotación de personal.",
+                    "caso_o_consigna": "Caso: 'A las 08:00 AM avisan dos bajas por enfermedad en el turno clave. Solo cuenta con 3 operarios novatos para cubrir una salida de camiones que exige 5'. ¿Cómo rearma la operación en 10 minutos?",
+                    "guia_evaluacion": "• Éxito: Asigna tareas según criticidad, apoya a los novatos en las posiciones más complejas, mantiene el liderazgo visible.\n• Alerta: Se paraliza, culpa a la administración o sobrecarga injustamente al personal más débil."
                 },
                 {
-                    "titulo": "Entrevista por Competencias y Resolución de Conflictos",
-                    "desc": "Evaluación de la capacidad de mediación ante desacuerdos entre subordinados y reporte a mandos medios."
+                    "titulo": "Entrevista por Competencias: Resolución de Conflictos",
+                    "desc": "Mediación ante desacuerdos cotidianos entre subordinados.",
+                    "caso_o_consigna": "Pregunta guía: 'Describa una situación donde dos colaboradores de su equipo se negaron a trabajar juntos por un problema personal afectando el sector. ¿Cómo intervino?'",
+                    "guia_evaluacion": "• Éxito: Aplica escucha neutral, separa lo personal de lo laboral, fija pautas claras de convivencia bajo normativa de la empresa.\n• Alerta: Toma partido por uno de los bandos o minimiza el conflicto esperando que se resuelva solo."
                 }
             ],
             "competencias": [
@@ -59,11 +71,15 @@
             "dinamicas": [
                 {
                     "titulo": "Assessment Center: Panel de Toma de Decisiones Estratégicas",
-                    "desc": "Análisis de un escenario complejo con restricción presupuestaria y de recursos humanos. Presentación de plan de acción bajo presión."
+                    "desc": "Análisis de escenarios complejos con restricciones cruzadas (presupuesto vs. objetivos).",
+                    "caso_o_consigna": "Caso directivo: 'Debe recortar un 15% del presupuesto operativo departamental sin que caiga el nivel de servicio en temporada alta. Presente su plan de acción en 5 minutos ante la dirección'.",
+                    "guia_evaluacion": "• Éxito: Identifica costos superfluos sin tocar la columna vertebral del servicio, argumenta con datos y visión global.\n• Alerta: Propone recortes lineales sin análisis de impacto o muestra resistencia a justificar números."
                 },
                 {
-                    "titulo": "Role-playing de Negociación y Alineación de Objetivos",
-                    "desc": "Gestión de resistencia al cambio de un equipo frente a una nueva directiva gerencial."
+                    "titulo": "Role-playing: Negociación de Cambio Estructural",
+                    "desc": "Alineación de equipos gerenciales o mandos medios frente a nuevas directivas impuestas.",
+                    "caso_o_consigna": "Situación: Los encargados rechazan de plano un nuevo sistema de control digital porque 'les quita tiempo'. El postulante (en rol de Jefe) debe negociar su implementación.",
+                    "guia_evaluacion": "• Éxito: Escucha las objeciones reales, explica el beneficio estratégico a mediano plazo, ofrece capacitación sin ceder en el objetivo principal.\n• Alerta: Adopta una postura autoritaria ('se hace porque lo digo') o cede totalmente ante la presión del equipo."
                 }
             ],
             "competencias": [
@@ -77,11 +93,15 @@
             "dinamicas": [
                 {
                     "titulo": "Prueba de Análisis Financiero y Criterio Impositivo",
-                    "desc": "Resolución de un caso práctico con estados contables o discrepancias en conciliaciones bancarias."
+                    "desc": "Resolución de un caso práctico con estados contables o conciliaciones.",
+                    "caso_o_consigna": "Caso práctico: 'En la conciliación bancaria mensual surge una partida en tránsito de origen desconocido por un monto significativo registrada el último día hábil. El cliente presiona para cerrar el balance general'. ¿Cuál es el criterio técnico a seguir?",
+                    "guia_evaluacion": "• Éxito: Aplica principios de prudencia contable, no inventa asientos para cerrar, exige respaldos documentales antes de dictaminar.\n• Alerta: Cede a la presión del cliente/gerencia registrando movimientos sin verificar para cumplir plazos."
                 },
                 {
-                    "titulo": "Entrevista Técnica de Criterio Profesional y Ética",
-                    "desc": "Evaluación de la postura ante situaciones de presión fiscal, manejo de auditorías y secreto profesional."
+                    "titulo": "Entrevista Técnica de Ética y Criterio Profesional",
+                    "desc": "Evaluación de la postura ante situaciones grises o de presión fiscal.",
+                    "caso_o_consigna": "Pregunta guía: '¿Cómo procedería si detecta que un registro impositivo anterior (hecho por otro colega o sector) presenta una inconsistencia menor que no es ilegal pero expone a la empresa a una revisión innecesaria?'",
+                    "guia_evaluacion": "• Éxito: Muestra rigor técnico, propone la regularización preventiva y maneja la comunicación con prudencia y profesionalismo.\n• Alerta: Lo encubre por corporativismo o genera alarma innecesaria sin proponer soluciones."
                 }
             ],
             "competencias": [
