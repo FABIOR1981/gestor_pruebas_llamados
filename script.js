@@ -61,11 +61,15 @@ function generarEvaluacion() {
     const materialTexto = dinamicaSeleccionada.hoja_postulante || "Sin material específico definido.";
     const casoTexto = dinamicaSeleccionada.caso_o_consigna || "Sin objetivo específico.";
     const guiaTexto = dinamicaSeleccionada.guia_evaluacion || "Sin guía específica.";
+    const tiempoTexto = dinamicaSeleccionada.tiempo_limite || "Sin límite especificado";
 
-    // 1. Informe exclusivo para el evaluador
+    // 1. Informe exclusivo para el evaluador con el tiempo límite destacado
     document.getElementById('dinamicaDescripcion').innerHTML = `
         <p><strong>Dinámica:</strong> ${dinamicaSeleccionada.titulo}</p>
         <p class="dynamics-list"><strong>Descripción:</strong> ${dinamicaSeleccionada.desc}</p>
+        <div style="background: #f4ecf7; border-left: 3px solid #8e44ad; padding: 10px; margin-top: 8px; font-size: 13px;">
+            <strong>⏱️ Tiempo Límite de la Prueba:</strong> <span style="font-size: 14px; font-weight: bold; color: #6c3483;">${tiempoTexto}</span>
+        </div>
         <div style="background: #f9f9f9; border-left: 3px solid #e67e22; padding: 10px; margin-top: 8px; font-size: 13px;">
             <strong>🎯 Objetivo de la Prueba:</strong><br>
             ${casoTexto}
@@ -90,7 +94,6 @@ function generarEvaluacion() {
     let contenedorPost = document.getElementById('contenedorPostulantes');
     contenedorPost.innerHTML = '';
     
-    // Contenedor para las hojas de trabajo de los postulantes
     let contenedorHojasPostulantes = document.getElementById('materialPostulanteContenido');
     contenedorHojasPostulantes.innerHTML = '';
 
@@ -116,13 +119,14 @@ function generarEvaluacion() {
             </div>
         `;
 
-        // Hoja de trabajo completa e individual por cada postulante con los datos arriba
+        // Hoja de trabajo individual por cada postulante con el tiempo límite visible arriba
         contenedorHojasPostulantes.innerHTML += `
             <div class="candidate-sheet">
                 <h3 style="color: var(--primary); margin-top: 0; border-bottom: 2px solid var(--primary); padding-bottom: 5px;">HOJA DE TRABAJO / CONSIGNA DEL POSTULANTE</h3>
-                <div style="margin-bottom: 20px; font-size: 14px; background: #fdfefe; border: 1px solid var(--border); padding: 12px; border-radius: 4px;">
+                <div style="margin-bottom: 15px; font-size: 14px; background: #fdfefe; border: 1px solid var(--border); padding: 12px; border-radius: 4px;">
                     <strong>Nombre del Postulante:</strong> __________________________________________________<br><br>
-                    <strong>Fecha:</strong> ____/____/20___ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>Resultado / Notas:</strong> ________________________
+                    <strong>Fecha:</strong> ____/____/20___ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>Resultado / Notas:</strong> ________________________<br><br>
+                    <span style="color: #8e44ad; font-weight: bold;">⏱️ Tiempo Límite: ${tiempoTexto}</span>
                 </div>
                 <p><strong>Dinámica:</strong> ${dinamicaSeleccionada.titulo} (Postulante #${i})</p>
                 <div style="background: #ffffff; border: 1px solid var(--border); padding: 25px; border-radius: 6px; margin-top: 10px; font-size: 15px; line-height: 1.7; white-space: pre-line; min-height: 350px;">
