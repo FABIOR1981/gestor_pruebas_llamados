@@ -112,15 +112,15 @@
                 <!-- 2. Clasificación (Área y Sigla) -->
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px;">
                     <div class="form-group">
-                        <label for="cargoArea">Área / Nivel:</label>
-                        <select id="cargoArea" onchange="actualizarCodigoCargoAutogenerado()" required>
-                            <option value="" disabled selected>Seleccione área...</option>
-                            <option value="OPE">Operativa (OPE)</option>
-                            <option value="ADM">Administración (ADM)</option>
-                            <option value="SUP">Supervisión (SUP)</option>
-                            <option value="FIN">Finanzas (FIN)</option>
-                            <option value="DIR">Dirección (DIR)</option>
-                        </select>
+                        <label for="cargoArea">Área / Nivel (3 Letras):</label>
+                        <input list="listaAreas" id="cargoArea" placeholder="Ej: OPE, TEC, MKT" maxlength="3" style="text-transform: uppercase;" oninput="actualizarCodigoCargoAutogenerado()" required>
+                        <datalist id="listaAreas">
+                            <option value="OPE">Operativa</option>
+                            <option value="ADM">Administración</option>
+                            <option value="SUP">Supervisión</option>
+                            <option value="FIN">Finanzas</option>
+                            <option value="DIR">Dirección</option>
+                        </datalist>
                     </div>
                     <div class="form-group">
                         <label for="cargoEspecialidad">Especialidad (3 Letras):</label>

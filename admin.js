@@ -107,14 +107,17 @@ function actualizarCodigoDinamicaAutogenerado() {
 }
 
 function actualizarCodigoCargoAutogenerado() {
-    const area = document.getElementById('cargoArea').value; // Ej: SUP
+    let area = document.getElementById('cargoArea').value.toUpperCase().trim().substring(0,3);
     let especialidad = document.getElementById('cargoEspecialidad').value.toUpperCase().trim().substring(0,3);
     
-    if (especialidad.length === 0) {
+    // Si falta alguno de los dos campos, vaciamos el código final
+    if (area.length === 0 || especialidad.length === 0) {
         document.getElementById('cargoKeyInput').value = "";
         return;
     }
-    // Si escribe menos de 3, rellenamos con X (Ej: VE -> VEX) para mantener formato
+
+    // Rellenamos con 'X' en caso de que escriban menos de 3 letras (ej: "IT" -> "ITX")
+    while(area.length < 3) area += 'X';
     while(especialidad.length < 3) especialidad += 'X';
 
     const prefijo = `${area}-${especialidad}-`;
