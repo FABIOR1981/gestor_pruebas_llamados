@@ -1,11 +1,14 @@
-let baseDatosGlobal = { cargos: {}, dinamicas: [] };
+let baseDatosGlobal = { areas: {}, cargos: {}, dinamicas: [] };
 
 window.onload = async function() {
     try {
         const response = await fetch('datos.json');
         if (!response.ok) throw new Error("No se pudo cargar datos.json");
         const data = await response.json();
+        
+        // Aseguramos que exista el objeto areas aunque el JSON viejo no lo tenga
         baseDatosGlobal = data;
+        if (!baseDatosGlobal.areas) baseDatosGlobal.areas = {};
         
         document.getElementById('estadoCarga').textContent = "Conectado a datos.json";
         document.getElementById('estadoCarga').style.color = "var(--success)";
@@ -36,7 +39,23 @@ function inicializarAdmin() {
         opt2.value = key; opt2.textContent = `[${key}] ${nombreCargo}`;
         modalCargo.appendChild(opt2);
     }
+    
+    cargarSelectAreas();
     renderizarDinamicas();
+}
+
+function cargarSelectAreas() {
+    const selectArea = document.getElementById('cargoAreaSelect');
+    if (!selectArea) return;
+    
+    selectArea.innerHTML = '<option value="" disabled selected>Seleccione un área...</option>';
+    
+    for (const sigla in baseDatosGlobal.areas) {
+        let opt = document.createElement('option');
+        opt.value = sigla;
+        opt.textContent = `[${sigla}] ${baseDatosGlobal.areas[sigla].nombre}`;
+        selectArea.appendChild(opt);
+    }
 }
 
 function renderizarDinamicas() {
@@ -74,22 +93,54 @@ function renderizarDinamicas() {
 }
 
 // ==========================================
+// LÓGICA DE ÁREAS (NUEVO)
+// ==========================================
+
+function abrirModalArea() {
+    document.getElementById('formArea').reset();
+    document.getElementById('modalAreaNueva').style.display = 'flex';
+}
+
+function cerrarModalArea() {
+    document.getElementById('modalAreaNueva').style.display = 'none';
+}
+
+function guardarArea(event) {
+    event.preventDefault();
+    const sigla = document.getElementById('areaSiglaNueva').value.toUpperCase().trim();
+    const nombre = document.getElementById('areaNombreNueva').value.trim();
+
+    if (sigla.length !== 3) {
+        alert("La sigla debe tener exactamente 3 letras.");
+        return;
+    }
+
+    if (baseDatosGlobal.areas[sigla]) {
+        alert("Ya existe un área con esa sigla.");
+        return;
+    }
+
+    baseDatosGlobal.areas[sigla] = { nombre: nombre };
+    cerrarModalArea();
+    cargarSelectAreas();
+    alert(`Área '${nombre}' [${sigla}] creada con éxito.`);
+}
+
+// ==========================================
 // LÓGICA DE AUTOGENERACIÓN DE CÓDIGOS
 // ==========================================
 
 function actualizarCodigoDinamicaAutogenerado() {
-    const cargoKey = document.getElementById('modalCargo').value; // Ej: SUP-ENC-01
+    const cargoKey = document.getElementById('modalCargo').value; 
     const isEditMode = document.getElementById('editIndex').value !== "";
 
-    if (isEditMode) return; // Si estamos editando, no cambiamos el ID.
+    if (isEditMode) return; 
 
-    // Extraer la especialidad del cargo (ej: de SUP-ENC-01 sacamos ENC)
     const partes = cargoKey.split('-');
     if (partes.length < 2) return;
     const especialidad = partes[1]; 
-    const prefijo = `DIN-${especialidad}-`; // Ej: DIN-ENC-
+    const prefijo = `DIN-${especialidad}-`; 
 
-    // Buscar correlativo máximo
     let max = 0;
     baseDatosGlobal.dinamicas.forEach(din => {
         if (din.id.startsWith(prefijo)) {
@@ -101,23 +152,20 @@ function actualizarCodigoDinamicaAutogenerado() {
         }
     });
 
-    // Asignar el siguiente número (ej: DIN-ENC-03)
     const nextNum = String(max + 1).padStart(2, '0');
     document.getElementById('modalCodigo').value = `${prefijo}${nextNum}`;
 }
 
 function actualizarCodigoCargoAutogenerado() {
-    let areaSigla = document.getElementById('areaSiglaInput').value.toUpperCase().trim().substring(0,3);
+    const selectArea = document.getElementById('cargoAreaSelect');
+    let areaSigla = selectArea.value;
     let especialidad = document.getElementById('cargoEspecialidad').value.toUpperCase().trim().substring(0,3);
     
-    // Si falta alguno de los dos campos, vaciamos el código final
-    if (areaSigla.length === 0 || especialidad.length === 0) {
+    if (!areaSigla || especialidad.length === 0) {
         document.getElementById('cargoKeyInput').value = "";
         return;
     }
 
-    // Rellenamos con 'X' en caso de que escriban menos de 3 letras (ej: "IT" -> "ITX")
-    while(areaSigla.length < 3) areaSigla += 'X';
     while(especialidad.length < 3) especialidad += 'X';
 
     const prefijo = `${areaSigla}-${especialidad}-`;
@@ -138,7 +186,7 @@ function actualizarCodigoCargoAutogenerado() {
 }
 
 // ==========================================
-// MODALES Y GUARDADO
+// MODALES Y GUARDADO (CARGOS Y DINÁMICAS)
 // ==========================================
 
 function abrirModalDinamica() {
@@ -149,7 +197,6 @@ function abrirModalDinamica() {
     const cargoActual = document.getElementById('cargoSelectAdmin').value;
     document.getElementById('modalCargo').value = cargoActual;
     
-    // Autogenerar código al abrir
     actualizarCodigoDinamicaAutogenerado();
     
     document.getElementById('modalDinamica').style.display = 'flex';
@@ -166,7 +213,7 @@ function editarDinamica(dinId) {
     document.getElementById('modalTitulo').textContent = "Editar Dinámica";
     document.getElementById('editIndex').value = din.id; 
     document.getElementById('modalCargo').value = din.cargo_id;
-    document.getElementById('modalCodigo').value = din.id; // En edición se mantiene el código original
+    document.getElementById('modalCodigo').value = din.id; 
     document.getElementById('modalTituloDin').value = din.titulo || '';
     document.getElementById('modalDesc').value = din.desc || '';
     document.getElementById('modalTiempo').value = din.tiempo_limite || '';
@@ -222,7 +269,7 @@ function eliminarDinamica(dinId) {
 
 function abrirModalCargo() {
     document.getElementById('formCargo').reset();
-    document.getElementById('cargoKeyInput').value = ""; // Limpiar cálculo previo
+    document.getElementById('cargoKeyInput').value = ""; 
     document.getElementById('modalCargoNuevo').style.display = 'flex';
 }
 
@@ -234,10 +281,14 @@ function guardarCargo(event) {
     event.preventDefault();
     const key = document.getElementById('cargoKeyInput').value.trim();
     const nombre = document.getElementById('cargoNombreInput').value.trim();
-    const nombreArea = document.getElementById('areaNombreInput').value.trim();
+    
+    // Obtenemos el nombre del área desde el select buscando el option seleccionado
+    const selectArea = document.getElementById('cargoAreaSelect');
+    const areaSigla = selectArea.value;
+    const nombreArea = baseDatosGlobal.areas[areaSigla] ? baseDatosGlobal.areas[areaSigla].nombre : areaSigla;
 
     if (!key) {
-        alert("Complete las siglas del área y especialidad para generar el código.");
+        alert("Seleccione un área y complete la especialidad para generar el código.");
         return;
     }
 
@@ -246,7 +297,6 @@ function guardarCargo(event) {
         return;
     }
 
-    // Se guarda la estructura base, añadiendo el nombre del área como dato extra
     baseDatosGlobal.cargos[key] = {
         nombre: nombre,
         area: nombreArea,
@@ -260,7 +310,7 @@ function guardarCargo(event) {
     inicializarAdmin();
     document.getElementById('cargoSelectAdmin').value = key;
     renderizarDinamicas();
-    alert(`¡Cargo '${nombre}' [${key}] creado con éxito en el área de ${nombreArea}!`);
+    alert(`¡Cargo '${nombre}' [${key}] creado con éxito!`);
 }
 
 function descargarJSON() {

@@ -10,13 +10,14 @@
 
     <div class="container">
         <h1>Panel de Administración y ABM</h1>
-        <p class="subtitle">Gestione de forma limpia y ordenada los cargos, dinámicas y contenidos del archivo <code>datos.json</code>.</p>
+        <p class="subtitle">Gestione de forma limpia y ordenada las áreas, cargos y dinámicas del archivo <code>datos.json</code>.</p>
 
         <div class="toolbar">
             <div class="status-badge">
                 📁 Estado: <span id="estadoCarga" style="color: var(--accent);">Cargando...</span>
             </div>
             <div class="btn-group">
+                <button class="btn-success" style="background-color: #27ae60;" onclick="abrirModalArea()">+ Crear Nueva Área</button>
                 <button class="btn-warning" onclick="abrirModalCargo()">+ Crear Nuevo Cargo</button>
                 <button class="btn-secondary" onclick="descargarJSON()">📥 Descargar JSON Actualizado</button>
             </div>
@@ -40,6 +41,64 @@
         </div>
     </div>
 
+    <!-- Modal: Crear Nueva Área -->
+    <div id="modalAreaNueva" class="modal">
+        <div class="modal-content" style="max-width: 450px;">
+            <h3>Crear Nueva Área</h3>
+            <form id="formArea" onsubmit="guardarArea(event)">
+                <div class="form-group" style="margin-bottom: 15px;">
+                    <label for="areaNombreNueva">Nombre completo del Área:</label>
+                    <input type="text" id="areaNombreNueva" placeholder="Ej: Tecnología y Sistemas" required>
+                </div>
+                <div class="form-group" style="margin-bottom: 15px;">
+                    <label for="areaSiglaNueva">Sigla (Exactamente 3 letras):</label>
+                    <input type="text" id="areaSiglaNueva" placeholder="Ej: TEC" maxlength="3" minlength="3" style="text-transform: uppercase;" required>
+                </div>
+                <div style="display: flex; gap: 10px; margin-top: 25px;">
+                    <button type="submit" class="btn-success">Guardar Área</button>
+                    <button type="button" class="btn-danger" onclick="cerrarModalArea()">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: Crear Nuevo Cargo -->
+    <div id="modalCargoNuevo" class="modal">
+        <div class="modal-content" style="max-width: 550px;">
+            <h3>Crear Nuevo Cargo</h3>
+            <form id="formCargo" onsubmit="guardarCargo(event)">
+                
+                <div class="form-group" style="margin-bottom: 15px;">
+                    <label for="cargoNombreInput">Nombre legible del Cargo:</label>
+                    <input type="text" id="cargoNombreInput" placeholder="Ej: Administrador de Redes" required>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 10px; margin-bottom: 15px;">
+                    <div class="form-group">
+                        <label for="cargoAreaSelect">Área a la que pertenece:</label>
+                        <select id="cargoAreaSelect" onchange="actualizarCodigoCargoAutogenerado()" required>
+                            <!-- Se llena dinámicamente con las áreas del JSON -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="cargoEspecialidad">Sigla Especialidad:</label>
+                        <input type="text" id="cargoEspecialidad" placeholder="Ej: RED" maxlength="3" style="text-transform: uppercase;" oninput="actualizarCodigoCargoAutogenerado()" required>
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 15px;">
+                    <label for="cargoKeyInput">Código del Cargo (Autogenerado):</label>
+                    <input type="text" id="cargoKeyInput" style="background-color: #eaeded; font-family: monospace; font-weight: bold; color: #7f8c8d; border: 1px dashed #bdc3c7;" readonly required placeholder="Seleccione área y sigla para generar">
+                </div>
+
+                <div style="display: flex; gap: 10px; margin-top: 25px;">
+                    <button type="submit" class="btn-success">Crear Cargo</button>
+                    <button type="button" class="btn-danger" onclick="cerrarModalCargo()">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- Modal: Crear/Editar Dinámica -->
     <div id="modalDinamica" class="modal">
         <div class="modal-content">
@@ -49,7 +108,6 @@
                 
                 <div class="form-group" style="margin-bottom: 15px;">
                     <label for="modalCargo">Cargo Objetivo:</label>
-                    <!-- Al cambiar el cargo, se recalcula el código automático -->
                     <select id="modalCargo" onchange="actualizarCodigoDinamicaAutogenerado()"></select>
                 </div>
 
@@ -91,48 +149,6 @@
                 <div style="display: flex; gap: 10px; margin-top: 25px;">
                     <button type="submit" class="btn-success">Guardar Dinámica</button>
                     <button type="button" class="btn-danger" onclick="cerrarModalDinamica()">Cancelar</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Modal: Crear Nuevo Cargo -->
-    <div id="modalCargoNuevo" class="modal">
-        <div class="modal-content" style="max-width: 550px;">
-            <h3>Crear Nuevo Cargo</h3>
-            <form id="formCargo" onsubmit="guardarCargo(event)">
-                
-                <div class="form-group" style="margin-bottom: 15px;">
-                    <label for="cargoNombreInput">Nombre legible del Cargo:</label>
-                    <input type="text" id="cargoNombreInput" placeholder="Ej: Administrador de Redes" required>
-                </div>
-
-                <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 10px; margin-bottom: 15px;">
-                    <div class="form-group">
-                        <label for="areaNombreInput">Nombre del Área / Departamento:</label>
-                        <input type="text" id="areaNombreInput" placeholder="Ej: Tecnología" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="areaSiglaInput">Sigla Área (3 Letras):</label>
-                        <input type="text" id="areaSiglaInput" placeholder="Ej: TEC" maxlength="3" style="text-transform: uppercase;" oninput="actualizarCodigoCargoAutogenerado()" required>
-                    </div>
-                </div>
-
-                <div style="display: grid; grid-template-columns: 1fr; margin-bottom: 15px;">
-                    <div class="form-group">
-                        <label for="cargoEspecialidad">Sigla Especialidad (3 Letras):</label>
-                        <input type="text" id="cargoEspecialidad" placeholder="Ej: RED, LOG, VEN" maxlength="3" style="text-transform: uppercase;" oninput="actualizarCodigoCargoAutogenerado()" required>
-                    </div>
-                </div>
-
-                <div class="form-group" style="margin-bottom: 15px;">
-                    <label for="cargoKeyInput">Código del Cargo (Autogenerado):</label>
-                    <input type="text" id="cargoKeyInput" style="background-color: #eaeded; font-family: monospace; font-weight: bold; color: #7f8c8d; border: 1px dashed #bdc3c7;" readonly required placeholder="Complete las siglas superiores para generar">
-                </div>
-
-                <div style="display: flex; gap: 10px; margin-top: 25px;">
-                    <button type="submit" class="btn-success">Crear Cargo</button>
-                    <button type="button" class="btn-danger" onclick="cerrarModalCargo()">Cancelar</button>
                 </div>
             </form>
         </div>
