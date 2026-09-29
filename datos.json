@@ -4,6 +4,7 @@
             "nombre": "Carga / Descarga",
             "dinamicas": [
                 {
+                    "codigo": "CAR-01",
                     "titulo": "Prueba de Atención Sostenida y Verificación de Códigos",
                     "desc": "Ejercicio escrito individual de control rápido de alfanuméricos bajo presión de tiempo.",
                     "tiempo_limite": "2 Minutos Exactos",
@@ -12,6 +13,7 @@
                     "guia_evaluacion": "• Éxito: Alta tasa de aciertos y bajo margen de falsos positivos en tiempo récord.\n• Alerta: Tacha de forma desordenada, omite más de la mitad o se bloquea ante la presión."
                 },
                 {
+                    "codigo": "CAR-02",
                     "titulo": "Prueba de Criterio Operativo y Seguridad Laboral",
                     "desc": "Análisis escrito de un caso de distribución y estiba de cargas.",
                     "tiempo_limite": "Sin límite estricto (Aprox. 5 a 8 minutos)",
@@ -30,6 +32,7 @@
             "nombre": "Administrativo",
             "dinamicas": [
                 {
+                    "codigo": "ADM-01",
                     "titulo": "Prueba de Validación y Detección de Errores en Planilla",
                     "desc": "Ejercicio rápido de cotejo de datos alfanuméricos en formato de tabla.",
                     "tiempo_limite": "3 Minutos Exactos",
@@ -38,6 +41,7 @@
                     "guia_evaluacion": "• Éxito: Detecta el 100% de las incongruencias tipográficas y numéricas con prolijidad.\n• Alerta: Pasa por alto diferencias en letras o decimales por lectura superficial."
                 },
                 {
+                    "codigo": "ADM-02",
                     "titulo": "Simulación de Respuesta Escrita a Reclamo Urgente",
                     "desc": "Redacción rápida de un correo electrónico formal de respuesta ante una queja.",
                     "tiempo_limite": "5 Minutos",
@@ -56,6 +60,7 @@
             "nombre": "Encargado",
             "dinamicas": [
                 {
+                    "codigo": "ENC-01",
                     "titulo": "Prueba de Resolución de Casos: Priorización Operativa",
                     "desc": "Análisis escrito de un escenario crítico de dotación de personal.",
                     "tiempo_limite": "7 Minutos",
@@ -64,6 +69,7 @@
                     "guia_evaluacion": "• Éxito: Prioriza tareas neurálgicas, apoya a los novatos en puestos complejos y plantea un plan claro.\n• Alerta: Propone soluciones imposibles o traslada el problema completo a gerencia."
                 },
                 {
+                    "codigo": "ENC-02",
                     "titulo": "Entrevista Situacional: Mediación de Conflictos",
                     "desc": "Evaluación de criterio de liderazgo ante disputas de personal.",
                     "tiempo_limite": "Desarrollo Libre (Aprox. 10 minutos)",
@@ -82,6 +88,7 @@
             "nombre": "Jefe",
             "dinamicas": [
                 {
+                    "codigo": "JEF-01",
                     "titulo": "Análisis de Caso Directivo: Restricción Presupuestaria",
                     "desc": "Ejercicio de pensamiento estratégico y asignación de recursos.",
                     "tiempo_limite": "10 Minutos",
@@ -90,6 +97,7 @@
                     "guia_evaluacion": "• Éxito: Propone mejoras de eficiencia y redistribución inteligente antes que un corte lineal.\n• Alerta: Plantea que el objetivo es inalcanzable o propone medidas arbitrarias sin sustento."
                 },
                 {
+                    "codigo": "JEF-02",
                     "titulo": "Simulación de Negociación: Resistencia al Cambio",
                     "desc": "Role-playing de alineación de mandos medios frente a una nueva directiva.",
                     "tiempo_limite": "2 Minutos de Simulación",
@@ -108,6 +116,7 @@
             "nombre": "Contador",
             "dinamicas": [
                 {
+                    "codigo": "CON-01",
                     "titulo": "Prueba de Criterio Técnico y Resolución de Conciliación",
                     "desc": "Resolución analítica de una inconsistencia contable típica.",
                     "tiempo_limite": "8 Minutos",
@@ -116,6 +125,7 @@
                     "guia_evaluacion": "• Éxito: Aplica principio de prudencia contable, no inventa asientos y exige respaldo documental.\n• Alerta: Cede a la presión gerencial registrando un ajuste ficticio para cumplir fechas."
                 },
                 {
+                    "codigo": "CON-02",
                     "titulo": "Entrevista de Criterio Profesional y Prevención de Riesgos",
                     "desc": "Evaluación de postura ante zonas grises normativas.",
                     "tiempo_limite": "Desarrollo Libre (Aprox. 10 minutos)",

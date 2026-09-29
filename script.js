@@ -38,7 +38,7 @@ function actualizarDinamicas() {
     datos.dinamicas.forEach((din, index) => {
         let opt = document.createElement('option');
         opt.value = index;
-        opt.textContent = din.titulo;
+        opt.textContent = `[${din.codigo}] ${din.titulo}`; // Muestra el código en el selector desplegable
         selectDinamica.appendChild(opt);
     });
 }
@@ -58,14 +58,16 @@ function generarEvaluacion() {
     document.getElementById('cargoTitulo').textContent = `Cargo Objetivo: ${datosCargo.nombre}`;
 
     // Textos seguros
+    const codigoDin = dinamicaSeleccionada.codigo || "S/C";
+    const tituloDin = dinamicaSeleccionada.titulo || "Sin título";
     const materialTexto = dinamicaSeleccionada.hoja_postulante || "Sin material específico definido.";
     const casoTexto = dinamicaSeleccionada.caso_o_consigna || "Sin objetivo específico.";
     const guiaTexto = dinamicaSeleccionada.guia_evaluacion || "Sin guía específica.";
     const tiempoTexto = dinamicaSeleccionada.tiempo_limite || "Sin límite especificado";
 
-    // 1. Informe exclusivo para el evaluador con el tiempo límite destacado
+    // 1. Informe para el evaluador: Muestra Nombre y Código de la dinámica
     document.getElementById('dinamicaDescripcion').innerHTML = `
-        <p><strong>Dinámica:</strong> ${dinamicaSeleccionada.titulo}</p>
+        <p><strong>Dinámica:</strong> ${tituloDin} <span style="background: #eaeded; padding: 2px 6px; border-radius: 4px; font-family: monospace; font-size: 13px; color: #2c3e50;">Código: ${codigoDin}</span></p>
         <p class="dynamics-list"><strong>Descripción:</strong> ${dinamicaSeleccionada.desc}</p>
         <div style="background: #f4ecf7; border-left: 3px solid #8e44ad; padding: 10px; margin-top: 8px; font-size: 13px;">
             <strong>⏱️ Tiempo Límite de la Prueba:</strong> <span style="font-size: 14px; font-weight: bold; color: #6c3483;">${tiempoTexto}</span>
@@ -119,16 +121,15 @@ function generarEvaluacion() {
             </div>
         `;
 
-        // Hoja de trabajo individual por cada postulante con el tiempo límite visible arriba
+        // 2. Hoja de trabajo del postulante: Muestra únicamente el Código para evitar sesgos
         contenedorHojasPostulantes.innerHTML += `
             <div class="candidate-sheet">
-                <h3 style="color: var(--primary); margin-top: 0; border-bottom: 2px solid var(--primary); padding-bottom: 5px;">HOJA DE TRABAJO / CONSIGNA DEL POSTULANTE</h3>
+                <h3 style="color: var(--primary); margin-top: 0; border-bottom: 2px solid var(--primary); padding-bottom: 5px;">HOJA DE TRABAJO / CONSIGNA</h3>
                 <div style="margin-bottom: 15px; font-size: 14px; background: #fdfefe; border: 1px solid var(--border); padding: 12px; border-radius: 4px;">
                     <strong>Nombre del Postulante:</strong> __________________________________________________<br><br>
-                    <strong>Fecha:</strong> ____/____/20___ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>Resultado / Notas:</strong> ________________________<br><br>
+                    <strong>Fecha:</strong> ____/____/20___ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>Dinámica ID:</strong> <span style="font-family: monospace; font-weight: bold; background: #eaeded; padding: 2px 5px; border-radius: 3px;">${codigoDin}</span><br><br>
                     <span style="color: #8e44ad; font-weight: bold;">⏱️ Tiempo Límite: ${tiempoTexto}</span>
                 </div>
-                <p><strong>Dinámica:</strong> ${dinamicaSeleccionada.titulo} (Postulante #${i})</p>
                 <div style="background: #ffffff; border: 1px solid var(--border); padding: 25px; border-radius: 6px; margin-top: 10px; font-size: 15px; line-height: 1.7; white-space: pre-line; min-height: 350px;">
                     ${materialTexto}
                 </div>
