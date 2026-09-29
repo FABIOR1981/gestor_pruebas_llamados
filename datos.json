@@ -1,0 +1,94 @@
+{
+    "cargos": {
+        "carga": {
+            "nombre": "Carga / Descarga",
+            "dinamicas": [
+                {
+                    "titulo": "Prueba de Coordinación Visomotora y Resistencia al Esfuerzo Físico/Operativo",
+                    "desc": "Dinámica de circuito práctico o prueba de atención sostenida bajo presión de tiempo. Se evalúa la agilidad mental, prevención de riesgos y ritmo de trabajo."
+                },
+                {
+                    "titulo": "Dinámica Grupal: 'El Rompecabezas Logístico'",
+                    "desc": "Resolución colaborativa de un problema de ordenamiento físico de bultos o rutas. Se observa la comunicación en equipo y la tolerancia a la frustración."
+                }
+            ],
+            "competencias": [
+                { "comp": "Atención a la Normativa", "desc": "Cumple estrictamente protocolos de seguridad y manipulación." },
+                { "comp": "Resistencia / Dinamismo", "desc": "Mantiene ritmo de ejecución constante y eficiencia." },
+                { "comp": "Trabajo en Equipo", "desc": "Colabora de forma armónica con sus compañeros de cuadrilla." }
+            ]
+        },
+        "administrativo": {
+            "nombre": "Administrativo",
+            "dinamicas": [
+                {
+                    "titulo": "Prueba de Atención al Detalle y Carga de Datos",
+                    "desc": "Ejercicio de validación de alfanuméricos, detección de errores en planillas y ordenamiento alfabético/numérico rápido."
+                },
+                {
+                    "titulo": "Simulación de Atención al Cliente / Proveedores",
+                    "desc": "Role-playing resolviendo un conflicto administrativo menor o canalizando una solicitud urgente por vía telefónica/escrita."
+                }
+            ],
+            "competencias": [
+                { "comp": "Exactitud y Metodicidad", "desc": "Minimiza errores de transcripción y orden." },
+                { "comp": "Gestión del Tiempo", "desc": "Prioriza tareas administrativas eficientemente." },
+                { "comp": "Comunicación Efectiva", "desc": "Transmite información clara y formal de manera escrita y oral." }
+            ]
+        },
+        "encargado": {
+            "nombre": "Encargado",
+            "dinamicas": [
+                {
+                    "titulo": "Dinámica de Liderazgo Situacional y Delegación",
+                    "desc": "Se plantea un caso de falta imprevista de personal en plena jornada. El candidato debe organizar los turnos y resolver prioridades operativas."
+                },
+                {
+                    "titulo": "Entrevista por Competencias y Resolución de Conflictos",
+                    "desc": "Evaluación de la capacidad de mediación ante desacuerdos entre subordinados y reporte a mandos medios."
+                }
+            ],
+            "competencias": [
+                { "comp": "Liderazgo Práctico", "desc": "Guía al equipo con claridad y firmeza empática." },
+                { "comp": "Toma de Decisiones", "desc": "Actúa con criterio ante imprevistos cotidianos." },
+                { "comp": "Orientación a Resultados", "desc": "Supervisa el cumplimiento de metas diarias." }
+            ]
+        },
+        "jefe": {
+            "nombre": "Jefe",
+            "dinamicas": [
+                {
+                    "titulo": "Assessment Center: Panel de Toma de Decisiones Estratégicas",
+                    "desc": "Análisis de un escenario complejo con restricción presupuestaria y de recursos humanos. Presentación de plan de acción bajo presión."
+                },
+                {
+                    "titulo": "Role-playing de Negociación y Alineación de Objetivos",
+                    "desc": "Gestión de resistencia al cambio de un equipo frente a una nueva directiva gerencial."
+                }
+            ],
+            "competencias": [
+                { "comp": "Visión Estratégica", "desc": "Comprende el impacto global de sus decisiones." },
+                { "comp": "Negociación e Influencia", "desc": "Persuade y alinea equipos hacia metas complejas." },
+                { "comp": "Gestión de Crisis", "desc": "Mantiene la templanza y el foco estratégico en momentos críticos." }
+            ]
+        },
+        "contador": {
+            "nombre": "Contador",
+            "dinamicas": [
+                {
+                    "titulo": "Prueba de Análisis Financiero y Criterio Impositivo",
+                    "desc": "Resolución de un caso práctico con estados contables o discrepancias en conciliaciones bancarias."
+                },
+                {
+                    "titulo": "Entrevista Técnica de Criterio Profesional y Ética",
+                    "desc": "Evaluación de la postura ante situaciones de presión fiscal, manejo de auditorías y secreto profesional."
+                }
+            ],
+            "competencias": [
+                { "comp": "Rigor Técnico-Contable", desc: "Dominio preciso de normativas y cálculos." },
+                { "comp": "Pensamiento Analítico", desc: "Detecta inconsistencias y riesgos financieros con agilidad." },
+                { "comp": "Confidencialidad y Ética", desc: "Muestra apego estricto a las normas profesionales." }
+            ]
+        }
+    }
+}
