@@ -12,19 +12,21 @@
         <h1>Panel de Administración y ABM</h1>
         <p class="subtitle">Gestione de forma limpia y ordenada las áreas, cargos y dinámicas del archivo <code>datos.json</code>.</p>
 
-        <div class="toolbar">
-            <div style="display: flex; gap: 15px; align-items: center;">
-                <button onclick="window.location.href='index.html'" style="background-color: #34495e; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; font-weight: bold; transition: background 0.2s;" onmouseover="this.style.backgroundColor='#2c3e50'" onmouseout="this.style.backgroundColor='#34495e'">
-                    ⬅️ Volver al Generador
-                </button>
-                <div class="status-badge">
-                    📁 Estado: <span id="estadoCarga" style="color: var(--accent);">Cargando...</span>
-                </div>
+        <div class="toolbar" style="flex-direction: column; align-items: stretch; gap: 15px;">
+            <div class="status-badge">
+                📁 Estado: <span id="estadoCarga" style="color: var(--accent);">Cargando...</span>
             </div>
-            <div class="btn-group">
-                <button class="btn-success" style="background-color: #27ae60;" onclick="abrirModalArea()">+ Crear Nueva Área</button>
-                <button class="btn-warning" onclick="abrirModalCargo()">+ Crear Nuevo Cargo</button>
-                <button class="btn-secondary" onclick="descargarJSON()">📥 Descargar JSON Actualizado</button>
+            <div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+                <div class="btn-group">
+                    <button class="btn-success" style="background-color: #27ae60;" onclick="abrirModalArea()">+ Crear Nueva Área</button>
+                    <button class="btn-warning" onclick="abrirModalCargo()">+ Crear Nuevo Cargo</button>
+                    <button class="btn-secondary" onclick="descargarJSON()">📥 Descargar JSON Actualizado</button>
+                </div>
+                <div>
+                    <button onclick="window.location.href='index.html'" style="background-color: #34495e; color: white; border: none; padding: 10px 16px; border-radius: 4px; cursor: pointer; font-weight: bold; transition: background 0.2s;" onmouseover="this.style.backgroundColor='#2c3e50'" onmouseout="this.style.backgroundColor='#34495e'">
+                        ⬅️ Volver al Generador
+                    </button>
+                </div>
             </div>
         </div>
 
