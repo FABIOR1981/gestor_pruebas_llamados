@@ -1,10 +1,10 @@
-let baseDatosCargos = {};
+let baseDatosGlobal = { cargos: {}, dinamicas: [] };
 
 async function cargarDatos() {
     try {
         const response = await fetch('datos.json');
         const data = await response.json();
-        baseDatosCargos = data.cargos;
+        baseDatosGlobal = data;
         inicializarSelectCargos();
     } catch (error) {
         console.error("Error al cargar el archivo JSON:", error);
@@ -16,10 +16,10 @@ function inicializarSelectCargos() {
     const selectCargo = document.getElementById('cargoSelect');
     selectCargo.innerHTML = '';
 
-    for (const key in baseDatosCargos) {
+    for (const key in baseDatosGlobal.cargos) {
         let opt = document.createElement('option');
         opt.value = key;
-        opt.textContent = baseDatosCargos[key].nombre;
+        opt.textContent = `[${key}] ${baseDatosGlobal.cargos[key].nombre}`;
         selectCargo.appendChild(opt);
     }
 
@@ -32,42 +32,42 @@ function actualizarDinamicas() {
     const selectDinamica = document.getElementById('tipoDinamica');
     selectDinamica.innerHTML = '';
 
-    if (!baseDatosCargos[cargoKey]) return;
+    if (!baseDatosGlobal.cargos[cargoKey]) return;
 
-    const datos = baseDatosCargos[cargoKey];
-    datos.dinamicas.forEach((din, index) => {
+    // Filtramos las dinámicas que pertenecen a este cargo_id
+    const dinamicasFiltradas = baseDatosGlobal.dinamicas.filter(din => din.cargo_id === cargoKey);
+
+    dinamicasFiltradas.forEach((din) => {
         let opt = document.createElement('option');
-        opt.value = index;
-        opt.textContent = `[${din.codigo}] ${din.titulo}`; // Muestra el código en el selector desplegable
+        opt.value = din.id; // Guardamos el ID único (ej: DIN-CAR-01)
+        opt.textContent = `[${din.id}] ${din.titulo}`;
         selectDinamica.appendChild(opt);
     });
 }
 
 function generarEvaluacion() {
     const cargoKey = document.getElementById('cargoSelect').value;
-    const dinamicaIndex = document.getElementById('tipoDinamica').value;
+    const dinamicaId = document.getElementById('tipoDinamica').value;
     const numPostulantes = parseInt(document.getElementById('numPostulantes').value) || 1;
     
-    if (!baseDatosCargos[cargoKey]) return;
+    if (!baseDatosGlobal.cargos[cargoKey]) return;
 
-    const datosCargo = baseDatosCargos[cargoKey];
-    const dinamicaSeleccionada = datosCargo.dinamicas[dinamicaIndex];
+    const datosCargo = baseDatosGlobal.cargos[cargoKey];
+    const dinamicaSeleccionada = baseDatosGlobal.dinamicas.find(din => din.id === dinamicaId);
 
     if (!dinamicaSeleccionada) return;
 
-    document.getElementById('cargoTitulo').textContent = `Cargo Objetivo: ${datosCargo.nombre}`;
+    document.getElementById('cargoTitulo').textContent = `Cargo Objetivo: [${cargoKey}] ${datosCargo.nombre}`;
 
-    // Textos seguros
-    const codigoDin = dinamicaSeleccionada.codigo || "S/C";
-    const tituloDin = dinamicaSeleccionada.titulo || "Sin título";
     const materialTexto = dinamicaSeleccionada.hoja_postulante || "Sin material específico definido.";
     const casoTexto = dinamicaSeleccionada.caso_o_consigna || "Sin objetivo específico.";
     const guiaTexto = dinamicaSeleccionada.guia_evaluacion || "Sin guía específica.";
     const tiempoTexto = dinamicaSeleccionada.tiempo_limite || "Sin límite especificado";
+    const codigoDin = dinamicaSeleccionada.id;
 
-    // 1. Informe para el evaluador: Muestra Nombre y Código de la dinámica
+    // Informe para el evaluador
     document.getElementById('dinamicaDescripcion').innerHTML = `
-        <p><strong>Dinámica:</strong> ${tituloDin} <span style="background: #eaeded; padding: 2px 6px; border-radius: 4px; font-family: monospace; font-size: 13px; color: #2c3e50;">Código: ${codigoDin}</span></p>
+        <p><strong>Dinámica:</strong> ${dinamicaSeleccionada.titulo} <span style="background: #eaeded; padding: 2px 6px; border-radius: 4px; font-family: monospace; font-size: 13px; color: #2c3e50;">ID: ${codigoDin}</span></p>
         <p class="dynamics-list"><strong>Descripción:</strong> ${dinamicaSeleccionada.desc}</p>
         <div style="background: #f4ecf7; border-left: 3px solid #8e44ad; padding: 10px; margin-top: 8px; font-size: 13px;">
             <strong>⏱️ Tiempo Límite de la Prueba:</strong> <span style="font-size: 14px; font-weight: bold; color: #6c3483;">${tiempoTexto}</span>
@@ -100,7 +100,6 @@ function generarEvaluacion() {
     contenedorHojasPostulantes.innerHTML = '';
 
     for (let i = 1; i <= numPostulantes; i++) {
-        // Bloque de calificación para el informe del evaluador
         contenedorPost.innerHTML += `
             <div class="candidate-box">
                 <h4>Postulante #${i}: __________________________________________________</h4>
@@ -121,7 +120,6 @@ function generarEvaluacion() {
             </div>
         `;
 
-        // 2. Hoja de trabajo del postulante: Cabecera optimizada en dos renglones
         contenedorHojasPostulantes.innerHTML += `
             <div class="candidate-sheet">
                 <h3 style="color: var(--primary); margin-top: 0; border-bottom: 2px solid var(--primary); padding-bottom: 5px;">HOJA DE TRABAJO / CONSIGNA</h3>
