@@ -59,19 +59,15 @@ function generarEvaluacion() {
     // Actualizar encabezados
     document.getElementById('cargoTitulo').textContent = `Cargo Objetivo: ${datosCargo.nombre}`;
 
-    // Textos seguros con validación por si falta alguna propiedad
+    // Textos seguros
     const materialTexto = dinamicaSeleccionada.material_postulante || "Sin material específico definido.";
     const casoTexto = dinamicaSeleccionada.caso_o_consigna || "Sin caso específico definido.";
     const guiaTexto = dinamicaSeleccionada.guia_evaluacion || "Sin guía específica.";
 
-    // Descripción de la dinámica enriquecida con material, objetivo y guía
+    // 1. Descripción en el informe del evaluador
     document.getElementById('dinamicaDescripcion').innerHTML = `
         <p><strong>Dinámica:</strong> ${dinamicaSeleccionada.titulo}</p>
         <p class="dynamics-list"><strong>Descripción:</strong> ${dinamicaSeleccionada.desc}</p>
-        <div style="background: #eef7fa; border-left: 3px solid #2980b9; padding: 10px; margin-top: 8px; font-size: 13px;">
-            <strong>📄 Material / Consigna para el Postulante:</strong><br>
-            ${materialTexto}
-        </div>
         <div style="background: #f9f9f9; border-left: 3px solid #e67e22; padding: 10px; margin-top: 8px; font-size: 13px;">
             <strong>🎯 Objetivo de la Prueba:</strong><br>
             ${casoTexto}
@@ -82,7 +78,20 @@ function generarEvaluacion() {
         </div>
     `;
 
-    // Construir filas de competencias con celda libre para anotaciones a mano
+    // 2. Rellenar el material dedicado para el postulante (salta a otra página al imprimir)
+    document.getElementById('materialPostulanteContenido').innerHTML = `
+        <h3 style="color: var(--primary); margin-top: 0; border-bottom: 2px solid var(--primary); padding-bottom: 5px;">HOJA DE TRABAJO / CONSIGNA DEL POSTULANTE</h3>
+        <p><strong>Dinámica:</strong> ${dinamicaSeleccionada.titulo}</p>
+        <div style="background: #ffffff; border: 1px solid var(--border); padding: 20px; border-radius: 6px; margin-top: 15px; font-size: 14px; line-height: 1.6;">
+            ${materialTexto.replace(/\n/g, '<br>')}
+        </div>
+        <div style="margin-top: 30px; font-size: 13px; color: #555;">
+            <strong>Nombre del Postulante:</strong> __________________________________________________<br><br>
+            <strong>Fecha:</strong> ____/____/20___ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>Resultado / Notas:</strong> ________________________
+        </div>
+    `;
+
+    // Construir filas de competencias con celdas libres para anotaciones a mano
     let filasCompetenciasHTML = '';
     datosCargo.competencias.forEach(c => {
         filasCompetenciasHTML += `
@@ -94,7 +103,7 @@ function generarEvaluacion() {
         `;
     });
 
-    // Contenedor de postulantes (genera un bloque independiente por cada uno)
+    // Contenedor de postulantes
     let contenedorPost = document.getElementById('contenedorPostulantes');
     contenedorPost.innerHTML = '';
 

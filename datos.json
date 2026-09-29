@@ -6,14 +6,14 @@
                 {
                     "titulo": "Prueba de Atención Sostenida y Verificación de Códigos",
                     "desc": "Ejercicio escrito individual de control rápido de alfanuméricos bajo presión de tiempo.",
-                    "material_postulante": "Entregar al postulante una hoja con 20 códigos operativos al azar y la siguiente instrucción escrita: 'En un tiempo máximo de 2 minutos, marque con un círculo únicamente los códigos que contengan una letra X y un número impar'.",
+                    "material_postulante": "Entregar al postulante una hoja con 20 códigos operativos al azar y la siguiente instrucción escrita:\n\n'En un tiempo máximo de 2 minutos, marque con un círculo únicamente los códigos que contengan una letra X y un número impar'.",
                     "caso_o_consigna": "Verificación de velocidad y agilidad visual bajo presión temporal estricta.",
                     "guia_evaluacion": "• Éxito: Alta tasa de aciertos y bajo margen de falsos positivos en tiempo récord.\n• Alerta: Tacha de forma desordenada, omite más de la mitad o se bloquea ante la presión."
                 },
                 {
                     "titulo": "Prueba de Criterio Operativo y Seguridad Laboral",
                     "desc": "Análisis escrito de un caso de distribución y estiba de cargas.",
-                    "material_postulante": "Entregar al postulante el siguiente caso impreso: 'Tiene que estibar en una zorra logística tres elementos: una caja pesada de 30kg, una caja mediana frágil de 10kg y una caja liviana de 5kg. Indique por escrito en qué orden las ubica de abajo hacia arriba y fundamente su respuesta en base a la seguridad'.",
+                    "material_postulante": "Entregar al postulante el siguiente caso impreso:\n\n'Tiene que estibar en una zorra logística tres elementos: una caja pesada de 30kg, una caja mediana frágil de 10kg y una caja liviana de 5kg. Indique por escrito en qué orden las ubica de abajo hacia arriba y fundamente su respuesta en base a la seguridad'.",
                     "caso_o_consigna": "Análisis de distribución de pesos, centro de gravedad y prevención de daños.",
                     "guia_evaluacion": "• Éxito: Responde con orden lógico de estabilidad (pesada abajo, frágil/liviana arriba) y prevención de lesiones físicas.\n• Alerta: Sugiere ubicar objetos frágiles abajo o no contempla el centro de gravedad."
                 }
@@ -30,14 +30,14 @@
                 {
                     "titulo": "Prueba de Validación y Detección de Errores en Planilla",
                     "desc": "Ejercicio rápido de cotejo de datos alfanuméricos en formato de tabla.",
-                    "material_postulante": "Entregar una tabla impresa con 10 registros de facturación originales y una copia al lado que contiene 3 errores sutiles (un número cambiado en un importe y una letra alterada en un nombre). Consigna: 'Marque en 3 minutos las diferencias que encuentre entre ambas columnas'.",
+                    "material_postulante": "Entregar una tabla impresa con 10 registros de facturación originales y una copia al lado que contiene 3 errores sutiles (un número cambiado en un importe y una letra alterada en un nombre).\n\nConsigna: 'Marque en 3 minutos las diferencias que encuentre entre ambas columnas'.",
                     "caso_o_consigna": "Cotejo de datos alfanuméricos y metodicidad en la revisión.",
                     "guia_evaluacion": "• Éxito: Detecta el 100% de las incongruencias tipográficas y numéricas con prolijidad.\n• Alerta: Pasa por alto diferencias en letras o decimales por lectura superficial."
                 },
                 {
                     "titulo": "Simulación de Respuesta Escrita a Reclamo Urgente",
                     "desc": "Redacción rápida de un correo electrónico formal de respuesta ante una queja.",
-                    "material_postulante": "Entregar la siguiente consigna por escrito: 'Un cliente interno envía un correo reclamando que un insumo crítico lleva 48 horas demorado y frena su sector. Redacte en un borrador (máximo 5 líneas) un correo de respuesta formal, pidiendo disculpas, explicando brevemente el contratiempo administrativo y fijando nueva entrega'.",
+                    "material_postulante": "Entregar la siguiente consigna por escrito:\n\n'Un cliente interno envía un correo reclamando que un insumo crítico lleva 48 horas demorado y frena su sector. Redacte en un borrador (máximo 5 líneas) un correo de respuesta formal, pidiendo disculpas, explicando brevemente el contratiempo administrativo y fijando nueva entrega'.",
                     "caso_o_consigna": "Redacción de correo corporativo bajo presión y resolución de conflictos.",
                     "guia_evaluacion": "• Éxito: Tono empático, formal, claro, directo y orientado a resolver sin excusas.\n• Alerta: Redacción desordenada, faltas de ortografía o tono defensivo/agresivo."
                 }
@@ -54,14 +54,14 @@
                 {
                     "titulo": "Prueba de Resolución de Casos: Priorización Operativa",
                     "desc": "Análisis escrito de un escenario crítico de dotación de personal.",
-                    "material_postulante": "Entregar por escrito: 'A las 08:00 AM avisan dos bajas médicas imprevistas en su turno. Cuenta únicamente con 3 operarios novatos para cubrir una salida de despachos que exige 5 personas. Escriba en 4 puntos cómo reorganizaría las tareas de la primera hora para minimizar el impacto operativo'.",
+                    "material_postulante": "Entregar por escrito:\n\n'A las 08:00 AM avisan dos bajas médicas imprevistas en su turno. Cuenta únicamente con 3 operarios novatos para cubrir una salida de despachos que exige 5 personas. Escriba en 4 puntos cómo reorganizaría las tareas de la primera hora para minimizar el impacto operativo'.",
                     "caso_o_consigna": "Reorganización express de turnos y tareas ante bajas imprevistas de personal.",
                     "guia_evaluacion": "• Éxito: Prioriza tareas neurálgicas, apoya a los novatos en puestos complejos y plantea un plan claro.\n• Alerta: Propone soluciones imposibles o traslada el problema completo a gerencia."
                 },
                 {
                     "titulo": "Entrevista Situacional: Mediación de Conflictos",
                     "desc": "Evaluación de criterio de liderazgo ante disputas de personal.",
-                    "material_postulante": "Pregunta planteada de forma verbal o escrita al candidato: 'Describa detalladamente los pasos exactos que seguiría si descubre que dos operarios de su sector se niegan a colaborar mutuamente debido a diferencias personales, afectando el ritmo del equipo'.",
+                    "material_postulante": "Pregunta planteada al candidato:\n\n'Describa detalladamente los pasos exactos que seguiría si descubre que dos operarios de su sector se niegan a colaborar mutuamente debido a diferencias personales, afectando el ritmo del equipo'.",
                     "caso_o_consigna": "Abordaje y mediación ante disputas de personal en mandos medios.",
                     "guia_evaluacion": "• Éxito: Entrevista individual neutral, remarca objetivos de la empresa y establece acuerdos claros.\n• Alerta: Ignora el conflicto, toma partido sin escuchar o amenaza con sanciones arbitrarias."
                 }
@@ -78,14 +78,14 @@
                 {
                     "titulo": "Análisis de Caso Directivo: Restricción Presupuestaria",
                     "desc": "Ejercicio de pensamiento estratégico y asignación de recursos.",
-                    "material_postulante": "Entregar por escrito: 'La dirección general le solicita afrontar un recorte del 15% en el presupuesto de horas extras de su área sin que decaiga el nivel de servicio en temporada alta. Escriba en 3 ejes principales cómo rediseñaría la operación para alcanzar la meta'.",
+                    "material_postulante": "Entregar por escrito:\n\n'La dirección general le solicita afrontar un recorte del 15% en el presupuesto de horas extras de su área sin que decaiga el nivel de servicio en temporada alta. Escriba en 3 ejes principales cómo rediseñaría la operación para alcanzar la meta'.",
                     "caso_o_consigna": "Afrontar un recorte porcentual de presupuesto u horas extras sin degradar el nivel de servicio.",
                     "guia_evaluacion": "• Éxito: Propone mejoras de eficiencia y redistribución inteligente antes que un corte lineal.\n• Alerta: Plantea que el objetivo es inalcanzable o propone medidas arbitrarias sin sustento."
                 },
                 {
                     "titulo": "Simulación de Negociación: Resistencia al Cambio",
                     "desc": "Role-playing de alineación de mandos medios frente a una nueva directiva.",
-                    "material_postulante": "Consigna para la simulación: 'Asuma que el evaluador es un encargado de su equipo que rechaza de plano implementar un nuevo software de control operativo argumentando que le quita tiempo. Deberá conversar con él y lograr su compromiso en 2 minutos'.",
+                    "material_postulante": "Consigna para la simulación:\n\n'Asuma que el evaluador es un encargado de su equipo que rechaza de plano implementar un nuevo software de control operativo argumentando que le quita tiempo. Deberá conversar con él y lograr su compromiso en 2 minutos'.",
                     "caso_o_consigna": "Negociación con un encargado que rechaza implementar un nuevo sistema o protocolo.",
                     "guia_evaluacion": "• Éxito: Valida la preocupación operativa, explica el beneficio estratégico y capacita con firmeza.\n• Alerta: Se impone autoritariamente o cede totalmente ante la queja del subordinado."
                 }
@@ -102,14 +102,14 @@
                 {
                     "titulo": "Prueba de Criterio Técnico y Resolución de Conciliación",
                     "desc": "Resolución analítica de una inconsistencia contable típica.",
-                    "material_postulante": "Entregar por escrito: 'En la conciliación bancaria mensual surge una partida en tránsito de origen desconocido registrada el último día hábil. El directorio presiona fuertemente para cerrar el balance general sin demora'. ¿Cuál es el procedimiento técnico y ético correcto a seguir?",
+                    "material_postulante": "Entregar por escrito:\n\n'En la conciliación bancaria mensual surge una partida en tránsito de origen desconocido registrada el último día hábil. El directorio presiona fuertemente para cerrar el balance general sin demora'.\n\n¿Cuál es el procedimiento técnico y ético correcto a seguir?",
                     "caso_o_consigna": "Manejo técnico y ético ante una partida en tránsito bajo presión de cierre de balance.",
                     "guia_evaluacion": "• Éxito: Aplica principio de prudencia contable, no inventa asientos y exige respaldo documental.\n• Alerta: Cede a la presión gerencial registrando un ajuste ficticio para cumplir fechas."
                 },
                 {
                     "titulo": "Entrevista de Criterio Profesional y Prevención de Riesgos",
                     "desc": "Evaluación de postura ante zonas grises normativas.",
-                    "material_postulante": "Pregunta planteada al candidato: '¿Cómo procedería si detecta que un procedimiento impositivo histórico de la empresa se ha venido realizando bajo un criterio interpretativo que hoy la normativa fiscal comienza a cuestionar en auditorías recientes?'",
+                    "material_postulante": "Pregunta planteada al candidato:\n\n'¿Cómo procedería si detecta que un procedimiento impositivo histórico de la empresa se ha venido realizando bajo un criterio interpretativo que hoy la normativa fiscal comienza a cuestionar en auditorías recientes?'",
                     "caso_o_consigna": "Procedimiento ante la detección de un criterio impositivo histórico cuestionado por la normativa.",
                     "guia_evaluacion": "• Éxito: Dimensiona el riesgo fiscal y propone una regularización o consulta formal preventiva.\n• Alerta: Minimiza el riesgo o busca ocultarlo esperando no ser auditado."
                 }

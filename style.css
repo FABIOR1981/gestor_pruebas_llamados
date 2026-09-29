@@ -194,6 +194,12 @@ button:hover {
     page-break-inside: avoid;
 }
 
+/* Hoja de Trabajo / Consigna para el Postulante */
+.candidate-sheet {
+    margin-top: 40px;
+    padding-top: 20px;
+}
+
 /* Configuración de Impresión */
 @media print {
     body {
@@ -208,35 +214,8 @@ button:hover {
         padding: 0;
         width: 100%;
     }
-}
-
-/* Estilos para el Modal de Creación */
-.modal-overlay {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 1000;
-    justify-content: center;
-    align-items: center;
-}
-
-.modal-content {
-    background: white;
-    padding: 30px;
-    border-radius: 8px;
-    width: 90%;
-    max-width: 500px;
-    margin: 50px auto;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-}
-
-.modal-content h3 {
-    margin-top: 0;
-    color: var(--primary);
-    border-bottom: 2px solid var(--light);
-    padding-bottom: 8px;
+    .candidate-sheet {
+        page-break-before: always; /* Fuerza salto de página para el material del postulante */
+        break-before: page;
+    }
 }
