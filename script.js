@@ -102,7 +102,7 @@ function generarEvaluacion() {
         filasCompetenciasHTML += `
             <tr>
                 <td style="width: 35%;"><strong>${c.comp}</strong><br><span style="font-size:11px; color:#666;">${c.desc}</span></td>
-                <td style="width: 45%;">Comportamiento observado:</td>
+                <td style="width: 45%;"></td>
                 <td style="width: 20%; text-align: center;">[ &nbsp; &nbsp; ] / 5</td>
             </tr>
         `;
