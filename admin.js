@@ -107,20 +107,20 @@ function actualizarCodigoDinamicaAutogenerado() {
 }
 
 function actualizarCodigoCargoAutogenerado() {
-    let area = document.getElementById('cargoArea').value.toUpperCase().trim().substring(0,3);
+    let areaSigla = document.getElementById('areaSiglaInput').value.toUpperCase().trim().substring(0,3);
     let especialidad = document.getElementById('cargoEspecialidad').value.toUpperCase().trim().substring(0,3);
     
     // Si falta alguno de los dos campos, vaciamos el código final
-    if (area.length === 0 || especialidad.length === 0) {
+    if (areaSigla.length === 0 || especialidad.length === 0) {
         document.getElementById('cargoKeyInput').value = "";
         return;
     }
 
     // Rellenamos con 'X' en caso de que escriban menos de 3 letras (ej: "IT" -> "ITX")
-    while(area.length < 3) area += 'X';
+    while(areaSigla.length < 3) areaSigla += 'X';
     while(especialidad.length < 3) especialidad += 'X';
 
-    const prefijo = `${area}-${especialidad}-`;
+    const prefijo = `${areaSigla}-${especialidad}-`;
 
     let max = 0;
     Object.keys(baseDatosGlobal.cargos).forEach(key => {
@@ -234,21 +234,25 @@ function guardarCargo(event) {
     event.preventDefault();
     const key = document.getElementById('cargoKeyInput').value.trim();
     const nombre = document.getElementById('cargoNombreInput').value.trim();
+    const nombreArea = document.getElementById('areaNombreInput').value.trim();
 
     if (!key) {
-        alert("Complete el área y especialidad para generar el código del cargo.");
+        alert("Complete las siglas del área y especialidad para generar el código.");
         return;
     }
 
     if (baseDatosGlobal.cargos[key]) {
-        alert("El sistema intentó sobreescribir un código existente. Contacte soporte.");
+        alert("El sistema intentó sobreescribir un código existente. Modifique la especialidad.");
         return;
     }
 
+    // Se guarda la estructura base, añadiendo el nombre del área como dato extra
     baseDatosGlobal.cargos[key] = {
         nombre: nombre,
+        area: nombreArea,
         competencias: [
-            { comp: "Competencia General", desc: "Descripción de ejemplo a modificar." }
+            { comp: "Competencia General 1", desc: "Descripción de ejemplo a modificar." },
+            { comp: "Competencia General 2", desc: "Descripción de ejemplo a modificar." }
         ]
     };
 
@@ -256,7 +260,7 @@ function guardarCargo(event) {
     inicializarAdmin();
     document.getElementById('cargoSelectAdmin').value = key;
     renderizarDinamicas();
-    alert(`¡Cargo '${nombre}' [${key}] creado con éxito!`);
+    alert(`¡Cargo '${nombre}' [${key}] creado con éxito en el área de ${nombreArea}!`);
 }
 
 function descargarJSON() {

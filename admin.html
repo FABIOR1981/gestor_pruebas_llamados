@@ -97,41 +97,37 @@
     </div>
 
     <!-- Modal: Crear Nuevo Cargo -->
-    <!-- Modal: Crear Nuevo Cargo -->
     <div id="modalCargoNuevo" class="modal">
-        <div class="modal-content" style="max-width: 500px;">
+        <div class="modal-content" style="max-width: 550px;">
             <h3>Crear Nuevo Cargo</h3>
             <form id="formCargo" onsubmit="guardarCargo(event)">
                 
-                <!-- 1. Nombre (Lo más natural es empezar por aquí) -->
                 <div class="form-group" style="margin-bottom: 15px;">
                     <label for="cargoNombreInput">Nombre legible del Cargo:</label>
-                    <input type="text" id="cargoNombreInput" placeholder="Ej: Encargado de Ventas" required>
+                    <input type="text" id="cargoNombreInput" placeholder="Ej: Administrador de Redes" required>
                 </div>
 
-                <!-- 2. Clasificación (Área y Sigla) -->
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px;">
+                <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 10px; margin-bottom: 15px;">
                     <div class="form-group">
-                        <label for="cargoArea">Área / Nivel (3 Letras):</label>
-                        <input list="listaAreas" id="cargoArea" placeholder="Ej: OPE, TEC, MKT" maxlength="3" style="text-transform: uppercase;" oninput="actualizarCodigoCargoAutogenerado()" required>
-                        <datalist id="listaAreas">
-                            <option value="OPE">Operativa</option>
-                            <option value="ADM">Administración</option>
-                            <option value="SUP">Supervisión</option>
-                            <option value="FIN">Finanzas</option>
-                            <option value="DIR">Dirección</option>
-                        </datalist>
+                        <label for="areaNombreInput">Nombre del Área / Departamento:</label>
+                        <input type="text" id="areaNombreInput" placeholder="Ej: Tecnología" required>
                     </div>
                     <div class="form-group">
-                        <label for="cargoEspecialidad">Especialidad (3 Letras):</label>
-                        <input type="text" id="cargoEspecialidad" placeholder="Ej: VEN, LOG" maxlength="3" style="text-transform: uppercase;" oninput="actualizarCodigoCargoAutogenerado()" required>
+                        <label for="areaSiglaInput">Sigla Área (3 Letras):</label>
+                        <input type="text" id="areaSiglaInput" placeholder="Ej: TEC" maxlength="3" style="text-transform: uppercase;" oninput="actualizarCodigoCargoAutogenerado()" required>
                     </div>
                 </div>
 
-                <!-- 3. Resultado (Código autogenerado) -->
+                <div style="display: grid; grid-template-columns: 1fr; margin-bottom: 15px;">
+                    <div class="form-group">
+                        <label for="cargoEspecialidad">Sigla Especialidad (3 Letras):</label>
+                        <input type="text" id="cargoEspecialidad" placeholder="Ej: RED, LOG, VEN" maxlength="3" style="text-transform: uppercase;" oninput="actualizarCodigoCargoAutogenerado()" required>
+                    </div>
+                </div>
+
                 <div class="form-group" style="margin-bottom: 15px;">
                     <label for="cargoKeyInput">Código del Cargo (Autogenerado):</label>
-                    <input type="text" id="cargoKeyInput" style="background-color: #eaeded; font-family: monospace; font-weight: bold; color: #7f8c8d; border: 1px dashed #bdc3c7;" readonly required placeholder="Complete los campos superiores para generar el código">
+                    <input type="text" id="cargoKeyInput" style="background-color: #eaeded; font-family: monospace; font-weight: bold; color: #7f8c8d; border: 1px dashed #bdc3c7;" readonly required placeholder="Complete las siglas superiores para generar">
                 </div>
 
                 <div style="display: flex; gap: 10px; margin-top: 25px;">
