@@ -1,32 +1,23 @@
 let baseDatosGlobal = { cargos: {} };
 
-// Cargar por defecto si está en la misma ruta
 window.onload = async function() {
     try {
-        const res = await fetch('datos.json');
-        const data = await res.json();
+        const response = await fetch('datos.json');
+        if (!response.ok) throw new Error("No se pudo cargar datos.json");
+        const data = await response.json();
         baseDatosGlobal = data;
+        
+        document.getElementById('estadoCarga').textContent = "Conectado a datos.json";
+        document.getElementById('estadoCarga').style.color = "var(--success)";
+        
         inicializarAdmin();
-    } catch (e) {
-        console.log("Carga un archivo JSON manualmente.");
+    } catch (error) {
+        console.error("Error al cargar datos.json:", error);
+        document.getElementById('estadoCarga').textContent = "Error al leer datos.json";
+        document.getElementById('estadoCarga').style.color = "var(--danger)";
+        alert("Asegúrate de correr esta página desde un servidor local (Live Server) o Netlify para que lea el archivo JSON.");
     }
 };
-
-function cargarArchivoJSON(event) {
-    const file = event.target.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = function(e) {
-        try {
-            baseDatosGlobal = JSON.parse(e.target.result);
-            inicializarAdmin();
-            alert("¡Archivo JSON cargado con éxito!");
-        } catch (err) {
-            alert("Error al parsear el archivo JSON.");
-        }
-    };
-    reader.readAsText(file);
-}
 
 function inicializarAdmin() {
     const selectCargo = document.getElementById('cargoSelectAdmin');
@@ -55,10 +46,13 @@ function renderizarDinamicas() {
 
     if (!baseDatosGlobal.cargos[cargoKey]) return;
 
-    const dinamicas = baseDatosGlobal.cargos[cargoKey].dinamicas;
+    const cargoActual = baseDatosGlobal.cargos[cargoKey];
+    document.getElementById('tituloListaCargo').textContent = `Dinámicas del Cargo: ${cargoActual.nombre}`;
+
+    const dinamicas = cargoActual.dinamicas || [];
 
     if (dinamicas.length === 0) {
-        contenedor.innerHTML = '<p>No hay dinámicas para este cargo.</p>';
+        contenedor.innerHTML = '<div style="padding: 20px; text-align: center; color: #777; background: white; border: 1px solid var(--border); border-radius: 6px;">No hay dinámicas registradas para este cargo.</div>';
         return;
     }
 
@@ -66,8 +60,8 @@ function renderizarDinamicas() {
         contenedor.innerHTML += `
             <div class="dynamics-card">
                 <div class="dynamics-info">
-                    <h4>[${din.codigo || 'S/C'}] ${din.titulo}</h4>
-                    <p><strong>Tiempo:</strong> ${din.tiempo_limite || 'N/A'}</p>
+                    <h4><span style="font-family: monospace; background: var(--light); padding: 2px 6px; border-radius: 4px; font-size: 13px; color: var(--accent);">[${din.codigo || 'S/C'}]</span> ${din.titulo}</h4>
+                    <p><strong>Tiempo Límite:</strong> ${din.tiempo_limite || 'N/A'}</p>
                     <p><strong>Descripción:</strong> ${din.desc}</p>
                 </div>
                 <div class="actions">
@@ -79,6 +73,7 @@ function renderizarDinamicas() {
     });
 }
 
+// Funciones Modal Dinámica
 function abrirModalDinamica() {
     document.getElementById('modalTitulo').textContent = "Nueva Dinámica";
     document.getElementById('editIndex').value = "-1";
@@ -86,7 +81,7 @@ function abrirModalDinamica() {
     document.getElementById('modalDinamica').style.display = 'flex';
 }
 
-function cerrarModal() {
+function cerrarModalDinamica() {
     document.getElementById('modalDinamica').style.display = 'none';
 }
 
@@ -122,16 +117,17 @@ function guardarDinamica(event) {
     };
 
     if (index === -1) {
-        // Nueva
+        if (!baseDatosGlobal.cargos[cargoKey].dinamicas) {
+            baseDatosGlobal.cargos[cargoKey].dinamicas = [];
+        }
         baseDatosGlobal.cargos[cargoKey].dinamicas.push(nuevaDin);
     } else {
-        // Modificación
         baseDatosGlobal.cargos[cargoKey].dinamicas[index] = nuevaDin;
     }
 
-    cerrarModal();
+    cerrarModalDinamica();
     renderizarDinamicas();
-    alert("¡Cambios aplicados en memoria con éxito! Recuerda descargar el JSON actualizado.");
+    alert("¡Dinámica guardada! No olvides hacer clic en 'Descargar JSON Actualizado' cuando termines.");
 }
 
 function eliminarDinamica(cargoKey, index) {
@@ -139,6 +135,42 @@ function eliminarDinamica(cargoKey, index) {
         baseDatosGlobal.cargos[cargoKey].dinamicas.splice(index, 1);
         renderizarDinamicas();
     }
+}
+
+// Funciones Modal Cargo Nuevo
+function abrirModalCargo() {
+    document.getElementById('formCargo').reset();
+    document.getElementById('modalCargoNuevo').style.display = 'flex';
+}
+
+function cerrarModalCargo() {
+    document.getElementById('modalCargoNuevo').style.display = 'none';
+}
+
+function guardarCargo(event) {
+    event.preventDefault();
+    const key = document.getElementById('cargoKeyInput').value.trim().toLowerCase().replace(/\s+/g, '_');
+    const nombre = document.getElementById('cargoNombreInput').value.trim();
+
+    if (baseDatosGlobal.cargos[key]) {
+        alert("Ya existe un cargo con ese identificador. Elige otro.");
+        return;
+    }
+
+    // Crear la estructura base para el nuevo cargo
+    baseDatosGlobal.cargos[key] = {
+        nombre: nombre,
+        dinamicas: [],
+        competencias: [
+            { comp: "Competencia General 1", desc: "Descripción de ejemplo a modificar." }
+        ]
+    };
+
+    cerrarModalCargo();
+    inicializarAdmin();
+    document.getElementById('cargoSelectAdmin').value = key;
+    renderizarDinamicas();
+    alert(`¡Cargo '${nombre}' creado con éxito!`);
 }
 
 function descargarJSON() {
