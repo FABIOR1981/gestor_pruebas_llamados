@@ -9,7 +9,7 @@
             ]
         },
         "ADM-GEN-01": {
-            "nombre": "Administrativo General",
+            "nombre": "Administrativo",
             "competencias": [
                 { "comp": "Exactitud y Metodicidad", "desc": "Minimiza errores de transcripción y orden." },
                 { "comp": "Gestión del Tiempo", "desc": "Prioriza tareas administrativas eficientemente." },
@@ -17,7 +17,7 @@
             ]
         },
         "SUP-ENC-01": {
-            "nombre": "Encargado de Turno",
+            "nombre": "Encargado",
             "competencias": [
                 { "comp": "Liderazgo Práctico", "desc": "Guía al equipo con claridad y firmeza empática." },
                 { "comp": "Toma de Decisiones", "desc": "Actúa con criterio ante imprevistos cotidianos." },
@@ -25,7 +25,7 @@
             ]
         },
         "SUP-JEF-01": {
-            "nombre": "Jefe de Departamento",
+            "nombre": "Jefe",
             "competencias": [
                 { "comp": "Visión Estratégica", "desc": "Comprende el impacto global de sus decisiones." },
                 { "comp": "Negociación e Influencia", "desc": "Persuade y alinea equipos hacia metas complejas." },
@@ -33,7 +33,7 @@
             ]
         },
         "FIN-CON-01": {
-            "nombre": "Contador / Analista Financiero",
+            "nombre": "Contador",
             "competencias": [
                 { "comp": "Rigor Técnico-Contable", "desc": "Dominio preciso de normativas y cálculos." },
                 { "comp": "Pensamiento Analítico", "desc": "Detecta inconsistencias y riesgos financieros con agilidad." },
