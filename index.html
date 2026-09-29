@@ -10,19 +10,19 @@
 
     <!-- Panel de Control (No se imprime) -->
     <div class="no-print">
-        <h1>Configuración de Evaluaciones Psicotécnicas</h1>
+        <h1>Generador de Evaluaciones Psicotécnicas</h1>
         <div class="form-grid">
             <div class="form-group">
                 <label for="cargoSelect">Puesto / Cargo:</label>
                 <select id="cargoSelect" onchange="actualizarDinamicas()">
-                    <!-- Se llena desde JS -->
+                    <!-- Se llena desde el JSON -->
                 </select>
             </div>
 
             <div class="form-group">
                 <label for="tipoDinamica">Dinámica Principal:</label>
                 <select id="tipoDinamica">
-                    <!-- Se llena desde JS -->
+                    <!-- Se llena desde el JSON -->
                 </select>
             </div>
 
@@ -35,33 +35,6 @@
         <div class="btn-container">
             <button onclick="generarEvaluacion()">Generar Formulario</button>
             <button class="btn-print" onclick="window.print()">Imprimir Formulario</button>
-            <button onclick="abrirModalCrear()" style="background-color: #8e44ad;">+ Crear Dinámica</button>
-            <button onclick="reiniciarDatosOriginales()" style="background-color: #7f8c8d; font-size:13px;" title="Vuelve a los datos por defecto">Restaurar Originales</button>
-        </div>
-    </div>
-
-    <!-- Modal / Ventana para Crear Dinámica -->
-    <div id="modalCrear" class="modal-overlay no-print">
-        <div class="modal-content">
-            <h3>Crear Nueva Dinámica de Evaluación</h3>
-            <form onsubmit="guardarNuevaDinamica(event)">
-                <div class="form-group" style="margin-bottom: 12px;">
-                    <label for="nuevoCargoSelect">Asociar al Cargo:</label>
-                    <select id="nuevoCargoSelect" style="width:150px;"></select>
-                </div>
-                <div class="form-group" style="margin-bottom: 12px;">
-                    <label for="nuevoTitulo">Título de la Dinámica / Prueba:</label>
-                    <input type="text" id="nuevoTitulo" placeholder="Ej: Prueba de agilidad numérica avanzada" required>
-                </div>
-                <div class="form-group" style="margin-bottom: 15px;">
-                    <label for="nuevaDesc">Objetivo / Consigna (Instrucciones para el evaluador):</label>
-                    <textarea id="nuevaDesc" rows="3" placeholder="Describe brevemente en qué consiste la prueba..." style="padding:10px; border:1px solid var(--border); border-radius:4px; font-family:inherit;" required></textarea>
-                </div>
-                <div style="display: flex; gap: 10px;">
-                    <button type="submit" style="background-color: #27ae60;">Guardar Dinámica</button>
-                    <button type="button" onclick="cerrarModalCrear()" style="background-color: #c0392b;">Cancelar</button>
-                </div>
-            </form>
         </div>
     </div>
 
@@ -97,6 +70,7 @@
         </div>
     </div>
 
+    <!-- Archivo JavaScript separado -->
     <script src="script.js"></script>
 </body>
 </html>
