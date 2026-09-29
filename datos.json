@@ -16,7 +16,7 @@
                 { "comp": "Comunicación Efectiva", "desc": "Transmite información clara y formal de manera escrita y oral." }
             ]
         },
-        "DIR-ENC-01": {
+        "SUP-ENC-01": {
             "nombre": "Encargado de Turno",
             "competencias": [
                 { "comp": "Liderazgo Práctico", "desc": "Guía al equipo con claridad y firmeza empática." },
@@ -24,7 +24,7 @@
                 { "comp": "Orientación a Resultados", "desc": "Supervisa el cumplimiento de metas diarias." }
             ]
         },
-        "DIR-JEF-02": {
+        "SUP-JEF-02": {
             "nombre": "Jefe de Departamento",
             "competencias": [
                 { "comp": "Visión Estratégica", "desc": "Comprende el impacto global de sus decisiones." },
@@ -84,17 +84,17 @@
         },
         {
             "id": "DIN-ENC-01",
-            "cargo_id": "DIR-ENC-01",
+            "cargo_id": "SUP-ENC-01",
             "titulo": "Prueba de Resolución de Casos: Priorización Operativa",
             "desc": "Análisis escrito de un escenario crítico de dotación de personal.",
             "tiempo_limite": "7 Minutos",
             "hoja_postulante": "Caso Práctico:\nA las 08:00 AM le notifican dos bajas médicas imprevistas en su turno operativo habitual. Cuenta únicamente con 3 operarios novatos para cubrir una salida de despachos que exige obligatoriamente a 5 personas.\n\nConsigna:\nDescriba en al menos 4 puntos claros cómo reorganizaría las tareas de la primera hora para minimizar el impacto operativo.\n\n<div class='renglon-respuesta'></div><div class='renglon-respuesta'></div><div class='renglon-respuesta'></div><div class='renglon-respuesta'></div><div class='renglon-respuesta'></div>",
             "caso_o_consigna": "Reorganización express de turnos y tareas ante bajas imprevistas de personal.",
-            "guia_evaluacion": "• Éxito: Prioriza tareas neurálgicas, apoya a los novatos en complejos y plantea un plan claro.\n• Alerta: Propone soluciones imposibles o traslada el problema completo a gerencia."
+            "guia_evaluacion": "• Éxito: Prioriza tareas neurálgicas, apoya a los novatos en puestos complejos y plantea un plan claro.\n• Alerta: Propone soluciones imposibles o traslada el problema completo a gerencia."
         },
         {
             "id": "DIN-ENC-02",
-            "cargo_id": "DIR-ENC-01",
+            "cargo_id": "SUP-ENC-01",
             "titulo": "Entrevista Situacional: Mediación de Conflictos",
             "desc": "Evaluación de criterio de liderazgo ante disputas de personal.",
             "tiempo_limite": "Desarrollo Libre (Aprox. 10 minutos)",
@@ -104,7 +104,7 @@
         },
         {
             "id": "DIN-JEF-01",
-            "cargo_id": "DIR-JEF-02",
+            "cargo_id": "SUP-JEF-02",
             "titulo": "Análisis de Caso Directivo: Restricción Presupuestaria",
             "desc": "Ejercicio de pensamiento estratégico y asignación de recursos.",
             "tiempo_limite": "10 Minutos",
@@ -114,7 +114,7 @@
         },
         {
             "id": "DIN-JEF-02",
-            "cargo_id": "DIR-JEF-02",
+            "cargo_id": "SUP-JEF-02",
             "titulo": "Simulación de Negociación: Resistencia al Cambio",
             "desc": "Role-playing de alineación de mandos medios frente a una nueva directiva.",
             "tiempo_limite": "2 Minutos de Simulación",
