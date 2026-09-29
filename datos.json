@@ -85,9 +85,9 @@
                 }
             ],
             "competencias": [
-                { "comp": "Rigor Técnico-Contable", desc: "Dominio preciso de normativas y cálculos." },
-                { "comp": "Pensamiento Analítico", desc: "Detecta inconsistencias y riesgos financieros con agilidad." },
-                { "comp": "Confidencialidad y Ética", desc: "Muestra apego estricto a las normas profesionales." }
+                { "comp": "Rigor Técnico-Contable", "desc": "Dominio preciso de normativas y cálculos." },
+                { "comp": "Pensamiento Analítico", "desc": "Detecta inconsistencias y riesgos financieros con agilidad." },
+                { "comp": "Confidencialidad y Ética", "desc": "Muestra apego estricto a las normas profesionales." }
             ]
         }
     }
