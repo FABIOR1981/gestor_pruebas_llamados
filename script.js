@@ -1,27 +1,50 @@
 let baseDatosCargos = {};
 
-// Cargar el archivo JSON al iniciar
+// Cargar datos (primero intenta del localStorage, si no hay, carga el JSON inicial)
 async function cargarDatos() {
     try {
-        const response = await fetch('datos.json');
-        const data = await response.json();
-        baseDatosCargos = data.cargos;
-        inicializarSelectCargos();
+        const guardadoLocal = localStorage.getItem('psicotecnico_datos');
+        if (guardadoLocal) {
+            baseDatosCargos = JSON.parse(guardadoLocal);
+            inicializarSelectCargos();
+        } else {
+            const response = await fetch('datos.json');
+            const data = await response.json();
+            baseDatosCargos = data.cargos;
+            guardarEnLocal(); // Guardar copia inicial en localStorage
+            inicializarSelectCargos();
+        }
     } catch (error) {
-        console.error("Error al cargar el archivo JSON:", error);
-        alert("No se pudo cargar 'datos.json'. Recuerda abrir la app desde un servidor local (como Live Server en VS Code).");
+        console.error("Error al cargar los datos:", error);
+        alert("No se pudieron cargar los datos.");
     }
+}
+
+function guardarEnLocal() {
+    localStorage.setItem('psicotecnico_datos', JSON.stringify(baseDatosCargos));
 }
 
 function inicializarSelectCargos() {
     const selectCargo = document.getElementById('cargoSelect');
+    const selectCargoModal = document.getElementById('nuevoCargoSelect');
+    
     selectCargo.innerHTML = '';
+    if(selectCargoModal) selectCargoModal.innerHTML = '';
 
     for (const key in baseDatosCargos) {
+        // Para el panel principal
         let opt = document.createElement('option');
         opt.value = key;
         opt.textContent = baseDatosCargos[key].nombre;
         selectCargo.appendChild(opt);
+
+        // Para el selector del modal de creación
+        if(selectCargoModal) {
+            let optModal = document.createElement('option');
+            optModal.value = key;
+            optModal.textContent = baseDatosCargos[key].nombre;
+            selectCargoModal.appendChild(optModal);
+        }
     }
 
     actualizarDinamicas();
@@ -54,6 +77,8 @@ function generarEvaluacion() {
     const datosCargo = baseDatosCargos[cargoKey];
     const dinamicaSeleccionada = datosCargo.dinamicas[dinamicaIndex];
 
+    if (!dinamicaSeleccionada) return;
+
     // Actualizar encabezados
     document.getElementById('cargoTitulo').textContent = `Cargo Objetivo: ${datosCargo.nombre}`;
 
@@ -63,7 +88,7 @@ function generarEvaluacion() {
         <p class="dynamics-list"><strong>Objetivo / Consigna:</strong> ${dinamicaSeleccionada.desc}</p>
     `;
 
-    // Construir filas de competencias para las tablas de cada postulante
+    // Construir filas de competencias
     let filasCompetenciasHTML = '';
     datosCargo.competencias.forEach(c => {
         filasCompetenciasHTML += `
@@ -102,5 +127,57 @@ function generarEvaluacion() {
     }
 }
 
-// Iniciar la aplicación al cargar la página
+// Funciones para el Modal de Creación de Dinámicas
+function abrirModalCrear() {
+    document.getElementById('modalCrear').style.display = 'block';
+}
+
+function cerrarModalCrear() {
+    document.getElementById('modalCrear').style.display = 'none';
+}
+
+function guardarNuevaDinamica(event) {
+    event.preventDefault();
+
+    const cargoKey = document.getElementById('nuevoCargoSelect').value;
+    const titulo = document.getElementById('nuevoTitulo').value.trim();
+    const desc = document.getElementById('nuevaDesc').value.trim();
+
+    if (!titulo || !desc) {
+        alert("Por favor completa todos los campos.");
+        return;
+    }
+
+    // Agregar la nueva dinámica al cargo correspondiente
+    baseDatosCargos[cargoKey].dinamicas.push({
+        titulo: titulo,
+        desc: desc
+    });
+
+    // Guardar cambios en el almacenamiento local
+    guardarEnLocal();
+
+    // Actualizar selectores en pantalla
+    actualizarDinamicas();
+    
+    // Seleccionar automáticamente la nueva dinámica creada
+    const selectDinamica = document.getElementById('tipoDinamica');
+    selectDinamica.value = selectDinamica.options.length - 1;
+    generarEvaluacion();
+
+    // Limpiar formulario y cerrar modal
+    document.getElementById('formNuevaDinamica').reset();
+    cerrarModalCrear();
+    
+    alert("¡Dinámica creada y guardada con éxito!");
+}
+
+// Función para restablecer los datos originales de fábrica
+function reiniciarDatosOriginales() {
+    if(confirm("¿Estás seguro de restablecer las dinámicas originales? Se borrarán las personalizadas.")) {
+        localStorage.removeItem('psicotecnico_datos');
+        location.reload();
+    }
+}
+
 window.onload = cargarDatos;
