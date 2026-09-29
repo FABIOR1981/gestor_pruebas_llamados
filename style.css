@@ -232,3 +232,12 @@ button:hover {
         break-before: page;
     }
 }
+
+/* Estilo para los renglones de respuesta del postulante ocupando el 100% del ancho */
+.renglon-respuesta {
+    width: 100%;
+    height: 32px;
+    border-bottom: 1px solid var(--border);
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
