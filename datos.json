@@ -24,7 +24,7 @@
                 { "comp": "Orientación a Resultados", "desc": "Supervisa el cumplimiento de metas diarias." }
             ]
         },
-        "SUP-JEF-02": {
+        "SUP-JEF-01": {
             "nombre": "Jefe de Departamento",
             "competencias": [
                 { "comp": "Visión Estratégica", "desc": "Comprende el impacto global de sus decisiones." },
@@ -104,7 +104,7 @@
         },
         {
             "id": "DIN-JEF-01",
-            "cargo_id": "SUP-JEF-02",
+            "cargo_id": "SUP-JEF-01",
             "titulo": "Análisis de Caso Directivo: Restricción Presupuestaria",
             "desc": "Ejercicio de pensamiento estratégico y asignación de recursos.",
             "tiempo_limite": "10 Minutos",
@@ -114,7 +114,7 @@
         },
         {
             "id": "DIN-JEF-02",
-            "cargo_id": "SUP-JEF-02",
+            "cargo_id": "SUP-JEF-01",
             "titulo": "Simulación de Negociación: Resistencia al Cambio",
             "desc": "Role-playing de alineación de mandos medios frente a una nueva directiva.",
             "tiempo_limite": "2 Minutos de Simulación",
