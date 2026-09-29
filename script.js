@@ -9,7 +9,7 @@ async function cargarDatos() {
         inicializarSelectCargos();
     } catch (error) {
         console.error("Error al cargar el archivo JSON:", error);
-        alert("Error de conexión. Asegúrate de estar corriendo la app en Netlify o un servidor local.");
+        alert("Error de conexión. Asegúrate de estar corriendo la app en Netlify o un servidor local (como Live Server en VS Code).");
     }
 }
 
@@ -59,24 +59,30 @@ function generarEvaluacion() {
     // Actualizar encabezados
     document.getElementById('cargoTitulo').textContent = `Cargo Objetivo: ${datosCargo.nombre}`;
 
+    // Textos seguros con validación por si falta alguna propiedad
+    const materialTexto = dinamicaSeleccionada.material_postulante || "Sin material específico definido.";
     const casoTexto = dinamicaSeleccionada.caso_o_consigna || "Sin caso específico definido.";
     const guiaTexto = dinamicaSeleccionada.guia_evaluacion || "Sin guía específica.";
 
-    // Descripción de la dinámica enriquecida
+    // Descripción de la dinámica enriquecida con material, objetivo y guía
     document.getElementById('dinamicaDescripcion').innerHTML = `
         <p><strong>Dinámica:</strong> ${dinamicaSeleccionada.titulo}</p>
         <p class="dynamics-list"><strong>Descripción:</strong> ${dinamicaSeleccionada.desc}</p>
-        <div style="background: #f9f9f9; border-left: 3px solid #2980b9; padding: 10px; margin-top: 8px; font-size: 13px;">
-            <strong>📋 Caso o Consigna a Plantear:</strong><br>
+        <div style="background: #eef7fa; border-left: 3px solid #2980b9; padding: 10px; margin-top: 8px; font-size: 13px;">
+            <strong>📄 Material / Consigna para el Postulante:</strong><br>
+            ${materialTexto}
+        </div>
+        <div style="background: #f9f9f9; border-left: 3px solid #e67e22; padding: 10px; margin-top: 8px; font-size: 13px;">
+            <strong>🎯 Objetivo de la Prueba:</strong><br>
             ${casoTexto}
         </div>
         <div style="background: #fdfefe; border-left: 3px solid #27ae60; padding: 10px; margin-top: 8px; font-size: 12px; color: #333;">
-            <strong>🔍 Guía Rápida de Observación para el Evaluador:</strong><br>
+            <strong>🔍 Guía de Observación para el Evaluador:</strong><br>
             ${guiaTexto.replace(/\n/g, '<br>')}
         </div>
     `;
 
-    // Construir filas de competencias con la celda libre para anotaciones
+    // Construir filas de competencias con celda libre para anotaciones a mano
     let filasCompetenciasHTML = '';
     datosCargo.competencias.forEach(c => {
         filasCompetenciasHTML += `
@@ -88,7 +94,7 @@ function generarEvaluacion() {
         `;
     });
 
-    // Contenedor de postulantes
+    // Contenedor de postulantes (genera un bloque independiente por cada uno)
     let contenedorPost = document.getElementById('contenedorPostulantes');
     contenedorPost.innerHTML = '';
 
