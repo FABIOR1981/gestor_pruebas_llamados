@@ -1,6 +1,5 @@
 let baseDatosCargos = {};
 
-// Cargar el archivo JSON al iniciar
 async function cargarDatos() {
     try {
         const response = await fetch('datos.json');
@@ -9,7 +8,7 @@ async function cargarDatos() {
         inicializarSelectCargos();
     } catch (error) {
         console.error("Error al cargar el archivo JSON:", error);
-        alert("Error de conexión. Asegúrate de estar corriendo la app en Netlify o un servidor local (como Live Server en VS Code).");
+        alert("Error de conexión. Asegúrate de correr la app en Netlify o un servidor local.");
     }
 }
 
@@ -56,15 +55,14 @@ function generarEvaluacion() {
 
     if (!dinamicaSeleccionada) return;
 
-    // Actualizar encabezados
     document.getElementById('cargoTitulo').textContent = `Cargo Objetivo: ${datosCargo.nombre}`;
 
     // Textos seguros
-    const materialTexto = dinamicaSeleccionada.material_postulante || "Sin material específico definido.";
-    const casoTexto = dinamicaSeleccionada.caso_o_consigna || "Sin caso específico definido.";
+    const materialTexto = dinamicaSeleccionada.hoja_postulante || "Sin material específico definido.";
+    const casoTexto = dinamicaSeleccionada.caso_o_consigna || "Sin objetivo específico.";
     const guiaTexto = dinamicaSeleccionada.guia_evaluacion || "Sin guía específica.";
 
-    // 1. Descripción en el informe del evaluador
+    // 1. Informe exclusivo para el evaluador (sin instrucciones para entregar)
     document.getElementById('dinamicaDescripcion').innerHTML = `
         <p><strong>Dinámica:</strong> ${dinamicaSeleccionada.titulo}</p>
         <p class="dynamics-list"><strong>Descripción:</strong> ${dinamicaSeleccionada.desc}</p>
@@ -78,12 +76,12 @@ function generarEvaluacion() {
         </div>
     `;
 
-    // 2. Rellenar el material dedicado para el postulante (salta a otra página al imprimir)
+    // 2. Hoja de trabajo limpia y directa para el postulante (salta de página al imprimir)
     document.getElementById('materialPostulanteContenido').innerHTML = `
         <h3 style="color: var(--primary); margin-top: 0; border-bottom: 2px solid var(--primary); padding-bottom: 5px;">HOJA DE TRABAJO / CONSIGNA DEL POSTULANTE</h3>
         <p><strong>Dinámica:</strong> ${dinamicaSeleccionada.titulo}</p>
-        <div style="background: #ffffff; border: 1px solid var(--border); padding: 20px; border-radius: 6px; margin-top: 15px; font-size: 14px; line-height: 1.6;">
-            ${materialTexto.replace(/\n/g, '<br>')}
+        <div style="background: #ffffff; border: 1px solid var(--border); padding: 20px; border-radius: 6px; margin-top: 15px; font-size: 14px; line-height: 1.6; white-space: pre-line;">
+            ${materialTexto}
         </div>
         <div style="margin-top: 30px; font-size: 13px; color: #555;">
             <strong>Nombre del Postulante:</strong> __________________________________________________<br><br>
@@ -91,7 +89,6 @@ function generarEvaluacion() {
         </div>
     `;
 
-    // Construir filas de competencias con celdas libres para anotaciones a mano
     let filasCompetenciasHTML = '';
     datosCargo.competencias.forEach(c => {
         filasCompetenciasHTML += `
@@ -103,7 +100,6 @@ function generarEvaluacion() {
         `;
     });
 
-    // Contenedor de postulantes
     let contenedorPost = document.getElementById('contenedorPostulantes');
     contenedorPost.innerHTML = '';
 
@@ -130,5 +126,4 @@ function generarEvaluacion() {
     }
 }
 
-// Iniciar la aplicación al cargar la página
 window.onload = cargarDatos;

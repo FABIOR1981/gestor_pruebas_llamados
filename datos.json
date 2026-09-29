@@ -6,14 +6,14 @@
                 {
                     "titulo": "Prueba de Atención Sostenida y Verificación de Códigos",
                     "desc": "Ejercicio escrito individual de control rápido de alfanuméricos bajo presión de tiempo.",
-                    "material_postulante": "Entregar al postulante una hoja con 20 códigos operativos al azar y la siguiente instrucción escrita:\n\n'En un tiempo máximo de 2 minutos, marque con un círculo únicamente los códigos que contengan una letra X y un número impar'.",
+                    "hoja_postulante": "Instrucciones:\nEn un tiempo máximo de 2 minutos, lea atentamente el siguiente listado de códigos y marque con un círculo únicamente aquellos que contengan una letra 'X' y un número impar.\n\n[ LISTADO DE CÓDIGOS PARA LA PRUEBA ]\n• A42-X8 &nbsp;&nbsp;&nbsp;&nbsp; • B91-K2 &nbsp;&nbsp;&nbsp;&nbsp; • X73-M4 &nbsp;&nbsp;&nbsp;&nbsp; • C12-P5\n• D35-X9 &nbsp;&nbsp;&nbsp;&nbsp; • E88-Z1 &nbsp;&nbsp;&nbsp;&nbsp; • F24-X3 &nbsp;&nbsp;&nbsp;&nbsp; • G60-L7\n• H19-X2 &nbsp;&nbsp;&nbsp;&nbsp; • J55-R8 &nbsp;&nbsp;&nbsp;&nbsp; • K43-X1 &nbsp;&nbsp;&nbsp;&nbsp; • L80-W6\n• M77-X4 &nbsp;&nbsp;&nbsp;&nbsp; • N21-Q3 &nbsp;&nbsp;&nbsp;&nbsp; • P14-X5 &nbsp;&nbsp;&nbsp;&nbsp; • Q90-S8\n• R33-X7 &nbsp;&nbsp;&nbsp;&nbsp; • S50-T2 &nbsp;&nbsp;&nbsp;&nbsp; • T62-X9 &nbsp;&nbsp;&nbsp;&nbsp; • V11-K4",
                     "caso_o_consigna": "Verificación de velocidad y agilidad visual bajo presión temporal estricta.",
                     "guia_evaluacion": "• Éxito: Alta tasa de aciertos y bajo margen de falsos positivos en tiempo récord.\n• Alerta: Tacha de forma desordenada, omite más de la mitad o se bloquea ante la presión."
                 },
                 {
                     "titulo": "Prueba de Criterio Operativo y Seguridad Laboral",
                     "desc": "Análisis escrito de un caso de distribución y estiba de cargas.",
-                    "material_postulante": "Entregar al postulante el siguiente caso impreso:\n\n'Tiene que estibar en una zorra logística tres elementos: una caja pesada de 30kg, una caja mediana frágil de 10kg y una caja liviana de 5kg. Indique por escrito en qué orden las ubica de abajo hacia arriba y fundamente su respuesta en base a la seguridad'.",
+                    "hoja_postulante": "Caso Práctico:\nTiene que estibar en una zorra logística tres elementos de trabajo:\n1. Una caja pesada de 30 kg.\n2. Una caja mediana frágil de 10 kg.\n3. Una caja liviana de 5 kg.\n\nConsigna:\nIndique por escrito en qué orden exacto ubicaría los tres elementos desde la base hasta la parte superior de la zorra, y fundamente su respuesta en base a los criterios de seguridad y estabilidad.",
                     "caso_o_consigna": "Análisis de distribución de pesos, centro de gravedad y prevención de daños.",
                     "guia_evaluacion": "• Éxito: Responde con orden lógico de estabilidad (pesada abajo, frágil/liviana arriba) y prevención de lesiones físicas.\n• Alerta: Sugiere ubicar objetos frágiles abajo o no contempla el centro de gravedad."
                 }
@@ -30,14 +30,14 @@
                 {
                     "titulo": "Prueba de Validación y Detección de Errores en Planilla",
                     "desc": "Ejercicio rápido de cotejo de datos alfanuméricos en formato de tabla.",
-                    "material_postulante": "Entregar una tabla impresa con 10 registros de facturación originales y una copia al lado que contiene 3 errores sutiles (un número cambiado en un importe y una letra alterada en un nombre).\n\nConsigna: 'Marque en 3 minutos las diferencias que encuentre entre ambas columnas'.",
+                    "hoja_postulante": "Instrucciones:\nCompare detenidamente la Columna A (Original) frente a la Columna B (Copia de control). En un tiempo máximo de 3 minutos, marque con un círculo todas las diferencias o errores tipográficos/numéricos que encuentre.\n\n[ TABLA ORIGINAL ]  vs  [ TABLA DE CONTROL ]\n• Fac-101 | Juan Pérez | $4.500  -->  • Fac-101 | Juan Pérez | $4.500\n• Fac-102 | Ana Gómez  | $2.150  -->  • Fac-102 | Ana Gámez  | $2.150\n• Fac-103 | Luis Silva | $8.900  -->  • Fac-103 | Luis Silva | $8.090\n• Fac-104 | Sofía Rivas| $1.200  -->  • Fac-104 | Sofía Rivas| $1.200\n• Fac-105 | Mario Ruiz | $6.300  -->  • Fac-105 | Mario Ruiz | $6.300",
                     "caso_o_consigna": "Cotejo de datos alfanuméricos y metodicidad en la revisión.",
                     "guia_evaluacion": "• Éxito: Detecta el 100% de las incongruencias tipográficas y numéricas con prolijidad.\n• Alerta: Pasa por alto diferencias en letras o decimales por lectura superficial."
                 },
                 {
                     "titulo": "Simulación de Respuesta Escrita a Reclamo Urgente",
                     "desc": "Redacción rápida de un correo electrónico formal de respuesta ante una queja.",
-                    "material_postulante": "Entregar la siguiente consigna por escrito:\n\n'Un cliente interno envía un correo reclamando que un insumo crítico lleva 48 horas demorado y frena su sector. Redacte en un borrador (máximo 5 líneas) un correo de respuesta formal, pidiendo disculpas, explicando brevemente el contratiempo administrativo y fijando nueva entrega'.",
+                    "hoja_postulante": "Situación planteada:\nUn cliente interno envía un mensaje reclamando enfáticamente que un insumo crítico lleva 48 horas demorado y esto le frena toda su línea de trabajo.\n\nConsigna:\nRedacte en el espacio inferior un borrador de correo electrónico (máximo 5 líneas) dando respuesta formal, pidiendo disculpas por el contratiempo administrativo y fijando una nueva fecha de entrega clara.\n\n_____________________________________________________________________\n_____________________________________________________________________\n_____________________________________________________________________\n_____________________________________________________________________",
                     "caso_o_consigna": "Redacción de correo corporativo bajo presión y resolución de conflictos.",
                     "guia_evaluacion": "• Éxito: Tono empático, formal, claro, directo y orientado a resolver sin excusas.\n• Alerta: Redacción desordenada, faltas de ortografía o tono defensivo/agresivo."
                 }
@@ -54,14 +54,14 @@
                 {
                     "titulo": "Prueba de Resolución de Casos: Priorización Operativa",
                     "desc": "Análisis escrito de un escenario crítico de dotación de personal.",
-                    "material_postulante": "Entregar por escrito:\n\n'A las 08:00 AM avisan dos bajas médicas imprevistas en su turno. Cuenta únicamente con 3 operarios novatos para cubrir una salida de despachos que exige 5 personas. Escriba en 4 puntos cómo reorganizaría las tareas de la primera hora para minimizar el impacto operativo'.",
+                    "hoja_postulante": "Caso Práctico:\nA las 08:00 AM le notifican dos bajas médicas imprevistas en su turno operativo habitual. Cuenta únicamente con 3 operarios novatos para cubrir una salida de despachos que exige obligatoriamente a 5 personas.\n\nConsigna:\nDescriba en al menos 4 puntos claros cómo reorganizaría las tareas de la primera hora para minimizar el impacto en la operación.\n\n1. _________________________________________________________________\n2. _________________________________________________________________\n3. _________________________________________________________________\n4. _________________________________________________________________",
                     "caso_o_consigna": "Reorganización express de turnos y tareas ante bajas imprevistas de personal.",
                     "guia_evaluacion": "• Éxito: Prioriza tareas neurálgicas, apoya a los novatos en puestos complejos y plantea un plan claro.\n• Alerta: Propone soluciones imposibles o traslada el problema completo a gerencia."
                 },
                 {
                     "titulo": "Entrevista Situacional: Mediación de Conflictos",
                     "desc": "Evaluación de criterio de liderazgo ante disputas de personal.",
-                    "material_postulante": "Pregunta planteada al candidato:\n\n'Describa detalladamente los pasos exactos que seguiría si descubre que dos operarios de su sector se niegan a colaborar mutuamente debido a diferencias personales, afectando el ritmo del equipo'.",
+                    "hoja_postulante": "Pregunta para desarrollo escrito:\n\n'Describa detalladamente los pasos exactos que seguiría si descubre que dos operarios de su sector se niegan a colaborar mutuamente debido a diferencias personales, afectando seriamente el ritmo del equipo'.\n\nRespuesta del postulante:\n_____________________________________________________________________\n_____________________________________________________________________\n_____________________________________________________________________\n_____________________________________________________________________",
                     "caso_o_consigna": "Abordaje y mediación ante disputas de personal en mandos medios.",
                     "guia_evaluacion": "• Éxito: Entrevista individual neutral, remarca objetivos de la empresa y establece acuerdos claros.\n• Alerta: Ignora el conflicto, toma partido sin escuchar o amenaza con sanciones arbitrarias."
                 }
@@ -78,14 +78,14 @@
                 {
                     "titulo": "Análisis de Caso Directivo: Restricción Presupuestaria",
                     "desc": "Ejercicio de pensamiento estratégico y asignación de recursos.",
-                    "material_postulante": "Entregar por escrito:\n\n'La dirección general le solicita afrontar un recorte del 15% en el presupuesto de horas extras de su área sin que decaiga el nivel de servicio en temporada alta. Escriba en 3 ejes principales cómo rediseñaría la operación para alcanzar la meta'.",
+                    "hoja_postulante": "Caso Directivo:\nLa dirección general le solicita afrontar un recorte del 15% en el presupuesto de horas extras de su área sin que decaiga el nivel de servicio en plena temporada alta.\n\nConsigna:\nDesarrolle en 3 ejes principales cómo rediseñaría la operación para alcanzar la meta financiera sin afectar los objetivos centrales.\n\nEje 1: _______________________________________________________________\nEje 2: _______________________________________________________________\nEje 3: _______________________________________________________________",
                     "caso_o_consigna": "Afrontar un recorte porcentual de presupuesto u horas extras sin degradar el nivel de servicio.",
                     "guia_evaluacion": "• Éxito: Propone mejoras de eficiencia y redistribución inteligente antes que un corte lineal.\n• Alerta: Plantea que el objetivo es inalcanzable o propone medidas arbitrarias sin sustento."
                 },
                 {
                     "titulo": "Simulación de Negociación: Resistencia al Cambio",
                     "desc": "Role-playing de alineación de mandos medios frente a una nueva directiva.",
-                    "material_postulante": "Consigna para la simulación:\n\n'Asuma que el evaluador es un encargado de su equipo que rechaza de plano implementar un nuevo software de control operativo argumentando que le quita tiempo. Deberá conversar con él y lograr su compromiso en 2 minutos'.",
+                    "hoja_postulante": "Instrucciones de la Prueba:\nEsta sección corresponde a una simulación de rol (Role-playing) conducida por el evaluador. Se evaluará su capacidad de persuasión y manejo de objeciones ante un colaborador que rechaza implementar un cambio operativo.\n\n[ Espacio reservado para notas o apuntes previos del candidato ]\n_____________________________________________________________________\n_____________________________________________________________________",
                     "caso_o_consigna": "Negociación con un encargado que rechaza implementar un nuevo sistema o protocolo.",
                     "guia_evaluacion": "• Éxito: Valida la preocupación operativa, explica el beneficio estratégico y capacita con firmeza.\n• Alerta: Se impone autoritariamente o cede totalmente ante la queja del subordinado."
                 }
@@ -102,14 +102,14 @@
                 {
                     "titulo": "Prueba de Criterio Técnico y Resolución de Conciliación",
                     "desc": "Resolución analítica de una inconsistencia contable típica.",
-                    "material_postulante": "Entregar por escrito:\n\n'En la conciliación bancaria mensual surge una partida en tránsito de origen desconocido registrada el último día hábil. El directorio presiona fuertemente para cerrar el balance general sin demora'.\n\n¿Cuál es el procedimiento técnico y ético correcto a seguir?",
+                    "hoja_postulante": "Caso Práctico:\nEn la conciliación bancaria mensual surge una partida en tránsito de origen desconocido registrada el último día hábil del período. El directorio presiona fuertemente para cerrar el balance general sin demora.\n\nConsigna:\nFundamente por escrito cuál es el procedimiento técnico y ético correcto que aplicaría en esta situación:\n\n_____________________________________________________________________\n_____________________________________________________________________\n_____________________________________________________________________\n_____________________________________________________________________",
                     "caso_o_consigna": "Manejo técnico y ético ante una partida en tránsito bajo presión de cierre de balance.",
                     "guia_evaluacion": "• Éxito: Aplica principio de prudencia contable, no inventa asientos y exige respaldo documental.\n• Alerta: Cede a la presión gerencial registrando un ajuste ficticio para cumplir fechas."
                 },
                 {
                     "titulo": "Entrevista de Criterio Profesional y Prevención de Riesgos",
                     "desc": "Evaluación de postura ante zonas grises normativas.",
-                    "material_postulante": "Pregunta planteada al candidato:\n\n'¿Cómo procedería si detecta que un procedimiento impositivo histórico de la empresa se ha venido realizando bajo un criterio interpretativo que hoy la normativa fiscal comienza a cuestionar en auditorías recientes?'",
+                    "hoja_postulante": "Pregunta para desarrollo escrito:\n\n'¿Cómo procedería técnicamente si detecta que un procedimiento impositivo histórico de la empresa se ha venido realizando bajo un criterio interpretativo que hoy la normativa fiscal comienza a cuestionar en auditorías recientes?'\n\nRespuesta del postulante:\n_____________________________________________________________________\n_____________________________________________________________________\n_____________________________________________________________________\n_____________________________________________________________________",
                     "caso_o_consigna": "Procedimiento ante la detección de un criterio impositivo histórico cuestionado por la normativa.",
                     "guia_evaluacion": "• Éxito: Dimensiona el riesgo fiscal y propone una regularización o consulta formal preventiva.\n• Alerta: Minimiza el riesgo o busca ocultarlo esperando no ser auditado."
                 }
