@@ -6,7 +6,6 @@ window.onload = async function() {
         if (!response.ok) throw new Error("No se pudo cargar datos.json");
         const data = await response.json();
         
-        // Aseguramos que exista el objeto areas aunque el JSON viejo no lo tenga
         baseDatosGlobal = data;
         if (!baseDatosGlobal.areas) baseDatosGlobal.areas = {};
         
@@ -92,10 +91,6 @@ function renderizarDinamicas() {
     });
 }
 
-// ==========================================
-// LÓGICA DE ÁREAS (NUEVO)
-// ==========================================
-
 function abrirModalArea() {
     document.getElementById('formArea').reset();
     document.getElementById('modalAreaNueva').style.display = 'flex';
@@ -126,20 +121,19 @@ function guardarArea(event) {
     alert(`Área '${nombre}' [${sigla}] creada con éxito.`);
 }
 
-// ==========================================
-// LÓGICA DE AUTOGENERACIÓN DE CÓDIGOS
-// ==========================================
-
 function actualizarCodigoDinamicaAutogenerado() {
-    const cargoKey = document.getElementById('modalCargo').value; 
+    const cargoKey = document.getElementById('modalCargo').value; // Ej: CAR-SUP-ENC-01
     const isEditMode = document.getElementById('editIndex').value !== "";
 
     if (isEditMode) return; 
 
+    // Extraer área y especialidad del cargo (Ej: de CAR-SUP-ENC-01 sacamos SUP y ENC)
     const partes = cargoKey.split('-');
-    if (partes.length < 2) return;
-    const especialidad = partes[1]; 
-    const prefijo = `DIN-${especialidad}-`; 
+    if (partes.length < 4) return;
+    const area = partes[1];
+    const especialidad = partes[2];
+    
+    const prefijo = `DIN-${area}-${especialidad}-`; // Ej: DIN-SUP-ENC-
 
     let max = 0;
     baseDatosGlobal.dinamicas.forEach(din => {
@@ -168,7 +162,7 @@ function actualizarCodigoCargoAutogenerado() {
 
     while(especialidad.length < 3) especialidad += 'X';
 
-    const prefijo = `${areaSigla}-${especialidad}-`;
+    const prefijo = `CAR-${areaSigla}-${especialidad}-`; // Ej: CAR-SUP-ENC-
 
     let max = 0;
     Object.keys(baseDatosGlobal.cargos).forEach(key => {
@@ -184,10 +178,6 @@ function actualizarCodigoCargoAutogenerado() {
     const nextNum = String(max + 1).padStart(2, '0');
     document.getElementById('cargoKeyInput').value = `${prefijo}${nextNum}`;
 }
-
-// ==========================================
-// MODALES Y GUARDADO (CARGOS Y DINÁMICAS)
-// ==========================================
 
 function abrirModalDinamica() {
     document.getElementById('modalTitulo').textContent = "Nueva Dinámica";
@@ -282,7 +272,6 @@ function guardarCargo(event) {
     const key = document.getElementById('cargoKeyInput').value.trim();
     const nombre = document.getElementById('cargoNombreInput').value.trim();
     
-    // Obtenemos el nombre del área desde el select buscando el option seleccionado
     const selectArea = document.getElementById('cargoAreaSelect');
     const areaSigla = selectArea.value;
     const nombreArea = baseDatosGlobal.areas[areaSigla] ? baseDatosGlobal.areas[areaSigla].nombre : areaSigla;
