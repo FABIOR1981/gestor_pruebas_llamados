@@ -219,3 +219,16 @@ button:hover {
         break-before: page;
     }
 }
+
+/* Hoja de Trabajo / Consigna para el Postulante */
+.candidate-sheet {
+    margin-top: 40px;
+    padding-top: 20px;
+}
+
+@media print {
+    .candidate-sheet {
+        page-break-before: always; /* Fuerza salto de página limpio por cada postulante */
+        break-before: page;
+    }
+}

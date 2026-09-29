@@ -62,7 +62,7 @@ function generarEvaluacion() {
     const casoTexto = dinamicaSeleccionada.caso_o_consigna || "Sin objetivo específico.";
     const guiaTexto = dinamicaSeleccionada.guia_evaluacion || "Sin guía específica.";
 
-    // 1. Informe exclusivo para el evaluador (sin instrucciones para entregar)
+    // 1. Informe exclusivo para el evaluador
     document.getElementById('dinamicaDescripcion').innerHTML = `
         <p><strong>Dinámica:</strong> ${dinamicaSeleccionada.titulo}</p>
         <p class="dynamics-list"><strong>Descripción:</strong> ${dinamicaSeleccionada.desc}</p>
@@ -73,19 +73,6 @@ function generarEvaluacion() {
         <div style="background: #fdfefe; border-left: 3px solid #27ae60; padding: 10px; margin-top: 8px; font-size: 12px; color: #333;">
             <strong>🔍 Guía de Observación para el Evaluador:</strong><br>
             ${guiaTexto.replace(/\n/g, '<br>')}
-        </div>
-    `;
-
-    // 2. Hoja de trabajo limpia y directa para el postulante (salta de página al imprimir)
-    document.getElementById('materialPostulanteContenido').innerHTML = `
-        <h3 style="color: var(--primary); margin-top: 0; border-bottom: 2px solid var(--primary); padding-bottom: 5px;">HOJA DE TRABAJO / CONSIGNA DEL POSTULANTE</h3>
-        <p><strong>Dinámica:</strong> ${dinamicaSeleccionada.titulo}</p>
-        <div style="background: #ffffff; border: 1px solid var(--border); padding: 20px; border-radius: 6px; margin-top: 15px; font-size: 14px; line-height: 1.6; white-space: pre-line;">
-            ${materialTexto}
-        </div>
-        <div style="margin-top: 30px; font-size: 13px; color: #555;">
-            <strong>Nombre del Postulante:</strong> __________________________________________________<br><br>
-            <strong>Fecha:</strong> ____/____/20___ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>Resultado / Notas:</strong> ________________________
         </div>
     `;
 
@@ -102,8 +89,13 @@ function generarEvaluacion() {
 
     let contenedorPost = document.getElementById('contenedorPostulantes');
     contenedorPost.innerHTML = '';
+    
+    // Contenedor para las hojas de trabajo de los postulantes
+    let contenedorHojasPostulantes = document.getElementById('materialPostulanteContenido');
+    contenedorHojasPostulantes.innerHTML = '';
 
     for (let i = 1; i <= numPostulantes; i++) {
+        // Bloque de calificación para el informe del evaluador
         contenedorPost.innerHTML += `
             <div class="candidate-box">
                 <h4>Postulante #${i}: __________________________________________________</h4>
@@ -121,6 +113,21 @@ function generarEvaluacion() {
                 </table>
                 <div style="font-size:12px; font-weight:600; color:var(--secondary); margin-top:8px;">Observaciones específicas del postulante:</div>
                 <div class="observations-box"></div>
+            </div>
+        `;
+
+        // Hoja de trabajo completa e individual por cada postulante con los datos arriba
+        contenedorHojasPostulantes.innerHTML += `
+            <div class="candidate-sheet">
+                <h3 style="color: var(--primary); margin-top: 0; border-bottom: 2px solid var(--primary); padding-bottom: 5px;">HOJA DE TRABAJO / CONSIGNA DEL POSTULANTE</h3>
+                <div style="margin-bottom: 20px; font-size: 14px; background: #fdfefe; border: 1px solid var(--border); padding: 12px; border-radius: 4px;">
+                    <strong>Nombre del Postulante:</strong> __________________________________________________<br><br>
+                    <strong>Fecha:</strong> ____/____/20___ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>Resultado / Notas:</strong> ________________________
+                </div>
+                <p><strong>Dinámica:</strong> ${dinamicaSeleccionada.titulo} (Postulante #${i})</p>
+                <div style="background: #ffffff; border: 1px solid var(--border); padding: 25px; border-radius: 6px; margin-top: 10px; font-size: 15px; line-height: 1.7; white-space: pre-line; min-height: 350px;">
+                    ${materialTexto}
+                </div>
             </div>
         `;
     }
