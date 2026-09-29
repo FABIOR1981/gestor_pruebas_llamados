@@ -45,16 +45,17 @@
         <div class="modal-content">
             <h3 id="modalTitulo">Nueva Dinámica</h3>
             <form id="formDinamica" onsubmit="guardarDinamica(event)">
-                <input type="hidden" id="editIndex" value="-1">
+                <input type="hidden" id="editIndex" value="">
                 
                 <div class="form-group" style="margin-bottom: 15px;">
                     <label for="modalCargo">Cargo Objetivo:</label>
-                    <select id="modalCargo"></select>
+                    <!-- Al cambiar el cargo, se recalcula el código automático -->
+                    <select id="modalCargo" onchange="actualizarCodigoDinamicaAutogenerado()"></select>
                 </div>
 
                 <div class="form-group" style="margin-bottom: 15px;">
-                    <label for="modalCodigo">Código Alfanumérico (Ej: CAR-03, ADM-03):</label>
-                    <input type="text" id="modalCodigo" required>
+                    <label for="modalCodigo">Código Alfanumérico (Autogenerado):</label>
+                    <input type="text" id="modalCodigo" style="background-color: #eaeded; font-family: monospace; font-weight: bold; color: #7f8c8d;" readonly required>
                 </div>
 
                 <div class="form-group" style="margin-bottom: 15px;">
@@ -97,17 +98,35 @@
 
     <!-- Modal: Crear Nuevo Cargo -->
     <div id="modalCargoNuevo" class="modal">
-        <div class="modal-content" style="max-width: 450px;">
+        <div class="modal-content" style="max-width: 500px;">
             <h3>Crear Nuevo Cargo</h3>
             <form id="formCargo" onsubmit="guardarCargo(event)">
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px;">
+                    <div class="form-group">
+                        <label for="cargoArea">Área / Nivel:</label>
+                        <select id="cargoArea" onchange="actualizarCodigoCargoAutogenerado()" required>
+                            <option value="OPE">Operativa (OPE)</option>
+                            <option value="ADM">Administración (ADM)</option>
+                            <option value="SUP">Supervisión (SUP)</option>
+                            <option value="FIN">Finanzas (FIN)</option>
+                            <option value="DIR">Dirección (DIR)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="cargoEspecialidad">Especialidad (3 Letras):</label>
+                        <input type="text" id="cargoEspecialidad" placeholder="Ej: VEN, LOG" maxlength="3" style="text-transform: uppercase;" oninput="actualizarCodigoCargoAutogenerado()" required>
+                    </div>
+                </div>
+
                 <div class="form-group" style="margin-bottom: 15px;">
-                    <label for="cargoKeyInput">Identificador clave (sin espacios, ej: <code>operario</code>):</label>
-                    <input type="text" id="cargoKeyInput" placeholder="Ej: logistica" required>
+                    <label for="cargoKeyInput">Código del Cargo (Autogenerado):</label>
+                    <input type="text" id="cargoKeyInput" style="background-color: #eaeded; font-family: monospace; font-weight: bold; color: #7f8c8d;" readonly required>
                 </div>
 
                 <div class="form-group" style="margin-bottom: 15px;">
                     <label for="cargoNombreInput">Nombre legible del Cargo:</label>
-                    <input type="text" id="cargoNombreInput" placeholder="Ej: Operario Logístico" required>
+                    <input type="text" id="cargoNombreInput" placeholder="Ej: Operario de Logística" required>
                 </div>
 
                 <div style="display: flex; gap: 10px; margin-top: 25px;">

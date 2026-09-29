@@ -15,7 +15,7 @@ window.onload = async function() {
         console.error("Error al cargar datos.json:", error);
         document.getElementById('estadoCarga').textContent = "Error al leer datos.json";
         document.getElementById('estadoCarga').style.color = "var(--danger)";
-        alert("Asegúrate de correr esta página desde un servidor local (Live Server) o Netlify.");
+        alert("Asegúrate de correr esta página desde un servidor local o Netlify.");
     }
 };
 
@@ -49,7 +49,6 @@ function renderizarDinamicas() {
     const cargoActual = baseDatosGlobal.cargos[cargoKey];
     document.getElementById('tituloListaCargo').textContent = `Dinámicas del Cargo: [${cargoKey}] ${cargoActual.nombre}`;
 
-    // Filtramos del arreglo global de dinámicas
     const dinamicasFiltradas = baseDatosGlobal.dinamicas.filter(din => din.cargo_id === cargoKey);
 
     if (dinamicasFiltradas.length === 0) {
@@ -74,14 +73,81 @@ function renderizarDinamicas() {
     });
 }
 
+// ==========================================
+// LÓGICA DE AUTOGENERACIÓN DE CÓDIGOS
+// ==========================================
+
+function actualizarCodigoDinamicaAutogenerado() {
+    const cargoKey = document.getElementById('modalCargo').value; // Ej: SUP-ENC-01
+    const isEditMode = document.getElementById('editIndex').value !== "";
+
+    if (isEditMode) return; // Si estamos editando, no cambiamos el ID.
+
+    // Extraer la especialidad del cargo (ej: de SUP-ENC-01 sacamos ENC)
+    const partes = cargoKey.split('-');
+    if (partes.length < 2) return;
+    const especialidad = partes[1]; 
+    const prefijo = `DIN-${especialidad}-`; // Ej: DIN-ENC-
+
+    // Buscar correlativo máximo
+    let max = 0;
+    baseDatosGlobal.dinamicas.forEach(din => {
+        if (din.id.startsWith(prefijo)) {
+            const numStr = din.id.replace(prefijo, '');
+            const num = parseInt(numStr, 10);
+            if (!isNaN(num) && num > max) {
+                max = num;
+            }
+        }
+    });
+
+    // Asignar el siguiente número (ej: DIN-ENC-03)
+    const nextNum = String(max + 1).padStart(2, '0');
+    document.getElementById('modalCodigo').value = `${prefijo}${nextNum}`;
+}
+
+function actualizarCodigoCargoAutogenerado() {
+    const area = document.getElementById('cargoArea').value; // Ej: SUP
+    let especialidad = document.getElementById('cargoEspecialidad').value.toUpperCase().trim().substring(0,3);
+    
+    if (especialidad.length === 0) {
+        document.getElementById('cargoKeyInput').value = "";
+        return;
+    }
+    // Si escribe menos de 3, rellenamos con X (Ej: VE -> VEX) para mantener formato
+    while(especialidad.length < 3) especialidad += 'X';
+
+    const prefijo = `${area}-${especialidad}-`;
+
+    let max = 0;
+    Object.keys(baseDatosGlobal.cargos).forEach(key => {
+        if (key.startsWith(prefijo)) {
+            const numStr = key.replace(prefijo, '');
+            const num = parseInt(numStr, 10);
+            if (!isNaN(num) && num > max) {
+                max = num;
+            }
+        }
+    });
+
+    const nextNum = String(max + 1).padStart(2, '0');
+    document.getElementById('cargoKeyInput').value = `${prefijo}${nextNum}`;
+}
+
+// ==========================================
+// MODALES Y GUARDADO
+// ==========================================
+
 function abrirModalDinamica() {
     document.getElementById('modalTitulo').textContent = "Nueva Dinámica";
-    document.getElementById('editIndex').value = ""; // Usamos el ID en lugar del índice numérico
+    document.getElementById('editIndex').value = ""; 
     document.getElementById('formDinamica').reset();
     
-    // Asignar por defecto el cargo actualmente seleccionado en el filtro
     const cargoActual = document.getElementById('cargoSelectAdmin').value;
     document.getElementById('modalCargo').value = cargoActual;
+    
+    // Autogenerar código al abrir
+    actualizarCodigoDinamicaAutogenerado();
     
     document.getElementById('modalDinamica').style.display = 'flex';
 }
@@ -95,9 +161,9 @@ function editarDinamica(dinId) {
     if (!din) return;
 
     document.getElementById('modalTitulo').textContent = "Editar Dinámica";
-    document.getElementById('editIndex').value = din.id; // Guardamos el ID como referencia
+    document.getElementById('editIndex').value = din.id; 
     document.getElementById('modalCargo').value = din.cargo_id;
-    document.getElementById('modalCodigo').value = din.id;
+    document.getElementById('modalCodigo').value = din.id; // En edición se mantiene el código original
     document.getElementById('modalTituloDin').value = din.titulo || '';
     document.getElementById('modalDesc').value = din.desc || '';
     document.getElementById('modalTiempo').value = din.tiempo_limite || '';
@@ -126,14 +192,12 @@ function guardarDinamica(event) {
     };
 
     if (!dinIdEditando) {
-        // Nueva dinámica
         if (baseDatosGlobal.dinamicas.some(d => d.id === idIngresado)) {
-            alert("Ya existe una dinámica con ese ID/Código. Elige uno diferente.");
+            alert("Error de sistema: El código autogenerado ya existe.");
             return;
         }
         baseDatosGlobal.dinamicas.push(nuevaDin);
     } else {
-        // Edición
         const index = baseDatosGlobal.dinamicas.findIndex(d => d.id === dinIdEditando);
         if (index !== -1) {
             baseDatosGlobal.dinamicas[index] = nuevaDin;
@@ -141,7 +205,6 @@ function guardarDinamica(event) {
     }
 
     cerrarModalDinamica();
-    // Cambiamos el select al cargo donde pertenece para verla reflejada al instante
     document.getElementById('cargoSelectAdmin').value = cargoKey;
     renderizarDinamicas();
     alert("¡Dinámica guardada! Haz clic en 'Descargar JSON Actualizado' cuando termines.");
@@ -156,6 +219,7 @@ function eliminarDinamica(dinId) {
 
 function abrirModalCargo() {
     document.getElementById('formCargo').reset();
+    document.getElementById('cargoKeyInput').value = ""; // Limpiar cálculo previo
     document.getElementById('modalCargoNuevo').style.display = 'flex';
 }
 
@@ -168,8 +232,13 @@ function guardarCargo(event) {
     const key = document.getElementById('cargoKeyInput').value.trim();
     const nombre = document.getElementById('cargoNombreInput').value.trim();
 
+    if (!key) {
+        alert("Complete el área y especialidad para generar el código del cargo.");
+        return;
+    }
+
     if (baseDatosGlobal.cargos[key]) {
-        alert("Ya existe un cargo con ese código clave. Elige otro.");
+        alert("El sistema intentó sobreescribir un código existente. Contacte soporte.");
         return;
     }
 
@@ -184,7 +253,7 @@ function guardarCargo(event) {
     inicializarAdmin();
     document.getElementById('cargoSelectAdmin').value = key;
     renderizarDinamicas();
-    alert(`¡Cargo '${nombre}' creado con éxito!`);
+    alert(`¡Cargo '${nombre}' [${key}] creado con éxito!`);
 }
 
 function descargarJSON() {
