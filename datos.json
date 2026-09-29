@@ -1,4 +1,11 @@
 {
+    "areas": {
+        "OPE": { "nombre": "Operativa" },
+        "ADM": { "nombre": "Administración" },
+        "SUP": { "nombre": "Supervisión" },
+        "FIN": { "nombre": "Finanzas" },
+        "DIR": { "nombre": "Dirección" }
+    },
     "cargos": {
         "OPE-CAR-01": {
             "nombre": "Operario de Carga y Descarga",
