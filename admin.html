@@ -97,15 +97,24 @@
     </div>
 
     <!-- Modal: Crear Nuevo Cargo -->
+    <!-- Modal: Crear Nuevo Cargo -->
     <div id="modalCargoNuevo" class="modal">
         <div class="modal-content" style="max-width: 500px;">
             <h3>Crear Nuevo Cargo</h3>
             <form id="formCargo" onsubmit="guardarCargo(event)">
                 
+                <!-- 1. Nombre (Lo más natural es empezar por aquí) -->
+                <div class="form-group" style="margin-bottom: 15px;">
+                    <label for="cargoNombreInput">Nombre legible del Cargo:</label>
+                    <input type="text" id="cargoNombreInput" placeholder="Ej: Encargado de Ventas" required>
+                </div>
+
+                <!-- 2. Clasificación (Área y Sigla) -->
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px;">
                     <div class="form-group">
                         <label for="cargoArea">Área / Nivel:</label>
                         <select id="cargoArea" onchange="actualizarCodigoCargoAutogenerado()" required>
+                            <option value="" disabled selected>Seleccione área...</option>
                             <option value="OPE">Operativa (OPE)</option>
                             <option value="ADM">Administración (ADM)</option>
                             <option value="SUP">Supervisión (SUP)</option>
@@ -119,14 +128,10 @@
                     </div>
                 </div>
 
+                <!-- 3. Resultado (Código autogenerado) -->
                 <div class="form-group" style="margin-bottom: 15px;">
                     <label for="cargoKeyInput">Código del Cargo (Autogenerado):</label>
-                    <input type="text" id="cargoKeyInput" style="background-color: #eaeded; font-family: monospace; font-weight: bold; color: #7f8c8d;" readonly required>
-                </div>
-
-                <div class="form-group" style="margin-bottom: 15px;">
-                    <label for="cargoNombreInput">Nombre legible del Cargo:</label>
-                    <input type="text" id="cargoNombreInput" placeholder="Ej: Operario de Logística" required>
+                    <input type="text" id="cargoKeyInput" style="background-color: #eaeded; font-family: monospace; font-weight: bold; color: #7f8c8d; border: 1px dashed #bdc3c7;" readonly required placeholder="Complete los campos superiores para generar el código">
                 </div>
 
                 <div style="display: flex; gap: 10px; margin-top: 25px;">
