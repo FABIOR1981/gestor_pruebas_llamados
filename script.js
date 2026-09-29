@@ -121,14 +121,27 @@ function generarEvaluacion() {
             </div>
         `;
 
-        // 2. Hoja de trabajo del postulante: Muestra únicamente el Código para evitar sesgos
+        // 2. Hoja de trabajo del postulante: Cabecera optimizada en dos renglones
         contenedorHojasPostulantes.innerHTML += `
             <div class="candidate-sheet">
                 <h3 style="color: var(--primary); margin-top: 0; border-bottom: 2px solid var(--primary); padding-bottom: 5px;">HOJA DE TRABAJO / CONSIGNA</h3>
-                <div style="margin-bottom: 15px; font-size: 14px; background: #fdfefe; border: 1px solid var(--border); padding: 12px; border-radius: 4px;">
-                    <strong>Nombre del Postulante:</strong> __________________________________________________<br><br>
-                    <strong>Fecha:</strong> ____/____/20___ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>Dinámica ID:</strong> <span style="font-family: monospace; font-weight: bold; background: #eaeded; padding: 2px 5px; border-radius: 3px;">${codigoDin}</span><br><br>
-                    <span style="color: #8e44ad; font-weight: bold;">⏱️ Tiempo Límite: ${tiempoTexto}</span>
+                <div style="margin-bottom: 15px; font-size: 14px; background: #fdfefe; border: 1px solid var(--border); padding: 12px; border-radius: 4px; line-height: 1.8;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div style="flex-grow: 1; margin-right: 20px;">
+                            <strong>Nombre del Postulante:</strong> __________________________________________________
+                        </div>
+                        <div>
+                            <strong>Fecha:</strong> ____/____/20___
+                        </div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px; border-top: 1px dashed var(--border); pt: 8px;">
+                        <div>
+                            <strong>Dinámica ID:</strong> <span style="font-family: monospace; font-weight: bold; background: #eaeded; padding: 2px 6px; border-radius: 3px;">${codigoDin}</span>
+                        </div>
+                        <div>
+                            <span style="color: #8e44ad; font-weight: bold;">⏱️ Tiempo Límite: ${tiempoTexto}</span>
+                        </div>
+                    </div>
                 </div>
                 <div style="background: #ffffff; border: 1px solid var(--border); padding: 25px; border-radius: 6px; margin-top: 10px; font-size: 15px; line-height: 1.7; white-space: pre-line; min-height: 350px;">
                     ${materialTexto}
