@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestor ABM - Evaluaciones Psicotécnicas</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #34495e;
+            --accent: #2980b9;
+            --success: #27ae60;
+            --danger: #c0392b;
+            --light: #ecf0f1;
+            --border: #bdc3c7;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f6f7;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        h1, h2 {
+            color: var(--primary);
+            border-bottom: 2px solid var(--light);
+            padding-bottom: 10px;
+        }
+
+        .toolbar {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+            background: #fafafa;
+            padding: 15px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        button {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        button:hover { opacity: 0.9; }
+        .btn-success { background-color: var(--success); }
+        .btn-danger { background-color: var(--danger); }
+        .btn-secondary { background-color: #7f8c8d; }
+
+        input, select, textarea {
+            padding: 8px 12px;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-size: 14px;
+            width: 100%;
+            box-sizing: border-box;
+            background-color: white;
+            font-family: inherit;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            font-weight: 600;
+            margin-bottom: 5px;
+            display: block;
+            color: var(--secondary);
+            font-size: 13px;
+        }
+
+        .dynamics-card {
+            background: #fdfefe;
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--accent);
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .dynamics-info h4 {
+            margin: 0 0 5px 0;
+            color: var(--primary);
+        }
+
+        .dynamics-info p {
+            margin: 3px 0;
+            font-size: 13px;
+            color: #555;
+        }
+
+        .actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            justify-content: center; align-items: center;
+            z-index: 1000;
+        }
+        .modal-content {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Panel ABM: Gestor de Dinámicas y Cargos</h1>
+        <p>Edita, crea o elimina cargos y dinámicas de manera visual. Cuando termines, descarga el nuevo archivo JSON.</p>
+
+        <div class="toolbar">
+            <div>
+                <label for="fileInput" style="display:inline-block; margin-right:10px;">Cargar tu <code>datos.json</code> actual:</label>
+                <input type="file" id="fileInput" accept=".json" onchange="cargarArchivoJSON(event)" style="display:inline-block; width:auto;">
+            </div>
+            <div style="margin-left: auto; display: flex; gap: 10px;">
+                <button class="btn-success" onclick="abrirModalDinamica()">+ Nueva Dinámica</button>
+                <button class="btn-secondary" onclick="descargarJSON()">📥 Descargar JSON Actualizado</button>
+            </div>
+        </div>
+
+        <div class="form-group" style="max-width: 300px;">
+            <label for="cargoSelectAdmin">Filtrar por Cargo:</label>
+            <select id="cargoSelectAdmin" onchange="renderizarDinamicas()"></select>
+        </div>
+
+        <h2>Dinámicas Asociadas al Cargo</h2>
+        <div id="listaDinamicas">
+            <!-- Se llena dinámicamente -->
+        </div>
+    </div>
+
+    <!-- Modal para Crear / Editar Dinámica -->
+    <div id="modalDinamica" class="modal">
+        <div class="modal-content">
+            <h3 id="modalTitulo">Nueva Dinámica</h3>
+            <form id="formDinamica" onsubmit="guardarDinamica(event)">
+                <input type="hidden" id="editIndex" value="-1">
+                
+                <div class="form-group">
+                    <label for="modalCargo">Cargo Objetivo:</label>
+                    <select id="modalCargo"></select>
+                </div>
+
+                <div class="form-group">
+                    <label for="modalCodigo">Código Alfanumérico (Ej: CAR-03, ADM-03):</label>
+                    <input type="text" id="modalCodigo" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="modalTituloDin">Título de la Dinámica:</label>
+                    <input type="text" id="modalTituloDin" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="modalDesc">Descripción Breve:</label>
+                    <input type="text" id="modalDesc" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="modalTiempo">Tiempo Límite:</label>
+                    <input type="text" id="modalTiempo" placeholder="Ej: 3 Minutos Exactos" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="modalHoja">Hoja de Trabajo / Consigna para el Postulante:</label>
+                    <textarea id="modalHoja" rows="5" placeholder="Texto o consigna que verá el candidato..." required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="modalCaso">Objetivo / Consigna para el Evaluador:</label>
+                    <input type="text" id="modalCaso" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="modalGuia">Guía de Observación (Éxito / Alerta):</label>
+                    <textarea id="modalGuia" rows="3" required></textarea>
+                </div>
+
+                <div style="display: flex; gap: 10px; margin-top: 20px;">
+                    <button type="submit" class="btn-success">Guardar Cambios</button>
+                    <button type="button" class="btn-danger" onclick="cerrarModal()">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="admin.js"></script>
+</body>
+</html>
