@@ -13,8 +13,13 @@
         <p class="subtitle">Gestione de forma limpia y ordenada las áreas, cargos y dinámicas del archivo <code>datos.json</code>.</p>
 
         <div class="toolbar">
-            <div class="status-badge">
-                📁 Estado: <span id="estadoCarga" style="color: var(--accent);">Cargando...</span>
+            <div style="display: flex; gap: 15px; align-items: center;">
+                <button onclick="window.location.href='index.html'" style="background-color: #34495e; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; font-weight: bold; transition: background 0.2s;" onmouseover="this.style.backgroundColor='#2c3e50'" onmouseout="this.style.backgroundColor='#34495e'">
+                    ⬅️ Volver al Generador
+                </button>
+                <div class="status-badge">
+                    📁 Estado: <span id="estadoCarga" style="color: var(--accent);">Cargando...</span>
+                </div>
             </div>
             <div class="btn-group">
                 <button class="btn-success" style="background-color: #27ae60;" onclick="abrirModalArea()">+ Crear Nueva Área</button>
