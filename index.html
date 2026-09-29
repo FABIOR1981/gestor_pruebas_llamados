@@ -14,14 +14,16 @@
         <div class="form-grid">
             <div class="form-group">
                 <label for="cargoSelect">Puesto / Cargo:</label>
-                <select id="cargoSelect" onchange="actualizarDinamicas()">
+                <!-- Al cambiar el cargo, se actualizan las dinámicas y se limpia la pantalla para evitar errores -->
+                <select id="cargoSelect" onchange="onCargoChange()">
                     <!-- Se llena desde el JSON -->
                 </select>
             </div>
 
             <div class="form-group">
                 <label for="tipoDinamica">Dinámica Principal:</label>
-                <select id="tipoDinamica">
+                <!-- Al cambiar la dinámica, se limpia la pantalla de forma automática -->
+                <select id="tipoDinamica" onchange="onDinamicaChange()">
                     <!-- Se llena desde el JSON -->
                 </select>
             </div>
@@ -53,7 +55,7 @@
 
         <div class="section-title">1. DINÁMICA DE EVALUACIÓN SELECCIONADA</div>
         <div id="dinamicaDescripcion">
-            <!-- Descripción de la dinámica para el evaluador -->
+            <p style="color: #7f8c8d; font-style: italic;">Seleccione un cargo y una dinámica, luego presione "Generar Formulario".</p>
         </div>
 
         <div class="section-title" id="tituloSeccionEvaluacion">2. EVALUACIÓN Y PUNTAJE POR POSTULANTE</div>

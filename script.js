@@ -24,7 +24,6 @@ function inicializarSelectCargos() {
     }
 
     actualizarDinamicas();
-    generarEvaluacion();
 }
 
 function actualizarDinamicas() {
@@ -43,6 +42,24 @@ function actualizarDinamicas() {
         opt.textContent = `[${din.id}] ${din.titulo}`;
         selectDinamica.appendChild(opt);
     });
+}
+
+// Eventos de control al cambiar los selectores para evitar datos cruzados
+function onCargoChange() {
+    actualizarDinamicas();
+    limpiarResultados();
+}
+
+function onDinamicaChange() {
+    limpiarResultados();
+}
+
+// Función que blanquea la pantalla de resultados
+function limpiarResultados() {
+    document.getElementById('cargoTitulo').textContent = "Cargo: -";
+    document.getElementById('dinamicaDescripcion').innerHTML = '<p style="color: #7f8c8d; font-style: italic;">Selección modificada. Presione "Generar Formulario" para actualizar los datos.</p>';
+    document.getElementById('contenedorPostulantes').innerHTML = '';
+    document.getElementById('materialPostulanteContenido').innerHTML = '';
 }
 
 function generarEvaluacion() {
