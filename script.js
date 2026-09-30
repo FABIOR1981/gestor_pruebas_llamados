@@ -1,10 +1,11 @@
-let baseDatosGlobal = { cargos: {}, dinamicas: [] };
+let baseDatosGlobal = { areas: {}, cargos: {}, dinamicas: [] };
 
 async function cargarDatos() {
     try {
         const response = await fetch('datos.json');
         const data = await response.json();
         baseDatosGlobal = data;
+        if (!baseDatosGlobal.areas) baseDatosGlobal.areas = {};
         inicializarSelectCargos();
     } catch (error) {
         console.error("Error al cargar el archivo JSON:", error);
@@ -27,21 +28,32 @@ function inicializarSelectCargos() {
 }
 
 function actualizarDinamicas() {
-    const cargoKey = document.getElementById('cargoSelect').value;
+    const cargoKey = document.getElementById('cargoSelect').value; // Ej: CAR-SUP-ENC-01
     const selectDinamica = document.getElementById('tipoDinamica');
     selectDinamica.innerHTML = '';
 
     if (!baseDatosGlobal.cargos[cargoKey]) return;
 
-    // Filtramos las dinámicas que pertenecen a este cargo_id
+    // Filtramos las dinámicas que coinciden exactamente con el cargo_id del JSON
     const dinamicasFiltradas = baseDatosGlobal.dinamicas.filter(din => din.cargo_id === cargoKey);
+
+    if (dinamicasFiltradas.length === 0) {
+        let opt = document.createElement('option');
+        opt.value = "";
+        opt.textContent = "No hay dinámicas para este cargo";
+        selectDinamica.appendChild(opt);
+        limpiarResultados();
+        return;
+    }
 
     dinamicasFiltradas.forEach((din) => {
         let opt = document.createElement('option');
-        opt.value = din.id; // Guardamos el ID único (ej: DIN-CAR-01)
+        opt.value = din.id; // Guardamos el ID único (ej: DIN-SUP-ENC-01)
         opt.textContent = `[${din.id}] ${din.titulo}`;
         selectDinamica.appendChild(opt);
     });
+
+    limpiarResultados();
 }
 
 // Eventos de control al cambiar los selectores para evitar datos cruzados
@@ -72,7 +84,10 @@ function generarEvaluacion() {
     const datosCargo = baseDatosGlobal.cargos[cargoKey];
     const dinamicaSeleccionada = baseDatosGlobal.dinamicas.find(din => din.id === dinamicaId);
 
-    if (!dinamicaSeleccionada) return;
+    if (!dinamicaSeleccionada) {
+        alert("Por favor seleccione una dinámica válida.");
+        return;
+    }
 
     document.getElementById('cargoTitulo').textContent = `Cargo Objetivo: [${cargoKey}] ${datosCargo.nombre}`;
 
