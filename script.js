@@ -3,13 +3,15 @@ let baseDatosGlobal = { areas: {}, cargos: {}, dinamicas: [] };
 async function cargarDatos() {
     try {
         const response = await fetch('datos.json');
-        const data = await response.json();
-        baseDatosGlobal = data;
+        if (!response.ok) throw new Error('No se pudo cargar datos.json');
+        baseDatosGlobal = await response.json();
         if (!baseDatosGlobal.areas) baseDatosGlobal.areas = {};
+        if (!baseDatosGlobal.cargos) baseDatosGlobal.cargos = {};
+        if (!Array.isArray(baseDatosGlobal.dinamicas)) baseDatosGlobal.dinamicas = [];
         inicializarSelectCargos();
     } catch (error) {
-        console.error("Error al cargar el archivo JSON:", error);
-        alert("Error de conexión. Asegúrate de correr la app en Netlify o un servidor local.");
+        console.error('Error al cargar el archivo JSON:', error);
+        alert('Error de conexión. Asegúrate de correr la app en Netlify o un servidor local.');
     }
 }
 
@@ -18,7 +20,7 @@ function inicializarSelectCargos() {
     selectCargo.innerHTML = '';
 
     for (const key in baseDatosGlobal.cargos) {
-        let opt = document.createElement('option');
+        const opt = document.createElement('option');
         opt.value = key;
         opt.textContent = `[${key}] ${baseDatosGlobal.cargos[key].nombre}`;
         selectCargo.appendChild(opt);
@@ -27,49 +29,40 @@ function inicializarSelectCargos() {
     actualizarDinamicas();
 }
 
+// Se ejecuta al cambiar el cargo: recarga las dinámicas y limpia la pantalla para evitar datos cruzados
 function actualizarDinamicas() {
+    limpiarResultados();
+
     const cargoKey = document.getElementById('cargoSelect').value; // Ej: CAR-SUP-ENC-01
     const selectDinamica = document.getElementById('tipoDinamica');
     selectDinamica.innerHTML = '';
 
     if (!baseDatosGlobal.cargos[cargoKey]) return;
 
-    // Filtramos las dinámicas que coinciden exactamente con el cargo_id del JSON
-    const dinamicasFiltradas = baseDatosGlobal.dinamicas.filter(din => din.cargo_id === cargoKey);
+    // Solo las dinámicas cuyo cargo_id coincide exactamente con el cargo elegido
+    const dinamicasFiltradas = baseDatosGlobal.dinamicas.filter((din) => din.cargo_id === cargoKey);
 
     if (dinamicasFiltradas.length === 0) {
-        let opt = document.createElement('option');
-        opt.value = "";
-        opt.textContent = "No hay dinámicas para este cargo";
+        const opt = document.createElement('option');
+        opt.value = '';
+        opt.textContent = 'No hay dinámicas para este cargo';
         selectDinamica.appendChild(opt);
-        limpiarResultados();
         return;
     }
 
     dinamicasFiltradas.forEach((din) => {
-        let opt = document.createElement('option');
-        opt.value = din.id; // Guardamos el ID único (ej: DIN-SUP-ENC-01)
+        const opt = document.createElement('option');
+        opt.value = din.id; // ID único (ej: DIN-SUP-ENC-01)
         opt.textContent = `[${din.id}] ${din.titulo}`;
         selectDinamica.appendChild(opt);
     });
-
-    limpiarResultados();
 }
 
-// Eventos de control al cambiar los selectores para evitar datos cruzados
-function onCargoChange() {
-    actualizarDinamicas();
-    limpiarResultados();
-}
-
-function onDinamicaChange() {
-    limpiarResultados();
-}
-
-// Función que blanquea la pantalla de resultados
+// Blanquea la pantalla de resultados
 function limpiarResultados() {
-    document.getElementById('cargoTitulo').textContent = "Cargo: -";
-    document.getElementById('dinamicaDescripcion').innerHTML = '<p style="color: #7f8c8d; font-style: italic;">Selección modificada. Presione "Generar Formulario" para actualizar los datos.</p>';
+    document.getElementById('cargoTitulo').textContent = 'Cargo: -';
+    document.getElementById('dinamicaDescripcion').innerHTML =
+        '<p class="texto-placeholder">Selección modificada. Presione "Generar Formulario" para actualizar los datos.</p>';
     document.getElementById('contenedorPostulantes').innerHTML = '';
     document.getElementById('materialPostulanteContenido').innerHTML = '';
 }
@@ -77,62 +70,58 @@ function limpiarResultados() {
 function generarEvaluacion() {
     const cargoKey = document.getElementById('cargoSelect').value;
     const dinamicaId = document.getElementById('tipoDinamica').value;
-    const numPostulantes = parseInt(document.getElementById('numPostulantes').value) || 1;
-    
+    const numIngresado = parseInt(document.getElementById('numPostulantes').value, 10) || 1;
+    const numPostulantes = Math.min(10, Math.max(1, numIngresado));
+
     if (!baseDatosGlobal.cargos[cargoKey]) return;
 
     const datosCargo = baseDatosGlobal.cargos[cargoKey];
-    const dinamicaSeleccionada = baseDatosGlobal.dinamicas.find(din => din.id === dinamicaId);
+    const dinamica = baseDatosGlobal.dinamicas.find((din) => din.id === dinamicaId);
 
-    if (!dinamicaSeleccionada) {
-        alert("Por favor seleccione una dinámica válida.");
+    if (!dinamica) {
+        alert('Por favor seleccione una dinámica válida.');
         return;
     }
 
     document.getElementById('cargoTitulo').textContent = `Cargo Objetivo: [${cargoKey}] ${datosCargo.nombre}`;
 
-    const materialTexto = dinamicaSeleccionada.hoja_postulante || "Sin material específico definido.";
-    const casoTexto = dinamicaSeleccionada.caso_o_consigna || "Sin objetivo específico.";
-    const guiaTexto = dinamicaSeleccionada.guia_evaluacion || "Sin guía específica.";
-    const tiempoTexto = dinamicaSeleccionada.tiempo_limite || "Sin límite especificado";
-    const codigoDin = dinamicaSeleccionada.id;
+    // Todo texto que viene del JSON se escapa antes de entrar a innerHTML
+    const materialTexto = esc(dinamica.hoja_postulante || 'Sin material específico definido.');
+    const casoTexto = esc(dinamica.caso_o_consigna || 'Sin objetivo específico.');
+    const guiaHTML = esc(dinamica.guia_evaluacion || 'Sin guía específica.').replace(/\r?\n/g, '<br>');
+    const tiempoTexto = esc(dinamica.tiempo_limite || 'Sin límite especificado');
+    const codigoDin = esc(dinamica.id);
 
     // Informe para el evaluador
     document.getElementById('dinamicaDescripcion').innerHTML = `
-        <p><strong>Dinámica:</strong> ${dinamicaSeleccionada.titulo} <span style="background: #eaeded; padding: 2px 6px; border-radius: 4px; font-family: monospace; font-size: 13px; color: #2c3e50;">ID: ${codigoDin}</span></p>
-        <p class="dynamics-list"><strong>Descripción:</strong> ${dinamicaSeleccionada.desc}</p>
-        <div style="background: #f4ecf7; border-left: 3px solid #8e44ad; padding: 10px; margin-top: 8px; font-size: 13px;">
-            <strong>⏱️ Tiempo Límite de la Prueba:</strong> <span style="font-size: 14px; font-weight: bold; color: #6c3483;">${tiempoTexto}</span>
+        <p><strong>Dinámica:</strong> ${esc(dinamica.titulo)} <span class="id-badge">ID: ${codigoDin}</span></p>
+        <p class="dynamics-list"><strong>Descripción:</strong> ${esc(dinamica.desc)}</p>
+        <div class="caja-nota caja-tiempo">
+            <strong>⏱️ Tiempo Límite de la Prueba:</strong> <span class="valor">${tiempoTexto}</span>
         </div>
-        <div style="background: #f9f9f9; border-left: 3px solid #e67e22; padding: 10px; margin-top: 8px; font-size: 13px;">
+        <div class="caja-nota caja-objetivo">
             <strong>🎯 Objetivo de la Prueba:</strong><br>
             ${casoTexto}
         </div>
-        <div style="background: #fdfefe; border-left: 3px solid #27ae60; padding: 10px; margin-top: 8px; font-size: 12px; color: #333;">
+        <div class="caja-nota caja-guia">
             <strong>🔍 Guía de Observación para el Evaluador:</strong><br>
-            ${guiaTexto.replace(/\n/g, '<br>')}
+            ${guiaHTML}
         </div>
     `;
 
-    let filasCompetenciasHTML = '';
-    datosCargo.competencias.forEach(c => {
-        filasCompetenciasHTML += `
+    const filasCompetenciasHTML = (datosCargo.competencias || []).map((c) => `
             <tr>
-                <td style="width: 35%;"><strong>${c.comp}</strong><br><span style="font-size:11px; color:#666;">${c.desc}</span></td>
-                <td style="width: 45%;"></td>
-                <td style="width: 20%; text-align: center;">[ &nbsp; &nbsp; ] / 5</td>
+                <td class="col-competencia"><strong>${esc(c.comp)}</strong><br><span class="competencia-desc">${esc(c.desc)}</span></td>
+                <td class="col-notas"></td>
+                <td class="col-puntaje">[ &nbsp; &nbsp; ] / 5</td>
             </tr>
-        `;
-    });
+        `).join('');
 
-    let contenedorPost = document.getElementById('contenedorPostulantes');
-    contenedorPost.innerHTML = '';
-    
-    let contenedorHojasPostulantes = document.getElementById('materialPostulanteContenido');
-    contenedorHojasPostulantes.innerHTML = '';
+    const bloquesPostulantes = [];
+    const hojasPostulantes = [];
 
     for (let i = 1; i <= numPostulantes; i++) {
-        contenedorPost.innerHTML += `
+        bloquesPostulantes.push(`
             <div class="candidate-box">
                 <h4>Postulante #${i}: __________________________________________________</h4>
                 <table class="metrics-table">
@@ -147,38 +136,43 @@ function generarEvaluacion() {
                         ${filasCompetenciasHTML}
                     </tbody>
                 </table>
-                <div style="font-size:12px; font-weight:600; color:var(--secondary); margin-top:8px;">Observaciones específicas del postulante:</div>
+                <div class="observaciones-titulo">Observaciones específicas del postulante:</div>
                 <div class="observations-box"></div>
             </div>
-        `;
+        `);
 
-        contenedorHojasPostulantes.innerHTML += `
+        hojasPostulantes.push(`
             <div class="candidate-sheet">
-                <h3 style="color: var(--primary); margin-top: 0; border-bottom: 2px solid var(--primary); padding-bottom: 5px;">HOJA DE TRABAJO / CONSIGNA</h3>
-                <div style="margin-bottom: 15px; font-size: 14px; background: #fdfefe; border: 1px solid var(--border); padding: 12px; border-radius: 4px; line-height: 1.8;">
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <div style="flex-grow: 1; margin-right: 20px;">
+                <h3 class="hoja-titulo">HOJA DE TRABAJO / CONSIGNA</h3>
+                <div class="hoja-datos">
+                    <div class="hoja-fila">
+                        <div class="hoja-nombre">
                             <strong>Nombre del Postulante:</strong> __________________________________________________
                         </div>
                         <div>
                             <strong>Fecha:</strong> ____/____/20___
                         </div>
                     </div>
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px; border-top: 1px dashed var(--border); pt: 8px;">
+                    <div class="hoja-fila">
                         <div>
-                            <strong>Dinámica ID:</strong> <span style="font-family: monospace; font-weight: bold; background: #eaeded; padding: 2px 6px; border-radius: 3px;">${codigoDin}</span>
+                            <strong>Dinámica ID:</strong> <span class="id-badge">${codigoDin}</span>
                         </div>
-                        <div>
-                            <span style="color: #8e44ad; font-weight: bold;">⏱️ Tiempo Límite: ${tiempoTexto}</span>
-                        </div>
+                        <div class="hoja-tiempo">⏱️ Tiempo Límite: ${tiempoTexto}</div>
                     </div>
                 </div>
-                <div style="background: #ffffff; border: 1px solid var(--border); padding: 25px; border-radius: 6px; margin-top: 10px; font-size: 15px; line-height: 1.7; white-space: pre-line; min-height: 350px;">
-                    ${materialTexto}
-                </div>
+                <div class="hoja-consigna">${materialTexto}</div>
             </div>
-        `;
+        `);
     }
+
+    document.getElementById('contenedorPostulantes').innerHTML = bloquesPostulantes.join('');
+    document.getElementById('materialPostulanteContenido').innerHTML = hojasPostulantes.join('');
 }
 
-window.onload = cargarDatos;
+document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('cargoSelect').addEventListener('change', actualizarDinamicas);
+    document.getElementById('tipoDinamica').addEventListener('change', limpiarResultados);
+    document.getElementById('btnGenerar').addEventListener('click', generarEvaluacion);
+    document.getElementById('btnImprimir').addEventListener('click', () => window.print());
+    cargarDatos();
+});

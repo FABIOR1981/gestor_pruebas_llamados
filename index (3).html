@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador de Evaluaciones Psicotécnicas</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Panel de Control (No se imprime) -->
+    <div class="no-print">
+        <h1>Generador de Evaluaciones Psicotécnicas</h1>
+        <div class="form-grid">
+            <div class="form-group">
+                <label for="cargoSelect">Puesto / Cargo:</label>
+                <!-- Al cambiar el cargo se actualizan las dinámicas y se limpia la pantalla -->
+                <select id="cargoSelect">
+                    <!-- Se llena desde el JSON -->
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="tipoDinamica">Dinámica Principal:</label>
+                <!-- Al cambiar la dinámica se limpia la pantalla de forma automática -->
+                <select id="tipoDinamica">
+                    <!-- Se llena desde el JSON -->
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="numPostulantes">Postulantes:</label>
+                <input type="number" id="numPostulantes" min="1" max="10" value="1">
+            </div>
+        </div>
+
+        <div class="btn-container">
+            <div class="grupo-botones">
+                <button id="btnGenerar" type="button">Generar Formulario</button>
+                <button id="btnImprimir" type="button" class="btn-print">Imprimir Formulario</button>
+            </div>
+            <a class="btn-admin" href="admin.html">⚙️ Administrar Datos</a>
+        </div>
+    </div>
+
+    <!-- Hoja de Salida para Imprimir -->
+    <div class="print-container" id="printArea">
+        <div class="header-eval">
+            <div>
+                <h2>INFORME DE EVALUACIÓN PSICOTÉCNICA</h2>
+                <div id="cargoTitulo" class="cargo-titulo">Cargo: -</div>
+            </div>
+            <div class="meta-info">
+                <strong>Fecha:</strong> ____/____/20___<br>
+                <strong>Evaluador(a):</strong> ________________________
+            </div>
+        </div>
+
+        <div class="section-title">1. DINÁMICA DE EVALUACIÓN SELECCIONADA</div>
+        <div id="dinamicaDescripcion">
+            <p class="texto-placeholder">Seleccione un cargo y una dinámica, luego presione "Generar Formulario".</p>
+        </div>
+
+        <div class="section-title" id="tituloSeccionEvaluacion">2. EVALUACIÓN Y PUNTAJE POR POSTULANTE</div>
+        <div id="contenedorPostulantes">
+            <!-- Se generan los bloques completos por postulante -->
+        </div>
+
+        <div class="general-notes">
+            <div class="section-title">3. CONCLUSIÓN Y DICTAMEN GENERAL</div>
+            <div class="dictamen-box">
+                <strong>Dictamen Global (Apto / Apto con reservas / No apto):</strong><br><br>
+                <strong>Comentarios finales:</strong>
+            </div>
+        </div>
+
+        <!-- HOJA ADICIONAL: salta a la siguiente página automáticamente al imprimir -->
+        <div id="materialPostulanteContenido" class="candidate-sheet"></div>
+
+    </div>
+
+    <script src="utilidades.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
