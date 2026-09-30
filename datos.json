@@ -12,8 +12,7 @@
             "area": "Operativa",
             "competencias": [
                 { "comp": "Atención a la Normativa", "desc": "Cumple estrictamente protocolos de seguridad y manipulación." },
-                { "comp": "Resistencia / Dinamismo", "desc": "Mantiene ritmo de ejecución constante y eficiencia." },
-                { "comp": "Trabajo en Equipo", "desc": "Colabora de forma armónica con sus compañeros de cuadrilla." }
+                { "comp": "Resistencia / Dinamismo", "desc": "Mantiene ritmo de ejecución constante y eficiencia." }
             ]
         },
         "CAR-ADM-GEN-01": {
@@ -21,8 +20,7 @@
             "area": "Administración",
             "competencias": [
                 { "comp": "Exactitud y Metodicidad", "desc": "Minimiza errores de transcripción y orden." },
-                { "comp": "Gestión del Tiempo", "desc": "Prioriza tareas administrativas eficientemente." },
-                { "comp": "Comunicación Efectiva", "desc": "Transmite información clara y formal de manera escrita y oral." }
+                { "comp": "Gestión del Tiempo", "desc": "Prioriza tareas administrativas eficientemente." }
             ]
         },
         "CAR-SUP-ENC-01": {
@@ -30,8 +28,7 @@
             "area": "Supervisión",
             "competencias": [
                 { "comp": "Liderazgo Práctico", "desc": "Guía al equipo con claridad y firmeza empática." },
-                { "comp": "Toma de Decisiones", "desc": "Actúa con criterio ante imprevistos cotidianos." },
-                { "comp": "Orientación a Resultados", "desc": "Supervisa el cumplimiento de metas diarias." }
+                { "comp": "Toma de Decisiones", "desc": "Actúa con criterio ante imprevistos cotidianos." }
             ]
         },
         "CAR-SUP-JEF-01": {
@@ -39,8 +36,7 @@
             "area": "Supervisión",
             "competencias": [
                 { "comp": "Visión Estratégica", "desc": "Comprende el impacto global de sus decisiones." },
-                { "comp": "Negociación e Influencia", "desc": "Persuade y alinea equipos hacia metas complejas." },
-                { "comp": "Gestión de Crisis", "desc": "Mantiene la templanza y el foco estratégico en momentos críticos." }
+                { "comp": "Negociación e Influencia", "desc": "Persuade y alinea equipos hacia metas complejas." }
             ]
         },
         "CAR-FIN-CON-01": {
@@ -48,8 +44,7 @@
             "area": "Finanzas",
             "competencias": [
                 { "comp": "Rigor Técnico-Contable", "desc": "Dominio preciso de normativas y cálculos." },
-                { "comp": "Pensamiento Analítico", "desc": "Detecta inconsistencias y riesgos financieros con agilidad." },
-                { "comp": "Confidencialidad y Ética", "desc": "Muestra apego estricto a las normas profesionales." }
+                { "comp": "Pensamiento Analítico", "desc": "Detecta inconsistencias y riesgos financieros con agilidad." }
             ]
         }
     },
@@ -60,9 +55,39 @@
             "titulo": "Prueba de Atención Sostenida y Verificación de Códigos",
             "desc": "Ejercicio escrito individual de control rápido de alfanuméricos bajo presión de tiempo.",
             "tiempo_limite": "2 Minutos Exactos",
-            "hoja_postulante": "Instrucciones:\nEn un tiempo máximo de 2 minutos, lea atentamente el siguiente listado de códigos y marque con un círculo únicamente aquellos que contengan una letra 'X' y un número impar.",
-            "caso_o_consigna": "Verificación de velocidad y agilidad visual bajo presión temporal estricta.",
-            "guia_evaluacion": "• Éxito: Alta tasa de aciertos y bajo margen de falsos positivos en tiempo récord.\n• Alerta: Tacha de forma desordenada, omite más de la mitad o se bloquea ante la presión."
+            "hoja_postulante": "Instrucciones: En un tiempo máximo de 2 minutos, marque los códigos indicados.",
+            "caso_o_consigna": "Verificación de velocidad y agilidad visual bajo presión.",
+            "guia_evaluacion": "• Éxito: Alta tasa de aciertos.\n• Alerta: Omite más de la mitad."
+        },
+        {
+            "id": "DIN-OPE-CAR-02",
+            "cargo_id": "CAR-OPE-CAR-01",
+            "titulo": "Prueba de Criterio Operativo y Seguridad Industrial",
+            "desc": "Análisis de situaciones de riesgo físico en planta.",
+            "tiempo_limite": "5 Minutos",
+            "hoja_postulante": "Instrucciones: Identifique las 3 fallas de seguridad en la imagen adjunta.",
+            "caso_o_consigna": "Evaluar la prevención de accidentes laborales.",
+            "guia_evaluacion": "• Éxito: Detecta los riesgos críticos.\n• Alerta: Pasa por alto normas de seguridad básicas."
+        },
+        {
+            "id": "DIN-ADM-GEN-01",
+            "cargo_id": "CAR-ADM-GEN-01",
+            "titulo": "Prueba de Clasificación y Criterio Documental",
+            "desc": "Ejercicio de organización y priorización de expedientes administrativos.",
+            "tiempo_limite": "5 Minutos",
+            "hoja_postulante": "Instrucciones: Ordene los expedientes según su nivel de urgencia.",
+            "caso_o_consigna": "Evaluar la metodicidad y el orden ante volumen alto de datos.",
+            "guia_evaluacion": "• Éxito: Clasificación impecable.\n• Alerta: Confunde criterios de prioridad."
+        },
+        {
+            "id": "DIN-ADM-GEN-02",
+            "cargo_id": "CAR-ADM-GEN-01",
+            "titulo": "Redacción de Comunicado Formal y Síntesis",
+            "desc": "Redacción rápida de un correo institucional ante un cambio de normativa.",
+            "tiempo_limite": "6 Minutos",
+            "hoja_postulante": "Instrucciones: Redacte un correo claro informando el cambio de horario.",
+            "caso_o_consigna": "Medir claridad de redacción y formalidad escrita.",
+            "guia_evaluacion": "• Éxito: Tono adecuado y conciso.\n• Alerta: Errores gramaticales o ambigüedad."
         },
         {
             "id": "DIN-SUP-ENC-01",
@@ -70,9 +95,59 @@
             "titulo": "Prueba de Resolución de Casos: Priorización Operativa",
             "desc": "Análisis escrito de un escenario crítico de dotación de personal.",
             "tiempo_limite": "7 Minutos",
-            "hoja_postulante": "Caso Práctico:\nA las 08:00 AM le notifican dos bajas médicas imprevistas en su turno operativo habitual.",
-            "caso_o_consigna": "Reorganización express de turnos y tareas ante bajas imprevistas de personal.",
-            "guia_evaluacion": "• Éxito: Prioriza tareas neurálgicas y apoya a los novatos.\n• Alerta: Propone soluciones imposibles."
+            "hoja_postulante": "Caso Práctico: Bajas médicas imprevistas en turno.",
+            "caso_o_consigna": "Reorganización express de turnos.",
+            "guia_evaluacion": "• Éxito: Prioriza tareas neurálgicas.\n• Alerta: Propone soluciones imposibles."
+        },
+        {
+            "id": "DIN-SUP-ENC-02",
+            "cargo_id": "CAR-SUP-ENC-01",
+            "titulo": "Simulación de Mediación y Manejo de Conflictos de Turno",
+            "desc": "Resolución escrita de un entredicho entre dos operarios.",
+            "tiempo_limite": "8 Minutos",
+            "hoja_postulante": "Caso Práctico: Disputa por asignación de tareas preferenciales.",
+            "caso_o_consigna": "Evaluar liderazgo ecuánime y neutralidad.",
+            "guia_evaluacion": "• Éxito: Escucha y equilibra las partes.\n• Alerta: Toma partido sin investigar."
+        },
+        {
+            "id": "DIN-SUP-JEF-01",
+            "cargo_id": "CAR-SUP-JEF-01",
+            "titulo": "Simulación de Comité de Crisis y Negociación",
+            "desc": "Análisis de conflicto interdepartamental con restricciones de presupuesto.",
+            "tiempo_limite": "10 Minutos",
+            "hoja_postulante": "Consigna: Defienda su propuesta frente a recortes.",
+            "caso_o_consigna": "Evaluar templanza, negociación y visión global.",
+            "guia_evaluacion": "• Éxito: Argumentación sólida y empática.\n• Alerta: Postura inflexible o confrontativa."
+        },
+        {
+            "id": "DIN-SUP-JEF-02",
+            "cargo_id": "CAR-SUP-JEF-01",
+            "titulo": "Evaluación de Indicadores de Desempeño y Toma de Decisiones",
+            "desc": "Interpretación de desvíos en métricas operativas mensuales.",
+            "tiempo_limite": "10 Minutos",
+            "hoja_postulante": "Consigna: Proponga un plan de acción correctivo ante la caída de rendimiento.",
+            "caso_o_consigna": "Medir razonamiento analítico gerencial.",
+            "guia_evaluacion": "• Éxito: Identifica causas raíz con precisión.\n• Alerta: Ataca síntomas superficiales."
+        },
+        {
+            "id": "DIN-FIN-CON-01",
+            "cargo_id": "CAR-FIN-CON-01",
+            "titulo": "Auditoría Exprés y Detección de Desvíos Contables",
+            "desc": "Revisión rápida de un estado de resultados simulado con anomalías.",
+            "tiempo_limite": "8 Minutos",
+            "hoja_postulante": "Consigna: Marque las inconsistencias financieras principales.",
+            "caso_o_consigna": "Medir precisión técnica y ojo analítico.",
+            "guia_evaluacion": "• Éxito: Detecta los desvíos clave.\n• Alerta: Pasa por alto errores normativos graves."
+        },
+        {
+            "id": "DIN-FIN-CON-02",
+            "cargo_id": "CAR-FIN-CON-01",
+            "titulo": "Prueba de Criterio ante Riesgo Impositivo y Normativo",
+            "desc": "Análisis de caso sobre plazos de presentación y multas potenciales.",
+            "tiempo_limite": "8 Minutos",
+            "hoja_postulante": "Consigna: Determine la prioridad de pago ante fondos insuficientes.",
+            "caso_o_consigna": "Evaluar manejo de presión económica y normativa legal.",
+            "guia_evaluacion": "• Éxito: Prioriza correctamente bajo ley.\n• Alerta: Omite vencimientos críticos."
         }
     ]
 }
