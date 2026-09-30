@@ -67,16 +67,7 @@ select, input {
     background-color: white;
 }
 
-/* Botones */
 .btn-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 10px;
-}
-
-.grupo-botones {
     display: flex;
     gap: 10px;
 }
@@ -104,22 +95,6 @@ button:hover {
     background-color: #219653;
 }
 
-/* Enlace con aspecto de botón (va a admin.html) */
-.btn-admin {
-    display: inline-block;
-    background-color: var(--secondary);
-    color: white;
-    padding: 10px 16px;
-    font-size: 16px;
-    font-weight: 600;
-    border-radius: 4px;
-    text-decoration: none;
-    transition: background 0.2s;
-}
-.btn-admin:hover {
-    background-color: var(--primary);
-}
-
 /* Estilos de la Hoja de Evaluación para Imprimir */
 .print-container {
     max-width: 900px;
@@ -144,13 +119,6 @@ button:hover {
     font-size: 20px;
 }
 
-.cargo-titulo {
-    font-size: 16px;
-    font-weight: bold;
-    color: var(--accent);
-    margin-top: 5px;
-}
-
 .meta-info {
     font-size: 13px;
     color: #555;
@@ -167,21 +135,6 @@ button:hover {
     margin: 20px 0 10px 0;
 }
 
-.texto-placeholder {
-    color: #7f8c8d;
-    font-style: italic;
-}
-
-.id-badge {
-    background: #eaeded;
-    padding: 2px 6px;
-    border-radius: 4px;
-    font-family: monospace;
-    font-size: 13px;
-    font-weight: bold;
-    color: var(--primary);
-}
-
 .dynamics-list {
     margin: 10px 0;
     padding-left: 20px;
@@ -189,36 +142,6 @@ button:hover {
     line-height: 1.6;
 }
 
-/* Cajas informativas del evaluador */
-.caja-nota {
-    padding: 10px;
-    margin-top: 8px;
-    font-size: 13px;
-}
-
-.caja-tiempo {
-    background: #f4ecf7;
-    border-left: 3px solid #8e44ad;
-}
-.caja-tiempo .valor {
-    font-size: 14px;
-    font-weight: bold;
-    color: #6c3483;
-}
-
-.caja-objetivo {
-    background: #f9f9f9;
-    border-left: 3px solid #e67e22;
-}
-
-.caja-guia {
-    background: #fdfefe;
-    border-left: 3px solid #27ae60;
-    font-size: 12px;
-    color: #333;
-}
-
-/* Bloque y tabla por postulante */
 .candidate-box {
     border: 1px solid var(--border);
     padding: 15px;
@@ -254,22 +177,6 @@ button:hover {
     background-color: #eaeded;
 }
 
-.col-competencia { width: 35%; }
-.col-notas { width: 45%; }
-.metrics-table td.col-puntaje { width: 20%; text-align: center; }
-
-.competencia-desc {
-    font-size: 11px;
-    color: #666;
-}
-
-.observaciones-titulo {
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--secondary);
-    margin-top: 8px;
-}
-
 .observations-box {
     border: 1px solid var(--border);
     min-height: 60px;
@@ -280,7 +187,6 @@ button:hover {
     margin-top: 5px;
 }
 
-/* Dictamen general */
 .general-notes {
     margin-top: 30px;
     border-top: 1px dashed var(--border);
@@ -288,82 +194,10 @@ button:hover {
     page-break-inside: avoid;
 }
 
-.general-notes .section-title {
-    margin-top: 0;
-}
-
-.dictamen-box {
-    border: 1px solid var(--border);
-    height: 80px;
-    border-radius: 4px;
-    padding: 8px;
-    font-size: 13px;
-}
-
 /* Hoja de Trabajo / Consigna para el Postulante */
 .candidate-sheet {
     margin-top: 40px;
     padding-top: 20px;
-}
-
-.hoja-titulo {
-    color: var(--primary);
-    margin-top: 0;
-    border-bottom: 2px solid var(--primary);
-    padding-bottom: 5px;
-}
-
-.hoja-datos {
-    margin-bottom: 15px;
-    font-size: 14px;
-    background: #fdfefe;
-    border: 1px solid var(--border);
-    padding: 12px;
-    border-radius: 4px;
-    line-height: 1.8;
-}
-
-.hoja-fila {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.hoja-fila + .hoja-fila {
-    margin-top: 8px;
-    border-top: 1px dashed var(--border);
-    padding-top: 8px;
-}
-
-.hoja-nombre {
-    flex-grow: 1;
-    margin-right: 20px;
-}
-
-.hoja-tiempo {
-    color: #8e44ad;
-    font-weight: bold;
-}
-
-.hoja-consigna {
-    background: #ffffff;
-    border: 1px solid var(--border);
-    padding: 25px;
-    border-radius: 6px;
-    margin-top: 10px;
-    font-size: 15px;
-    line-height: 1.7;
-    white-space: pre-line;
-    min-height: 350px;
-}
-
-/* Renglones de respuesta del postulante ocupando el 100% del ancho */
-.renglon-respuesta {
-    width: 100%;
-    height: 32px;
-    border-bottom: 1px solid var(--border);
-    margin-top: 10px;
-    margin-bottom: 10px;
 }
 
 /* Configuración de Impresión */
@@ -381,7 +215,29 @@ button:hover {
         width: 100%;
     }
     .candidate-sheet {
-        page-break-before: always; /* Salto de página limpio por cada postulante */
+        page-break-before: always; /* Fuerza salto de página para el material del postulante */
         break-before: page;
     }
+}
+
+/* Hoja de Trabajo / Consigna para el Postulante */
+.candidate-sheet {
+    margin-top: 40px;
+    padding-top: 20px;
+}
+
+@media print {
+    .candidate-sheet {
+        page-break-before: always; /* Fuerza salto de página limpio por cada postulante */
+        break-before: page;
+    }
+}
+
+/* Estilo para los renglones de respuesta del postulante ocupando el 100% del ancho */
+.renglon-respuesta {
+    width: 100%;
+    height: 32px;
+    border-bottom: 1px solid var(--border);
+    margin-top: 10px;
+    margin-bottom: 10px;
 }

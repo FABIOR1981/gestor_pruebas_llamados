@@ -12,27 +12,31 @@
         <h1>Panel de Administración y ABM</h1>
         <p class="subtitle">Gestione de forma limpia y ordenada las áreas, cargos y dinámicas del archivo <code>datos.json</code>.</p>
 
-        <div class="toolbar toolbar-columna">
+        <div class="toolbar" style="flex-direction: column; align-items: stretch; gap: 15px;">
             <div class="status-badge">
-                📁 Estado: <span id="estadoCarga">Cargando...</span>
+                📁 Estado: <span id="estadoCarga" style="color: var(--accent);">Cargando...</span>
             </div>
-            <div class="barra-botones">
+            <div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
                 <div class="btn-group">
-                    <button type="button" id="btnNuevaArea" class="btn-success">+ Crear Nueva Área</button>
-                    <button type="button" id="btnNuevoCargo" class="btn-warning">+ Crear Nuevo Cargo</button>
-                    <button type="button" id="btnDescargar" class="btn-secondary">📥 Descargar JSON Actualizado</button>
+                    <button class="btn-success" style="background-color: #27ae60;" onclick="abrirModalArea()">+ Crear Nueva Área</button>
+                    <button class="btn-warning" onclick="abrirModalCargo()">+ Crear Nuevo Cargo</button>
+                    <button class="btn-secondary" onclick="descargarJSON()">📥 Descargar JSON Actualizado</button>
                 </div>
-                <a class="btn-link" href="index.html">⬅️ Volver al Generador</a>
+                <div>
+                    <button onclick="window.location.href='index.html'" style="background-color: #34495e; color: white; border: none; padding: 10px 16px; border-radius: 4px; cursor: pointer; font-weight: bold; transition: background 0.2s;" onmouseover="this.style.backgroundColor='#2c3e50'" onmouseout="this.style.backgroundColor='#34495e'">
+                        ⬅️ Volver al Generador
+                    </button>
+                </div>
             </div>
         </div>
 
         <div class="control-panel">
             <div class="form-group">
                 <label for="cargoSelectAdmin">Seleccionar Cargo a Administrar:</label>
-                <select id="cargoSelectAdmin"></select>
+                <select id="cargoSelectAdmin" onchange="renderizarDinamicas()"></select>
             </div>
             <div>
-                <button type="button" id="btnNuevaDinamica" class="btn-success btn-ancho">+ Nueva Dinámica</button>
+                <button class="btn-success" onclick="abrirModalDinamica()" style="width: 100%;">+ Nueva Dinámica</button>
             </div>
         </div>
 
@@ -46,20 +50,20 @@
 
     <!-- Modal: Crear Nueva Área -->
     <div id="modalAreaNueva" class="modal">
-        <div class="modal-content modal-chico">
+        <div class="modal-content" style="max-width: 450px;">
             <h3>Crear Nueva Área</h3>
-            <form id="formArea">
-                <div class="form-group campo">
+            <form id="formArea" onsubmit="guardarArea(event)">
+                <div class="form-group" style="margin-bottom: 15px;">
                     <label for="areaNombreNueva">Nombre completo del Área:</label>
                     <input type="text" id="areaNombreNueva" placeholder="Ej: Tecnología y Sistemas" required>
                 </div>
-                <div class="form-group campo">
+                <div class="form-group" style="margin-bottom: 15px;">
                     <label for="areaSiglaNueva">Sigla (Exactamente 3 letras):</label>
-                    <input type="text" id="areaSiglaNueva" class="mayusculas" placeholder="Ej: TEC" maxlength="3" minlength="3" required>
+                    <input type="text" id="areaSiglaNueva" placeholder="Ej: TEC" maxlength="3" minlength="3" style="text-transform: uppercase;" required>
                 </div>
-                <div class="acciones-modal">
+                <div style="display: flex; gap: 10px; margin-top: 25px;">
                     <button type="submit" class="btn-success">Guardar Área</button>
-                    <button type="button" id="btnCancelarArea" class="btn-danger">Cancelar</button>
+                    <button type="button" class="btn-danger" onclick="cerrarModalArea()">Cancelar</button>
                 </div>
             </form>
         </div>
@@ -67,36 +71,36 @@
 
     <!-- Modal: Crear Nuevo Cargo -->
     <div id="modalCargoNuevo" class="modal">
-        <div class="modal-content modal-mediano">
+        <div class="modal-content" style="max-width: 550px;">
             <h3>Crear Nuevo Cargo</h3>
-            <form id="formCargo">
-
-                <div class="form-group campo">
+            <form id="formCargo" onsubmit="guardarCargo(event)">
+                
+                <div class="form-group" style="margin-bottom: 15px;">
                     <label for="cargoNombreInput">Nombre legible del Cargo:</label>
                     <input type="text" id="cargoNombreInput" placeholder="Ej: Administrador de Redes" required>
                 </div>
 
-                <div class="grid-cargo">
+                <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 10px; margin-bottom: 15px;">
                     <div class="form-group">
                         <label for="cargoAreaSelect">Área a la que pertenece:</label>
-                        <select id="cargoAreaSelect" required>
+                        <select id="cargoAreaSelect" onchange="actualizarCodigoCargoAutogenerado()" required>
                             <!-- Se llena dinámicamente con las áreas del JSON -->
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="cargoEspecialidad">Sigla Especialidad:</label>
-                        <input type="text" id="cargoEspecialidad" class="mayusculas" placeholder="Ej: RED" maxlength="3" required>
+                        <input type="text" id="cargoEspecialidad" placeholder="Ej: RED" maxlength="3" style="text-transform: uppercase;" oninput="actualizarCodigoCargoAutogenerado()" required>
                     </div>
                 </div>
 
-                <div class="form-group campo">
+                <div class="form-group" style="margin-bottom: 15px;">
                     <label for="cargoKeyInput">Código del Cargo (Autogenerado):</label>
-                    <input type="text" id="cargoKeyInput" class="input-codigo" readonly required placeholder="Seleccione área y sigla para generar">
+                    <input type="text" id="cargoKeyInput" style="background-color: #eaeded; font-family: monospace; font-weight: bold; color: #7f8c8d; border: 1px dashed #bdc3c7;" readonly required placeholder="Seleccione área y sigla para generar">
                 </div>
 
-                <div class="acciones-modal">
+                <div style="display: flex; gap: 10px; margin-top: 25px;">
                     <button type="submit" class="btn-success">Crear Cargo</button>
-                    <button type="button" id="btnCancelarCargo" class="btn-danger">Cancelar</button>
+                    <button type="button" class="btn-danger" onclick="cerrarModalCargo()">Cancelar</button>
                 </div>
             </form>
         </div>
@@ -106,58 +110,57 @@
     <div id="modalDinamica" class="modal">
         <div class="modal-content">
             <h3 id="modalTitulo">Nueva Dinámica</h3>
-            <form id="formDinamica">
+            <form id="formDinamica" onsubmit="guardarDinamica(event)">
                 <input type="hidden" id="editIndex" value="">
-
-                <div class="form-group campo">
+                
+                <div class="form-group" style="margin-bottom: 15px;">
                     <label for="modalCargo">Cargo Objetivo:</label>
-                    <select id="modalCargo"></select>
+                    <select id="modalCargo" onchange="actualizarCodigoDinamicaAutogenerado()"></select>
                 </div>
 
-                <div class="form-group campo">
+                <div class="form-group" style="margin-bottom: 15px;">
                     <label for="modalCodigo">Código Alfanumérico (Autogenerado):</label>
-                    <input type="text" id="modalCodigo" class="input-codigo" readonly required>
+                    <input type="text" id="modalCodigo" style="background-color: #eaeded; font-family: monospace; font-weight: bold; color: #7f8c8d;" readonly required>
                 </div>
 
-                <div class="form-group campo">
+                <div class="form-group" style="margin-bottom: 15px;">
                     <label for="modalTituloDin">Título de la Dinámica:</label>
                     <input type="text" id="modalTituloDin" required>
                 </div>
 
-                <div class="form-group campo">
+                <div class="form-group" style="margin-bottom: 15px;">
                     <label for="modalDesc">Descripción Breve:</label>
                     <input type="text" id="modalDesc" required>
                 </div>
 
-                <div class="form-group campo">
+                <div class="form-group" style="margin-bottom: 15px;">
                     <label for="modalTiempo">Tiempo Límite:</label>
                     <input type="text" id="modalTiempo" placeholder="Ej: 3 Minutos Exactos" required>
                 </div>
 
-                <div class="form-group campo">
+                <div class="form-group" style="margin-bottom: 15px;">
                     <label for="modalHoja">Hoja de Trabajo / Consigna para el Postulante:</label>
                     <textarea id="modalHoja" rows="4" placeholder="Texto o consigna que verá el candidato..." required></textarea>
                 </div>
 
-                <div class="form-group campo">
+                <div class="form-group" style="margin-bottom: 15px;">
                     <label for="modalCaso">Objetivo / Consigna para el Evaluador:</label>
                     <input type="text" id="modalCaso" required>
                 </div>
 
-                <div class="form-group campo">
+                <div class="form-group" style="margin-bottom: 15px;">
                     <label for="modalGuia">Guía de Observación (Éxito / Alerta):</label>
                     <textarea id="modalGuia" rows="3" required></textarea>
                 </div>
 
-                <div class="acciones-modal">
+                <div style="display: flex; gap: 10px; margin-top: 25px;">
                     <button type="submit" class="btn-success">Guardar Dinámica</button>
-                    <button type="button" id="btnCancelarDinamica" class="btn-danger">Cancelar</button>
+                    <button type="button" class="btn-danger" onclick="cerrarModalDinamica()">Cancelar</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <script src="utilidades.js"></script>
     <script src="admin.js"></script>
 </body>
 </html>
