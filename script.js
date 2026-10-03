@@ -90,7 +90,7 @@ function actualizarTiempoTotal() {
     const seleccionadas = obtenerDinamicasSeleccionadas();
     const total = seleccionadas.reduce((suma, din) => suma + minutosDe(din), 0);
     document.getElementById('tiempoTotalSeleccion').textContent =
-        seleccionadas.length ? `⏱️ Tiempo total estimado: ${total} min (${seleccionadas.length} dinámica/s)` : '';
+        seleccionadas.length > 1 ? `⏱️ Tiempo total estimado: ${total} min (${seleccionadas.length} dinámicas)` : '';
 }
 
 // Eventos de control al cambiar los selectores para evitar datos cruzados
@@ -158,11 +158,14 @@ function generarEvaluacion() {
         </div>
         </div>`).join('');
 
+    const tiempoTotalHTML = seleccionadas.length > 1 ? `
+        <div style="background: #f4ecf7; border: 1px solid #8e44ad; padding: 10px; font-size: 14px; font-weight: bold; color: #6c3483;">
+            ⏱️ Tiempo total estimado (${seleccionadas.length} dinámicas): ${tiempoTotal} minutos
+        </div>` : '';
+
     document.getElementById('dinamicaDescripcion').innerHTML = `
         ${bloquesDinamicas}
-        <div style="background: #f4ecf7; border: 1px solid #8e44ad; padding: 10px; font-size: 14px; font-weight: bold; color: #6c3483;">
-            ⏱️ Tiempo total estimado (${seleccionadas.length} dinámica/s): ${tiempoTotal} minutos
-        </div>
+        ${tiempoTotalHTML}
     `;
 
     const comps = datosCargo.competencias;
