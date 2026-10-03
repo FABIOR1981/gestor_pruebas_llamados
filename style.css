@@ -148,6 +148,11 @@ button:hover {
     margin-bottom: 20px;
     border-radius: 6px;
     background: #fafafa;
+}
+
+/* Evita cortar a mitad una dinámica o su tabla al saltar de página */
+.bloque-dinamica {
+    break-inside: avoid;
     page-break-inside: avoid;
 }
 
@@ -201,6 +206,24 @@ button:hover {
 }
 
 /* Configuración de Impresión */
+@page {
+    size: A4;
+    margin: 15mm;
+}
+
+@media print {
+    body {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+    .candidate-box h4 {
+        break-after: avoid;
+    }
+    .section-title {
+        break-after: avoid;
+    }
+}
+
 @media print {
     body {
         background: white;
@@ -215,21 +238,11 @@ button:hover {
         width: 100%;
     }
     .candidate-sheet {
-        page-break-before: always; /* Fuerza salto de página para el material del postulante */
+        margin-top: 0;
+        padding-top: 0;
+        page-break-before: always; /* Una hoja de trabajo por página */
         break-before: page;
-    }
-}
-
-/* Hoja de Trabajo / Consigna para el Postulante */
-.candidate-sheet {
-    margin-top: 40px;
-    padding-top: 20px;
-}
-
-@media print {
-    .candidate-sheet {
-        page-break-before: always; /* Fuerza salto de página limpio por cada postulante */
-        break-before: page;
+        break-inside: avoid;
     }
 }
 

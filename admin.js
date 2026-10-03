@@ -205,6 +205,7 @@ function editarDinamica(dinId) {
     document.getElementById('modalHoja').value = din.hoja_postulante || '';
     document.getElementById('modalCaso').value = din.caso_o_consigna || '';
     document.getElementById('modalGuia').value = din.guia_evaluacion || '';
+    document.getElementById('modalRespuesta').value = din.respuesta_esperada || '';
     
     document.getElementById('modalDinamica').style.display = 'flex';
 }
@@ -223,7 +224,8 @@ function guardarDinamica(event) {
         tiempo_limite: document.getElementById('modalTiempo').value.trim(),
         hoja_postulante: document.getElementById('modalHoja').value.trim(),
         caso_o_consigna: document.getElementById('modalCaso').value.trim(),
-        guia_evaluacion: document.getElementById('modalGuia').value.trim()
+        guia_evaluacion: document.getElementById('modalGuia').value.trim(),
+        respuesta_esperada: document.getElementById('modalRespuesta').value.trim()
     };
 
     if (!dinIdEditando) {

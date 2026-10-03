@@ -113,7 +113,7 @@ function generarEvaluacion() {
 
     // Informe para el evaluador
     const bloquesDinamicas = seleccionadas.map((din, idx) => `
-        <div style="margin-bottom: 14px;">
+        <div class="bloque-dinamica" style="margin-bottom: 14px;">
         <p><strong>Dinámica ${idx + 1}:</strong> ${din.titulo} <span style="background: #eaeded; padding: 2px 6px; border-radius: 4px; font-family: monospace; font-size: 13px; color: #2c3e50;">ID: ${din.id}</span></p>
         <p class="dynamics-list"><strong>Descripción:</strong> ${din.desc}</p>
         <div style="background: #f4ecf7; border-left: 3px solid #8e44ad; padding: 10px; margin-top: 8px; font-size: 13px;">
@@ -126,6 +126,10 @@ function generarEvaluacion() {
         <div style="background: #fdfefe; border-left: 3px solid #27ae60; padding: 10px; margin-top: 8px; font-size: 12px; color: #333;">
             <strong>🔍 Guía de Observación para el Evaluador:</strong><br>
             ${(din.guia_evaluacion || 'Sin guía específica.').replace(/\n/g, '<br>')}
+        </div>
+        <div style="background: #eafaf1; border: 1px dashed #1e8449; border-left: 3px solid #1e8449; padding: 10px; margin-top: 8px; font-size: 12px; color: #333;">
+            <strong>✅ Corrector: Respuestas Correctas / Esperadas:</strong><br>
+            ${(din.respuesta_esperada || 'Sin respuesta esperada definida.').replace(/\n/g, '<br>')}
         </div>
         </div>`).join('');
 
@@ -152,7 +156,7 @@ function generarEvaluacion() {
 
     // Una tabla de competencias por dinámica, con su puntaje parcial.
     const tablasPorDinamicaHTML = seleccionadas.map(din => `
-        <div style="margin-top: 10px;">
+        <div class="bloque-dinamica" style="margin-top: 10px;">
         <div style="font-size: 13px; font-weight: bold; color: var(--primary);">[${din.id}] ${din.titulo}</div>
         <table class="metrics-table">
             <thead>
