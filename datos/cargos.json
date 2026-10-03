@@ -3,7 +3,7 @@
         "nombre": "Carga / Descarga",
         "area": "Operativa",
         "competencias": [
-            { "comp": "Atención a la Normativa", "desc": "Cumple estrictamente protocolos de seguridad y manipulación." },
+            { "comp": "Actitud hacia la Normativa", "desc": "Muestra disposición a respetar protocolos de seguridad y a priorizar el cuidado propio y ajeno." },
             { "comp": "Resistencia / Dinamismo", "desc": "Mantiene ritmo de ejecución constante y eficiencia." },
             { "comp": "Trabajo en Equipo", "desc": "Colabora de forma armónica con sus compañeros de cuadrilla." }
         ]
@@ -12,7 +12,7 @@
         "nombre": "Administrativo",
         "area": "Administración",
         "competencias": [
-            { "comp": "Exactitud y Metodicidad", "desc": "Minimiza errores de transcripción y orden." },
+            { "comp": "Atención al Detalle y Orden", "desc": "Revisa con método y cuidado, manteniendo la concentración en tareas repetitivas." },
             { "comp": "Gestión del Tiempo", "desc": "Prioriza tareas administrativas eficientemente." },
             { "comp": "Comunicación Efectiva", "desc": "Transmite información clara y formal de manera escrita y oral." }
         ]
@@ -39,9 +39,9 @@
         "nombre": "Contador",
         "area": "Finanzas",
         "competencias": [
-            { "comp": "Rigor Técnico-Contable", "desc": "Dominio preciso de normativas y cálculos." },
-            { "comp": "Pensamiento Analítico", "desc": "Detecta inconsistencias y riesgos financieros con agilidad." },
-            { "comp": "Confidencialidad y Ética", "desc": "Muestra apego estricto a las normas profesionales." }
+            { "comp": "Método y Criterio Profesional", "desc": "Ordena su razonamiento y actúa con prudencia ante datos o situaciones dudosas." },
+            { "comp": "Pensamiento Analítico", "desc": "Analiza con lógica, detecta incoherencias y evalúa riesgos antes de decidir." },
+            { "comp": "Integridad y Confidencialidad", "desc": "Sostiene sus valores y la reserva de información aun bajo presión o insistencia." }
         ]
     }
 }
