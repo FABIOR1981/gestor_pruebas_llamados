@@ -103,6 +103,12 @@ function onDinamicaChange() {
     limpiarResultados();
 }
 
+// Muestra u oculta la guía de observación y el corrector, también al imprimir.
+function toggleGuia() {
+    const incluir = document.getElementById('incluirGuia').checked;
+    document.getElementById('printArea').classList.toggle('ocultar-guia', !incluir);
+}
+
 // Función que blanquea la pantalla de resultados
 function limpiarResultados() {
     actualizarTiempoTotal();
@@ -142,11 +148,11 @@ function generarEvaluacion() {
             <strong>🎯 Objetivo de la Prueba:</strong><br>
             ${din.caso_o_consigna || 'Sin objetivo específico.'}
         </div>
-        <div style="background: #fdfefe; border-left: 3px solid #27ae60; padding: 10px; margin-top: 8px; font-size: 12px; color: #333;">
+        <div class="bloque-guia" style="background: #fdfefe; border-left: 3px solid #27ae60; padding: 10px; margin-top: 8px; font-size: 12px; color: #333;">
             <strong>🔍 Guía de Observación para el Evaluador:</strong><br>
             ${(din.guia_evaluacion || 'Sin guía específica.').replace(/\n/g, '<br>')}
         </div>
-        <div style="background: #eafaf1; border: 1px dashed #1e8449; border-left: 3px solid #1e8449; padding: 10px; margin-top: 8px; font-size: 12px; color: #333;">
+        <div class="bloque-guia" style="background: #eafaf1; border: 1px dashed #1e8449; border-left: 3px solid #1e8449; padding: 10px; margin-top: 8px; font-size: 12px; color: #333;">
             <strong>✅ Corrector: Respuestas Correctas / Esperadas:</strong><br>
             ${(din.respuesta_esperada || 'Sin respuesta esperada definida.').replace(/\n/g, '<br>')}
         </div>

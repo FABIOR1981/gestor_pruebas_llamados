@@ -41,6 +41,11 @@
                 <button onclick="generarEvaluacion()">Generar Formulario</button>
                 <button class="btn-print" onclick="window.print()">Imprimir Formulario</button>
             </div>
+            <label class="switch-guia" for="incluirGuia" title="Incluye la guía de observación y el corrector en el informe">
+                <input type="checkbox" id="incluirGuia" checked onchange="toggleGuia()">
+                <span class="switch-track"></span>
+                <span class="switch-texto">Guía y corrector</span>
+            </label>
             <div>
                 <button onclick="window.location.href='admin.html'" style="background-color: #34495e; color: white; border: none; padding: 10px 16px; border-radius: 4px; cursor: pointer; font-weight: bold; transition: background 0.2s;" onmouseover="this.style.backgroundColor='#2c3e50'" onmouseout="this.style.backgroundColor='#34495e'">
                     ⚙️ Administrar Datos
