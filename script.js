@@ -147,6 +147,28 @@ function generarEvaluacion() {
         `;
     });
 
+    const maxPorDinamica = datosCargo.competencias.length * 5;
+    const maxTotal = maxPorDinamica * seleccionadas.length;
+
+    // Una tabla de competencias por dinámica, con su puntaje parcial.
+    const tablasPorDinamicaHTML = seleccionadas.map(din => `
+        <div style="margin-top: 10px;">
+        <div style="font-size: 13px; font-weight: bold; color: var(--primary);">[${din.id}] ${din.titulo}</div>
+        <table class="metrics-table">
+            <thead>
+                <tr>
+                    <th>Competencia / Indicador</th>
+                    <th>Notas de Conducta</th>
+                    <th>Puntuación (1-5)</th>
+                </tr>
+            </thead>
+            <tbody>
+                ${filasCompetenciasHTML}
+            </tbody>
+        </table>
+        <div style="text-align: right; font-size: 13px; font-weight: bold; margin-top: 4px;">Puntaje de la dinámica: [ &nbsp; &nbsp; &nbsp; ] / ${maxPorDinamica}</div>
+        </div>`).join('');
+
     let contenedorPost = document.getElementById('contenedorPostulantes');
     contenedorPost.innerHTML = '';
     
@@ -157,18 +179,10 @@ function generarEvaluacion() {
         contenedorPost.innerHTML += `
             <div class="candidate-box">
                 <h4>Postulante #${i}: __________________________________________________</h4>
-                <table class="metrics-table">
-                    <thead>
-                        <tr>
-                            <th>Competencia / Indicador</th>
-                            <th>Notas de Conducta</th>
-                            <th>Puntuación (1-5)</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${filasCompetenciasHTML}
-                    </tbody>
-                </table>
+                ${tablasPorDinamicaHTML}
+                <div style="border: 2px solid var(--primary); border-radius: 4px; padding: 8px 12px; margin-top: 10px; font-size: 14px; font-weight: bold; text-align: right;">
+                    PUNTAJE TOTAL: [ &nbsp; &nbsp; &nbsp; ] / ${maxTotal}
+                </div>
                 <div style="font-size:12px; font-weight:600; color:var(--secondary); margin-top:8px;">Observaciones específicas del postulante:</div>
                 <div class="observations-box"></div>
             </div>
