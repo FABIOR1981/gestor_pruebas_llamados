@@ -35,22 +35,41 @@ function actualizarDinamicas() {
     const dinamicasFiltradas = baseDatosGlobal.dinamicas.filter(din => din.cargo_id === cargoKey);
 
     if (dinamicasFiltradas.length === 0) {
-        contenedor.innerHTML = '<em>No hay dinámicas para este cargo</em>';
+        contenedor.innerHTML = '<span class="dinamicas-vacio">No hay dinámicas para este cargo</span>';
         limpiarResultados();
         return;
     }
 
     dinamicasFiltradas.forEach((din) => {
-        const label = document.createElement('label');
-        label.style.cssText = 'display: block; font-weight: normal; margin-bottom: 4px; cursor: pointer;';
+        const card = document.createElement('label');
+        card.className = 'dinamica-card';
+
         const check = document.createElement('input');
         check.type = 'checkbox';
         check.value = din.id;
-        check.style.cssText = 'width: auto; margin-right: 6px;';
-        check.onchange = onDinamicaChange;
-        label.appendChild(check);
-        label.appendChild(document.createTextNode(`[${din.id}] ${din.titulo} (${din.tiempo_limite || 'sin límite'})`));
-        contenedor.appendChild(label);
+        check.onchange = () => {
+            card.classList.toggle('seleccionada', check.checked);
+            onDinamicaChange();
+        };
+
+        const info = document.createElement('div');
+        const titulo = document.createElement('span');
+        titulo.className = 'dinamica-titulo';
+        titulo.textContent = din.titulo;
+
+        const meta = document.createElement('div');
+        meta.className = 'dinamica-meta';
+        const chipId = document.createElement('span');
+        chipId.className = 'chip chip-id';
+        chipId.textContent = din.id;
+        const chipTiempo = document.createElement('span');
+        chipTiempo.className = 'chip chip-tiempo';
+        chipTiempo.textContent = `⏱️ ${din.tiempo_limite || 'sin límite'}`;
+        meta.append(chipId, chipTiempo);
+
+        info.append(titulo, meta);
+        card.append(check, info);
+        contenedor.appendChild(card);
     });
 
     limpiarResultados();
