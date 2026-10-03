@@ -21,11 +21,11 @@
             </div>
 
             <div class="form-group">
-                <label for="tipoDinamica">Dinámica Principal:</label>
-                <!-- Al cambiar la dinámica, se limpia la pantalla de forma automática -->
-                <select id="tipoDinamica" onchange="onDinamicaChange()">
+                <label>Dinámicas (puede elegir varias):</label>
+                <div id="tipoDinamica" class="dinamicas-checks">
                     <!-- Se llena desde el JSON -->
-                </select>
+                </div>
+                <div id="tiempoTotalSeleccion" style="font-size: 13px; font-weight: bold; color: #6c3483; margin-top: 6px;"></div>
             </div>
 
             <div class="form-group">
@@ -60,7 +60,7 @@
             </div>
         </div>
 
-        <div class="section-title">1. DINÁMICA DE EVALUACIÓN SELECCIONADA</div>
+        <div class="section-title">1. DINÁMICAS DE EVALUACIÓN SELECCIONADAS</div>
         <div id="dinamicaDescripcion">
             <p style="color: #7f8c8d; font-style: italic;">Seleccione un cargo y una dinámica, luego presione "Generar Formulario".</p>
         </div>

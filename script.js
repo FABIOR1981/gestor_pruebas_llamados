@@ -26,8 +26,8 @@ function inicializarSelectCargos() {
 
 function actualizarDinamicas() {
     const cargoKey = document.getElementById('cargoSelect').value; // Ej: CAR-SUP-ENC-01
-    const selectDinamica = document.getElementById('tipoDinamica');
-    selectDinamica.innerHTML = '';
+    const contenedor = document.getElementById('tipoDinamica');
+    contenedor.innerHTML = '';
 
     if (!baseDatosGlobal.cargos[cargoKey]) return;
 
@@ -35,22 +35,43 @@ function actualizarDinamicas() {
     const dinamicasFiltradas = baseDatosGlobal.dinamicas.filter(din => din.cargo_id === cargoKey);
 
     if (dinamicasFiltradas.length === 0) {
-        let opt = document.createElement('option');
-        opt.value = "";
-        opt.textContent = "No hay dinámicas para este cargo";
-        selectDinamica.appendChild(opt);
+        contenedor.innerHTML = '<em>No hay dinámicas para este cargo</em>';
         limpiarResultados();
         return;
     }
 
     dinamicasFiltradas.forEach((din) => {
-        let opt = document.createElement('option');
-        opt.value = din.id; // Guardamos el ID único (ej: DIN-SUP-ENC-01)
-        opt.textContent = `[${din.id}] ${din.titulo}`;
-        selectDinamica.appendChild(opt);
+        const label = document.createElement('label');
+        label.style.cssText = 'display: block; font-weight: normal; margin-bottom: 4px; cursor: pointer;';
+        const check = document.createElement('input');
+        check.type = 'checkbox';
+        check.value = din.id;
+        check.style.cssText = 'width: auto; margin-right: 6px;';
+        check.onchange = onDinamicaChange;
+        label.appendChild(check);
+        label.appendChild(document.createTextNode(`[${din.id}] ${din.titulo} (${din.tiempo_limite || 'sin límite'})`));
+        contenedor.appendChild(label);
     });
 
     limpiarResultados();
+}
+
+// Minutos estimados a partir del texto del tiempo; ante rangos toma el mayor.
+function minutosDe(din) {
+    const numeros = (din.tiempo_limite || '').match(/\d+/g);
+    return numeros ? Math.max(...numeros.map(Number)) : 0;
+}
+
+function obtenerDinamicasSeleccionadas() {
+    const ids = Array.from(document.querySelectorAll('#tipoDinamica input:checked')).map(c => c.value);
+    return baseDatosGlobal.dinamicas.filter(din => ids.includes(din.id));
+}
+
+function actualizarTiempoTotal() {
+    const seleccionadas = obtenerDinamicasSeleccionadas();
+    const total = seleccionadas.reduce((suma, din) => suma + minutosDe(din), 0);
+    document.getElementById('tiempoTotalSeleccion').textContent =
+        seleccionadas.length ? `⏱️ Tiempo total estimado: ${total} min (${seleccionadas.length} dinámica/s)` : '';
 }
 
 // Eventos de control al cambiar los selectores para evitar datos cruzados
@@ -65,6 +86,7 @@ function onDinamicaChange() {
 
 // Función que blanquea la pantalla de resultados
 function limpiarResultados() {
+    actualizarTiempoTotal();
     document.getElementById('cargoTitulo').textContent = "Cargo: -";
     document.getElementById('dinamicaDescripcion').innerHTML = '<p style="color: #7f8c8d; font-style: italic;">Selección modificada. Presione "Generar Formulario" para actualizar los datos.</p>';
     document.getElementById('contenedorPostulantes').innerHTML = '';
@@ -73,41 +95,44 @@ function limpiarResultados() {
 
 function generarEvaluacion() {
     const cargoKey = document.getElementById('cargoSelect').value;
-    const dinamicaId = document.getElementById('tipoDinamica').value;
     const numPostulantes = parseInt(document.getElementById('numPostulantes').value) || 1;
     
     if (!baseDatosGlobal.cargos[cargoKey]) return;
 
     const datosCargo = baseDatosGlobal.cargos[cargoKey];
-    const dinamicaSeleccionada = baseDatosGlobal.dinamicas.find(din => din.id === dinamicaId);
+    const seleccionadas = obtenerDinamicasSeleccionadas();
 
-    if (!dinamicaSeleccionada) {
-        alert("Por favor seleccione una dinámica válida.");
+    if (seleccionadas.length === 0) {
+        alert("Por favor seleccione al menos una dinámica.");
         return;
     }
 
     document.getElementById('cargoTitulo').textContent = `Cargo Objetivo: [${cargoKey}] ${datosCargo.nombre}`;
 
-    const materialTexto = dinamicaSeleccionada.hoja_postulante || "Sin material específico definido.";
-    const casoTexto = dinamicaSeleccionada.caso_o_consigna || "Sin objetivo específico.";
-    const guiaTexto = dinamicaSeleccionada.guia_evaluacion || "Sin guía específica.";
-    const tiempoTexto = dinamicaSeleccionada.tiempo_limite || "Sin límite especificado";
-    const codigoDin = dinamicaSeleccionada.id;
+    const tiempoTotal = seleccionadas.reduce((suma, din) => suma + minutosDe(din), 0);
 
     // Informe para el evaluador
-    document.getElementById('dinamicaDescripcion').innerHTML = `
-        <p><strong>Dinámica:</strong> ${dinamicaSeleccionada.titulo} <span style="background: #eaeded; padding: 2px 6px; border-radius: 4px; font-family: monospace; font-size: 13px; color: #2c3e50;">ID: ${codigoDin}</span></p>
-        <p class="dynamics-list"><strong>Descripción:</strong> ${dinamicaSeleccionada.desc}</p>
+    const bloquesDinamicas = seleccionadas.map((din, idx) => `
+        <div style="margin-bottom: 14px;">
+        <p><strong>Dinámica ${idx + 1}:</strong> ${din.titulo} <span style="background: #eaeded; padding: 2px 6px; border-radius: 4px; font-family: monospace; font-size: 13px; color: #2c3e50;">ID: ${din.id}</span></p>
+        <p class="dynamics-list"><strong>Descripción:</strong> ${din.desc}</p>
         <div style="background: #f4ecf7; border-left: 3px solid #8e44ad; padding: 10px; margin-top: 8px; font-size: 13px;">
-            <strong>⏱️ Tiempo Límite de la Prueba:</strong> <span style="font-size: 14px; font-weight: bold; color: #6c3483;">${tiempoTexto}</span>
+            <strong>⏱️ Tiempo Límite:</strong> <span style="font-size: 14px; font-weight: bold; color: #6c3483;">${din.tiempo_limite || 'Sin límite especificado'}</span>
         </div>
         <div style="background: #f9f9f9; border-left: 3px solid #e67e22; padding: 10px; margin-top: 8px; font-size: 13px;">
             <strong>🎯 Objetivo de la Prueba:</strong><br>
-            ${casoTexto}
+            ${din.caso_o_consigna || 'Sin objetivo específico.'}
         </div>
         <div style="background: #fdfefe; border-left: 3px solid #27ae60; padding: 10px; margin-top: 8px; font-size: 12px; color: #333;">
             <strong>🔍 Guía de Observación para el Evaluador:</strong><br>
-            ${guiaTexto.replace(/\n/g, '<br>')}
+            ${(din.guia_evaluacion || 'Sin guía específica.').replace(/\n/g, '<br>')}
+        </div>
+        </div>`).join('');
+
+    document.getElementById('dinamicaDescripcion').innerHTML = `
+        ${bloquesDinamicas}
+        <div style="background: #f4ecf7; border: 1px solid #8e44ad; padding: 10px; font-size: 14px; font-weight: bold; color: #6c3483;">
+            ⏱️ Tiempo total estimado (${seleccionadas.length} dinámica/s): ${tiempoTotal} minutos
         </div>
     `;
 
@@ -149,6 +174,7 @@ function generarEvaluacion() {
             </div>
         `;
 
+        seleccionadas.forEach(din => {
         contenedorHojasPostulantes.innerHTML += `
             <div class="candidate-sheet">
                 <h3 style="color: var(--primary); margin-top: 0; border-bottom: 2px solid var(--primary); padding-bottom: 5px;">HOJA DE TRABAJO / CONSIGNA</h3>
@@ -163,18 +189,19 @@ function generarEvaluacion() {
                     </div>
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px; border-top: 1px dashed var(--border); pt: 8px;">
                         <div>
-                            <strong>Dinámica ID:</strong> <span style="font-family: monospace; font-weight: bold; background: #eaeded; padding: 2px 6px; border-radius: 3px;">${codigoDin}</span>
+                            <strong>Dinámica ID:</strong> <span style="font-family: monospace; font-weight: bold; background: #eaeded; padding: 2px 6px; border-radius: 3px;">${din.id}</span>
                         </div>
                         <div>
-                            <span style="color: #8e44ad; font-weight: bold;">⏱️ Tiempo Límite: ${tiempoTexto}</span>
+                            <span style="color: #8e44ad; font-weight: bold;">⏱️ Tiempo Límite: ${din.tiempo_limite || 'Sin límite especificado'}</span>
                         </div>
                     </div>
                 </div>
                 <div style="background: #ffffff; border: 1px solid var(--border); padding: 25px; border-radius: 6px; margin-top: 10px; font-size: 15px; line-height: 1.7; white-space: pre-line; min-height: 350px;">
-                    ${materialTexto}
+                    ${din.hoja_postulante || "Sin material específico definido."}
                 </div>
             </div>
         `;
+        });
     }
 }
 
