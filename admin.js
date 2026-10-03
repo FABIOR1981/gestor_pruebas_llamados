@@ -202,12 +202,29 @@ function editarDinamica(dinId) {
     document.getElementById('modalTituloDin').value = din.titulo || '';
     document.getElementById('modalDesc').value = din.desc || '';
     document.getElementById('modalTiempo').value = din.tiempo_limite || '';
-    document.getElementById('modalHoja').value = din.hoja_postulante || '';
+    document.getElementById('modalHoja').value = hojaParaEditar(din.hoja_postulante || '');
     document.getElementById('modalCaso').value = din.caso_o_consigna || '';
     document.getElementById('modalGuia').value = din.guia_evaluacion || '';
     document.getElementById('modalRespuesta').value = din.respuesta_esperada || '';
     
     document.getElementById('modalDinamica').style.display = 'flex';
+}
+
+// En el formulario los renglones se escriben como [Renglones para escribir: N] en vez de HTML.
+function hojaParaEditar(html) {
+    return html
+        .replace(/(?:<div class=['"]renglon-respuesta['"]><\/div>)+/g, run => {
+            const cantidad = (run.match(/<div/g) || []).length;
+            return `[Renglones para escribir: ${cantidad}]`;
+        })
+        .replace(/&nbsp;/g, '\u00a0');
+}
+
+function hojaParaGuardar(texto) {
+    return texto
+        .replace(/\[Renglones para escribir:\s*(\d+)\s*\]/gi, (_, n) =>
+            "<div class='renglon-respuesta'></div>".repeat(Math.min(parseInt(n, 10), 30)))
+        .replace(/\u00a0/g, '&nbsp;');
 }
 
 function guardarDinamica(event) {
@@ -222,7 +239,7 @@ function guardarDinamica(event) {
         titulo: document.getElementById('modalTituloDin').value.trim(),
         desc: document.getElementById('modalDesc').value.trim(),
         tiempo_limite: document.getElementById('modalTiempo').value.trim(),
-        hoja_postulante: document.getElementById('modalHoja').value.trim(),
+        hoja_postulante: hojaParaGuardar(document.getElementById('modalHoja').value.trim()),
         caso_o_consigna: document.getElementById('modalCaso').value.trim(),
         guia_evaluacion: document.getElementById('modalGuia').value.trim(),
         respuesta_esperada: document.getElementById('modalRespuesta').value.trim()
