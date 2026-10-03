@@ -2,20 +2,15 @@ let baseDatosGlobal = { areas: {}, cargos: {}, dinamicas: [] };
 
 window.onload = async function() {
     try {
-        const response = await fetch('datos.json');
-        if (!response.ok) throw new Error("No se pudo cargar datos.json");
-        const data = await response.json();
-        
-        baseDatosGlobal = data;
-        if (!baseDatosGlobal.areas) baseDatosGlobal.areas = {};
-        
-        document.getElementById('estadoCarga').textContent = "Conectado a datos.json";
+        baseDatosGlobal = await Datos.cargar();
+
+        document.getElementById('estadoCarga').textContent = "Datos cargados";
         document.getElementById('estadoCarga').style.color = "var(--success)";
         
         inicializarAdmin();
     } catch (error) {
-        console.error("Error al cargar datos.json:", error);
-        document.getElementById('estadoCarga').textContent = "Error al leer datos.json";
+        console.error("Error al cargar los datos:", error);
+        document.getElementById('estadoCarga').textContent = "Error al leer los datos";
         document.getElementById('estadoCarga').style.color = "var(--danger)";
         alert("Asegúrate de correr esta página desde un servidor local o Netlify.");
     }
@@ -303,11 +298,5 @@ function guardarCargo(event) {
 }
 
 function descargarJSON() {
-    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(baseDatosGlobal, null, 4));
-    const downloadAnchor = document.createElement('a');
-    downloadAnchor.setAttribute("href", dataStr);
-    downloadAnchor.setAttribute("download", "datos.json");
-    document.body.appendChild(downloadAnchor);
-    downloadAnchor.click();
-    downloadAnchor.remove();
+    Datos.exportar(baseDatosGlobal);
 }

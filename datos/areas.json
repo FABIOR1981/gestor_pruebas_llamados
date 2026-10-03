@@ -1,0 +1,6 @@
+{
+    "OPE": { "nombre": "Operativa" },
+    "ADM": { "nombre": "Administración" },
+    "SUP": { "nombre": "Supervisión" },
+    "FIN": { "nombre": "Finanzas" }
+}

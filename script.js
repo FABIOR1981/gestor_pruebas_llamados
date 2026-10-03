@@ -2,13 +2,10 @@ let baseDatosGlobal = { areas: {}, cargos: {}, dinamicas: [] };
 
 async function cargarDatos() {
     try {
-        const response = await fetch('datos.json');
-        const data = await response.json();
-        baseDatosGlobal = data;
-        if (!baseDatosGlobal.areas) baseDatosGlobal.areas = {};
+        baseDatosGlobal = await Datos.cargar();
         inicializarSelectCargos();
     } catch (error) {
-        console.error("Error al cargar el archivo JSON:", error);
+        console.error("Error al cargar los datos:", error);
         alert("Error de conexión. Asegúrate de correr la app en Netlify o un servidor local.");
     }
 }

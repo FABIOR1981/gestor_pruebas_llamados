@@ -1,0 +1,47 @@
+{
+    "CAR-OPE-CAR-01": {
+        "nombre": "Carga / Descarga",
+        "area": "Operativa",
+        "competencias": [
+            { "comp": "Atención a la Normativa", "desc": "Cumple estrictamente protocolos de seguridad y manipulación." },
+            { "comp": "Resistencia / Dinamismo", "desc": "Mantiene ritmo de ejecución constante y eficiencia." },
+            { "comp": "Trabajo en Equipo", "desc": "Colabora de forma armónica con sus compañeros de cuadrilla." }
+        ]
+    },
+    "CAR-ADM-GEN-01": {
+        "nombre": "Administrativo",
+        "area": "Administración",
+        "competencias": [
+            { "comp": "Exactitud y Metodicidad", "desc": "Minimiza errores de transcripción y orden." },
+            { "comp": "Gestión del Tiempo", "desc": "Prioriza tareas administrativas eficientemente." },
+            { "comp": "Comunicación Efectiva", "desc": "Transmite información clara y formal de manera escrita y oral." }
+        ]
+    },
+    "CAR-SUP-ENC-01": {
+        "nombre": "Encargado",
+        "area": "Supervisión",
+        "competencias": [
+            { "comp": "Liderazgo Práctico", "desc": "Guía al equipo con claridad y firmeza empática." },
+            { "comp": "Toma de Decisiones", "desc": "Actúa con criterio ante imprevistos cotidianos." },
+            { "comp": "Orientación a Resultados", "desc": "Supervisa el cumplimiento de metas diarias." }
+        ]
+    },
+    "CAR-SUP-JEF-01": {
+        "nombre": "Jefe",
+        "area": "Supervisión",
+        "competencias": [
+            { "comp": "Visión Estratégica", "desc": "Comprende el impacto global de sus decisiones." },
+            { "comp": "Negociación e Influencia", "desc": "Persuade y alinea equipos hacia metas complejas." },
+            { "comp": "Gestión de Crisis", "desc": "Mantiene la templanza y el foco estratégico en momentos críticos." }
+        ]
+    },
+    "CAR-FIN-CON-01": {
+        "nombre": "Contador",
+        "area": "Finanzas",
+        "competencias": [
+            { "comp": "Rigor Técnico-Contable", "desc": "Dominio preciso de normativas y cálculos." },
+            { "comp": "Pensamiento Analítico", "desc": "Detecta inconsistencias y riesgos financieros con agilidad." },
+            { "comp": "Confidencialidad y Ética", "desc": "Muestra apego estricto a las normas profesionales." }
+        ]
+    }
+}
