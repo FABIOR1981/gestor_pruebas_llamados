@@ -141,7 +141,12 @@
                 <div class="form-group" style="margin-bottom: 15px;">
                     <label for="modalHoja">Hoja de Trabajo / Consigna para el Postulante:</label>
                     <textarea id="modalHoja" rows="4" placeholder="Texto o consigna que verá el candidato..." required></textarea>
-                    <small style="color: #7f8c8d; font-size: 12px; margin-top: 4px;">Para dejar líneas donde el postulante escribe, use <code>[Renglones para escribir: 5]</code> (cambie el número según necesite).</small>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 15px; max-width: 220px;">
+                    <label for="modalRenglones">Renglones para escribir:</label>
+                    <input type="number" id="modalRenglones" min="0" max="30" value="5">
+                    <small style="color: #7f8c8d; font-size: 12px; margin-top: 4px;">Líneas en blanco al final de la hoja (0 a 30).</small>
                 </div>
 
                 <div class="form-group" style="margin-bottom: 15px;">

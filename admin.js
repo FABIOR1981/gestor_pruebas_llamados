@@ -202,7 +202,9 @@ function editarDinamica(dinId) {
     document.getElementById('modalTituloDin').value = din.titulo || '';
     document.getElementById('modalDesc').value = din.desc || '';
     document.getElementById('modalTiempo').value = din.tiempo_limite || '';
-    document.getElementById('modalHoja').value = hojaParaEditar(din.hoja_postulante || '');
+    const hoja = separarRenglones(din.hoja_postulante || '');
+    document.getElementById('modalHoja').value = hoja.texto;
+    document.getElementById('modalRenglones').value = hoja.renglones;
     document.getElementById('modalCaso').value = din.caso_o_consigna || '';
     document.getElementById('modalGuia').value = din.guia_evaluacion || '';
     document.getElementById('modalRespuesta').value = din.respuesta_esperada || '';
@@ -210,21 +212,22 @@ function editarDinamica(dinId) {
     document.getElementById('modalDinamica').style.display = 'flex';
 }
 
-// En el formulario los renglones se escriben como [Renglones para escribir: N] en vez de HTML.
-function hojaParaEditar(html) {
-    return html
-        .replace(/(?:<div class=['"]renglon-respuesta['"]><\/div>)+/g, run => {
-            const cantidad = (run.match(/<div/g) || []).length;
-            return `[Renglones para escribir: ${cantidad}]`;
-        })
-        .replace(/&nbsp;/g, '\u00a0');
+// Los renglones finales se editan en un campo numérico aparte, no como HTML dentro del texto.
+const REGEX_RENGLONES_FINALES = /(?:<div class=['"]renglon-respuesta['"]><\/div>)+\s*$/;
+
+function separarRenglones(html) {
+    const final = html.match(REGEX_RENGLONES_FINALES);
+    const renglones = final ? (final[0].match(/<div/g) || []).length : 0;
+    const texto = html.replace(REGEX_RENGLONES_FINALES, '').replace(/&nbsp;/g, '\u00a0').trim();
+    return { texto, renglones };
 }
 
-function hojaParaGuardar(texto) {
-    return texto
-        .replace(/\[Renglones para escribir:\s*(\d+)\s*\]/gi, (_, n) =>
-            "<div class='renglon-respuesta'></div>".repeat(Math.min(parseInt(n, 10), 30)))
-        .replace(/\u00a0/g, '&nbsp;');
+function componerHoja(texto, renglones) {
+    const cuerpo = texto.replace(/\u00a0/g, '&nbsp;').trim();
+    const cantidad = Math.min(Math.max(parseInt(renglones, 10) || 0, 0), 30);
+    return cantidad > 0
+        ? `${cuerpo}\n\n${"<div class='renglon-respuesta'></div>".repeat(cantidad)}`
+        : cuerpo;
 }
 
 function guardarDinamica(event) {
@@ -239,7 +242,7 @@ function guardarDinamica(event) {
         titulo: document.getElementById('modalTituloDin').value.trim(),
         desc: document.getElementById('modalDesc').value.trim(),
         tiempo_limite: document.getElementById('modalTiempo').value.trim(),
-        hoja_postulante: hojaParaGuardar(document.getElementById('modalHoja').value.trim()),
+        hoja_postulante: componerHoja(document.getElementById('modalHoja').value, document.getElementById('modalRenglones').value),
         caso_o_consigna: document.getElementById('modalCaso').value.trim(),
         guia_evaluacion: document.getElementById('modalGuia').value.trim(),
         respuesta_esperada: document.getElementById('modalRespuesta').value.trim()
