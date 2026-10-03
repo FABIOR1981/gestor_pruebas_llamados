@@ -159,41 +159,51 @@ function generarEvaluacion() {
         </div>
     `;
 
-    let filasCompetenciasHTML = '';
-    datosCargo.competencias.forEach(c => {
-        filasCompetenciasHTML += `
-            <tr>
-                <td style="width: 35%;"><strong>${c.comp}</strong><br><span style="font-size:11px; color:#666;">${c.desc}</span></td>
-                <td style="width: 45%;"></td>
-                <td style="width: 20%; text-align: center;">[ &nbsp; &nbsp; ] / 5</td>
-            </tr>
-        `;
-    });
-
-    const maxPorDinamica = datosCargo.competencias.length * 5;
+    const comps = datosCargo.competencias;
+    const maxPorDinamica = comps.length * 5;
+    const maxPorCompetencia = seleccionadas.length * 5;
     const maxTotal = maxPorDinamica * seleccionadas.length;
 
-    // Una tabla de competencias por dinámica, con su puntaje parcial.
-    const tablasPorDinamicaHTML = seleccionadas.map(din => `
-        <div class="bloque-dinamica" style="margin-top: 10px;">
-        <div style="font-size: 13px; font-weight: bold; color: var(--primary);">[${din.id}] ${din.titulo}</div>
-        <table class="metrics-table">
+    // Una sola tabla: cada dinámica es una fila y cada competencia una columna de puntaje.
+    const leyendaHTML = `
+        <div class="leyenda-dinamicas bloque-dinamica">
+            <strong>Competencias a observar</strong>
+            <ul>${comps.map(c => `
+                <li><strong>${c.comp}:</strong> ${c.desc}</li>`).join('')}
+            </ul>
+        </div>`;
+
+    const encabezadosHTML = comps.map(c => `<th class="col-puntaje">${c.comp}</th>`).join('');
+    const celdasVaciasHTML = comps.map(() => `<td class="celda-puntaje"><span class="max">/ 5</span></td>`).join('');
+
+    const filasDinamicasHTML = seleccionadas.map((din, idx) => `
+        <tr>
+            <td class="celda-comp">
+                <strong><span class="badge-d">D${idx + 1}</span>${din.titulo}</strong>
+                <span><span class="chip chip-id">${din.id}</span> <span class="chip chip-tiempo">⏱️ ${din.tiempo_limite || 'sin límite'}</span></span>
+            </td>
+            ${celdasVaciasHTML}
+            <td class="celda-puntaje col-subtotal"><span class="max">/ ${maxPorDinamica}</span></td>
+        </tr>`).join('');
+
+    const totalesCompetenciaHTML = comps.map(() => `<td class="celda-puntaje"><span class="max">/ ${maxPorCompetencia}</span></td>`).join('');
+
+    const tablaPuntajeHTML = `
+        <table class="tabla-puntaje">
             <thead>
-                <tr>
-                    <th>Competencia / Indicador</th>
-                    <th>Notas de Conducta</th>
-                    <th>Puntuación (1-5)</th>
-                </tr>
+                <tr><th>Dinámica</th>${encabezadosHTML}<th class="col-subtotal">Total dinámica</th></tr>
             </thead>
             <tbody>
-                ${filasCompetenciasHTML}
+                ${filasDinamicasHTML}
+                <tr class="fila-total">
+                    <td>TOTAL</td>${totalesCompetenciaHTML}
+                    <td class="celda-puntaje"><span class="max">/ ${maxTotal}</span></td>
+                </tr>
             </tbody>
-        </table>
-        <div style="text-align: right; font-size: 13px; font-weight: bold; margin-top: 4px;">Puntaje de la dinámica: [ &nbsp; &nbsp; &nbsp; ] / ${maxPorDinamica}</div>
-        </div>`).join('');
+        </table>`;
 
     let contenedorPost = document.getElementById('contenedorPostulantes');
-    contenedorPost.innerHTML = '';
+    contenedorPost.innerHTML = leyendaHTML;
     
     let contenedorHojasPostulantes = document.getElementById('materialPostulanteContenido');
     contenedorHojasPostulantes.innerHTML = '';
@@ -202,11 +212,8 @@ function generarEvaluacion() {
         contenedorPost.innerHTML += `
             <div class="candidate-box">
                 <h4>Postulante #${i}: __________________________________________________</h4>
-                ${tablasPorDinamicaHTML}
-                <div style="border: 2px solid var(--primary); border-radius: 4px; padding: 8px 12px; margin-top: 10px; font-size: 14px; font-weight: bold; text-align: right;">
-                    PUNTAJE TOTAL: [ &nbsp; &nbsp; &nbsp; ] / ${maxTotal}
-                </div>
-                <div style="font-size:12px; font-weight:600; color:var(--secondary); margin-top:8px;">Observaciones específicas del postulante:</div>
+                ${tablaPuntajeHTML}
+                <div style="font-size:12px; font-weight:600; color:var(--secondary); margin-top:8px;">Observaciones y notas de conducta del postulante:</div>
                 <div class="observations-box"></div>
             </div>
         `;
