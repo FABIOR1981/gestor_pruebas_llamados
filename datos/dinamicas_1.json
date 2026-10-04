@@ -1,0 +1,222 @@
+[
+    {
+        "id": "DIN-OPE-CAR-01",
+        "cargo_id": "CAR-OPE-CAR-01",
+        "titulo": "Prueba de Atención Sostenida y Verificación de Códigos",
+        "desc": "Ejercicio escrito individual de control rápido de alfanuméricos bajo presión de tiempo.",
+        "tiempo_limite": "2 Minutos Exactos",
+        "hoja_postulante": "Instrucciones:\nEn un tiempo máximo de 2 minutos, lea atentamente el siguiente listado de códigos y marque con un círculo únicamente aquellos que tengan, después del guion, la letra 'X' seguida de un dígito impar.\n\n[ LISTADO DE CÓDIGOS PARA LA PRUEBA ]\n• A42-X8 &nbsp;&nbsp;&nbsp;&nbsp; • B91-K2 &nbsp;&nbsp;&nbsp;&nbsp; • X73-M4 &nbsp;&nbsp;&nbsp;&nbsp; • C12-P5\n• D35-X9 &nbsp;&nbsp;&nbsp;&nbsp; • E88-Z1 &nbsp;&nbsp;&nbsp;&nbsp; • F24-X3 &nbsp;&nbsp;&nbsp;&nbsp; • G60-L7\n• H19-X2 &nbsp;&nbsp;&nbsp;&nbsp; • J55-R8 &nbsp;&nbsp;&nbsp;&nbsp; • K43-X1 &nbsp;&nbsp;&nbsp;&nbsp; • L80-W6\n• M77-X4 &nbsp;&nbsp;&nbsp;&nbsp; • N21-Q3 &nbsp;&nbsp;&nbsp;&nbsp; • P14-X5 &nbsp;&nbsp;&nbsp;&nbsp; • Q90-S8\n• R33-X7 &nbsp;&nbsp;&nbsp;&nbsp; • S50-T2 &nbsp;&nbsp;&nbsp;&nbsp; • T62-X9 &nbsp;&nbsp;&nbsp;&nbsp; • V11-K4",
+        "caso_o_consigna": "Verificación de velocidad y agilidad visual bajo presión temporal estricta.",
+        "guia_evaluacion": "• Éxito: Alta tasa de aciertos y bajo margen de falsos positivos en tiempo récord.\n• Alerta: Tacha de forma desordenada, omite más de la mitad o se bloquea ante la presión.",
+        "respuesta_esperada": "Códigos correctos (6): D35-X9, F24-X3, K43-X1, P14-X5, R33-X7, T62-X9.\nCriterio: tienen una 'X' después del guión seguida de un dígito impar.\nTrampas: X73-M4 (la X está al inicio) y los códigos con X seguida de dígito par (A42-X8, H19-X2, M77-X4) no deben marcarse."
+    },
+    {
+        "id": "DIN-OPE-CAR-02",
+        "cargo_id": "CAR-OPE-CAR-01",
+        "titulo": "Prueba de Criterio Operativo y Seguridad Laboral",
+        "desc": "Análisis escrito de un caso de distribución y estiba de cargas.",
+        "tiempo_limite": "Sin límite estricto (Aprox. 5 a 8 minutos)",
+        "hoja_postulante": "Caso Práctico:\nTiene que estibar en una zorra logística tres elementos de trabajo:\n1. Una caja pesada de 30 kg.\n2. Una caja mediana frágil de 10 kg.\n3. Una caja liviana de 5 kg.\n\nConsigna:\nIndique por escrito en qué orden exacto ubicaría los tres elementos desde la base hasta la parte superior de la zorra, y fundamente su respuesta en base a los criterios de seguridad y estabilidad.\n\n<div class='renglon-respuesta'></div><div class='renglon-respuesta'></div><div class='renglon-respuesta'></div><div class='renglon-respuesta'></div><div class='renglon-respuesta'></div>",
+        "caso_o_consigna": "Análisis de distribución de pesos, centro de gravedad y prevención de daños.",
+        "guia_evaluacion": "• Éxito: Responde con orden lógico de estabilidad (pesada abajo, frágil/liviana arriba) y prevención de lesiones físicas.\n• Alerta: Sugiere ubicar objetos frágiles abajo o no contempla el centro de gravedad.",
+        "respuesta_esperada": "Orden de base a tope: 1) caja pesada de 30 kg; 2) caja liviana de 5 kg; 3) caja frágil de 10 kg arriba, sin nada encima.\nFundamento esperado: el peso va abajo para bajar el centro de gravedad y dar estabilidad; lo frágil no debe soportar carga; evitar lesiones y caídas."
+    },
+    {
+        "id": "DIN-OPE-CAR-03",
+        "cargo_id": "CAR-OPE-CAR-01",
+        "titulo": "Detección de Riesgos en el Área de Carga",
+        "desc": "Identificación escrita de condiciones inseguras en un escenario de depósito.",
+        "tiempo_limite": "4 Minutos",
+        "hoja_postulante": "Caso Práctico:\nAl ingresar al sector de descarga usted observa: un pasillo con cajas apiladas hasta el techo, un charco de aceite cerca de la rampa, un compañero sin calzado de seguridad y un autoelevador circulando con marcha atrás sin señal sonora.\n\nConsigna:\nEnumere los riesgos que detecta, ordénelos del más grave al menos grave e indique qué haría de inmediato frente al primero.\n\n<div class='renglon-respuesta'></div><div class='renglon-respuesta'></div><div class='renglon-respuesta'></div><div class='renglon-respuesta'></div><div class='renglon-respuesta'></div>",
+        "caso_o_consigna": "Reconocimiento y priorización de riesgos laborales en el sector de carga y descarga.",
+        "guia_evaluacion": "• Éxito: Detecta los cuatro riesgos, prioriza el autoelevador/charco por peligro inmediato y avisa al responsable.\n• Alerta: Omite riesgos evidentes, no prioriza o decide seguir trabajando sin reportar.",
+        "respuesta_esperada": "Riesgos (orden sugerido, de mayor a menor gravedad):\n1) Autoelevador en marcha atrás sin señal sonora (riesgo de atropello).\n2) Charco de aceite junto a la rampa (resbalones y caídas).\n3) Cajas apiladas hasta el techo (riesgo de derrumbe).\n4) Compañero sin calzado de seguridad.\nAcción inmediata esperada: detener o advertir la circulación, señalizar la zona y avisar al responsable. Se acepta otro orden si está bien fundamentado."
+    },
+    {
+        "id": "DIN-OPE-CAR-04",
+        "cargo_id": "CAR-OPE-CAR-01",
+        "titulo": "Coordinación de Cuadrilla: Descarga con Consigna Cruzada",
+        "desc": "Ejercicio escrito sobre colaboración y comunicación en una tarea de equipo.",
+        "tiempo_limite": "5 Minutos",
+        "hoja_postulante": "Caso Práctico:\nEstá descargando un contenedor junto a otros 3 compañeros. Uno de ellos trabaja mucho más lento que el resto y la cuadrilla empieza a atrasarse. El encargado no está en el lugar.\n\nConsigna:\nIndique qué haría y qué le diría a su compañero, manteniendo el buen clima y el ritmo de trabajo.\n\n<div class='renglon-respuesta'></div><div class='renglon-respuesta'></div><div class='renglon-respuesta'></div><div class='renglon-respuesta'></div><div class='renglon-respuesta'></div>",
+        "caso_o_consigna": "Trabajo en equipo y comunicación respetuosa ante desigualdad de ritmo en la cuadrilla.",
+        "guia_evaluacion": "• Éxito: Ofrece ayuda, reasigna tareas de forma colaborativa y comunica sin reproches.\n• Alerta: Critica en público, se desentiende o reduce su propio ritmo en señal de protesta.",
+        "respuesta_esperada": "Se espera que: hable con el compañero con respeto y en privado; pregunte si necesita ayuda o tiene algún problema; ofrezca apoyo o redistribuya tareas entre la cuadrilla; mantenga el ritmo y el buen clima; y, si persiste, avise al encargado cuando regrese.\nNo se espera: críticas en público, ignorar la situación ni bajar el propio ritmo."
+    },
+    {
+        "id": "DIN-ADM-GEN-01",
+        "cargo_id": "CAR-ADM-GEN-01",
+        "titulo": "Prueba de Validación y Detección de Errores en Planilla",
+        "desc": "Ejercicio rápido de cotejo de datos alfanuméricos en formato de tabla.",
+        "tiempo_limite": "3 Minutos Exactos",
+        "hoja_postulante": "Instrucciones:\nCompare detenidamente la Columna A (Original) frente a la Columna B (Copia de control). En un tiempo máximo de 3 minutos, marque con un círculo todas las diferencias o errores tipográficos/numéricos que encuentre.\n\n[ TABLA ORIGINAL ]  vs  [ TABLA DE CONTROL ]\n• Fac-101 | Juan Pérez | $4.500  -->  • Fac-101 | Juan Pérez | $4.500\n• Fac-102 | Ana Gómez  | $2.150  -->  • Fac-102 | Ana Gámez  | $2.150\n• Fac-103 | Luis Silva | $8.900  -->  • Fac-103 | Luis Silva | $8.090\n• Fac-104 | Sofía Rivas| $1.200  -->  • Fac-104 | Sofía Rivas| $1.200\n• Fac-105 | Mario Ruiz | $6.300  -->  • Fac-105 | Mario Ruiz | $6.300",
+        "caso_o_consigna": "Cotejo de datos alfanuméricos y metodicidad en la revisión.",
+        "guia_evaluacion": "• Éxito: Detecta el 100% de las incongruencias tipográficas y numéricas con prolijidad.\n• Alerta: Pasa por alto diferencias en letras o decimales por lectura superficial.",
+        "respuesta_esperada": "Errores a detectar (2):\n1) Fac-102: 'Ana Gómez' figura como 'Ana Gámez'.\n2) Fac-103: '$8.900' figura como '$8.090'.\nLas facturas 101, 104 y 105 son idénticas y no deben marcarse."
+    },
+    {
+        "id": "DIN-ADM-GEN-02",
+        "cargo_id": "CAR-ADM-GEN-01",
+        "titulo": "Simulación de Respuesta Escrita a Reclamo Urgente",
+        "desc": "Redacción rápida de un correo electrónico formal de respuesta ante una queja.",
+        "tiempo_limite": "5 Minutos",
+        "hoja_postulante": "Situación planteada:\nUn cliente interno envía un mensaje reclamando enfáticamente que un insumo crítico lleva 48 horas demorado y esto frena toda su línea de trabajo.\n\nConsigna:\nRedacte en el espacio inferior un borrador de correo electrónico (máximo 5 líneas) dando respuesta formal, pidiendo disculpas por el contratiempo administrativo y fijando una nueva fecha de entrega clara.\n\n<div class='renglon-respuesta'></div><div class='renglon-respuesta'></div><div class='renglon-respuesta'></div><div class='renglon-respuesta'></div><div class='renglon-respuesta'></div>",
+        "caso_o_consigna": "Redacción de correo corporativo bajo presión y resolución de conflictos.",
+        "guia_evaluacion": "• Éxito: Tono empático, formal, claro, directo y orientado a resolver sin excusas.\n• Alerta: Redacción desordenada, faltas de ortografía o tono defensivo/agresivo.",
+        "respuesta_esperada": "El correo debe incluir: saludo formal; disculpa breve por la demora; reconocimiento del impacto en la línea de trabajo; acción concreta que se tomará (por ejemplo, gestionar con el proveedor); nueva fecha de entrega clara; cierre cordial. Máximo 5 líneas.\nNo debe: poner excusas, culpar a terceros ni tener faltas de ortografía."
+    },
+    {
+        "id": "DIN-ADM-GEN-03",
+        "cargo_id": "CAR-ADM-GEN-01",
+        "titulo": "Priorización de Tareas Administrativas del Día",
+        "desc": "Ordenamiento escrito de tareas concurrentes según urgencia e impacto.",
+        "tiempo_limite": "4 Minutos",
+        "hoja_postulante": "Caso Práctico:\nEs lunes 09:00 y tiene pendientes:\nA) Enviar una factura que vence hoy a las 12:00.\nB) Archivar documentación del mes pasado.\nC) Responder una consulta de un proveedor (no urgente).\nD) Cargar un pedido de compra que su jefe necesita antes del mediodía.\nE) Ordenar el material de oficina.\n\nConsigna:\nOrdene las tareas de mayor a menor prioridad y justifique brevemente su criterio.\n\n<div class='renglon-respuesta'></div><div class='renglon-respuesta'></div><div class='renglon-respuesta'></div><div class='renglon-respuesta'></div><div class='renglon-respuesta'></div>",
+        "caso_o_consigna": "Gestión del tiempo y criterio de priorización según plazos e impacto.",
+        "guia_evaluacion": "• Éxito: Prioriza A y D (con plazo), luego C, y deja B y E para después; fundamenta el criterio.\n• Alerta: Ordena por comodidad, no considera vencimientos o no justifica.",
+        "respuesta_esperada": "Orden esperado: 1) A (vence hoy a las 12:00) y D (el jefe lo necesita antes del mediodía), ambas con plazo hoy; 2) C (consulta del proveedor, no urgente); 3) B y E (archivar y ordenar, sin urgencia).\nFundamento esperado: urgencia (plazo) e impacto antes que comodidad."
+    },
+    {
+        "id": "DIN-ADM-GEN-04",
+        "cargo_id": "CAR-ADM-GEN-01",
+        "titulo": "Control de Cálculos y Totales en Documento Comercial",
+        "desc": "Verificación numérica de un remito con errores de cálculo.",
+        "tiempo_limite": "4 Minutos",
+        "hoja_postulante": "Instrucciones:\nRevise el siguiente detalle de pedido. Verifique cada subtotal y el total final, marque los errores y escriba el valor correcto.\n\n• Resma papel A4 | 10 u. x $350 | Subtotal: $3.500\n• Tinta impresora | 4 u. x $1.200 | Subtotal: $4.600\n• Carpetas | 25 u. x $80 | Subtotal: $2.000\n• Lapiceras | 50 u. x $15 | Subtotal: $750\n\nTOTAL INFORMADO: $10.850\n\nCorrecciones:\n<div class='renglon-respuesta'></div><div class='renglon-respuesta'></div><div class='renglon-respuesta'></div>",
+        "caso_o_consigna": "Exactitud numérica y metodicidad en la revisión de documentos comerciales.",
+        "guia_evaluacion": "• Éxito: Detecta que la tinta debe ser $4.800 y que el total correcto es $11.050, con revisión ordenada.\n• Alerta: Da por válidos los totales sin recalcular o corrige sin método.",
+        "respuesta_esperada": "Errores a detectar:\n1) Tinta de impresora: 4 x $1.200 = $4.800 (figura $4.600).\n2) Total correcto: $3.500 + $4.800 + $2.000 + $750 = $11.050 (figura $10.850).\nResma, carpetas y lapiceras están bien."
+    },
+    {
+        "id": "DIN-SUP-ENC-01",
+        "cargo_id": "CAR-SUP-ENC-01",
+        "titulo": "Prueba de Resolución de Casos: Priorización Operativa",
+        "desc": "Análisis escrito de un escenario crítico de dotación de personal.",
+        "tiempo_limite": "7 Minutos",
+        "hoja_postulante": "Caso Práctico:\nA las 08:00 AM le notifican dos bajas médicas imprevistas en su turno operativo habitual. Cuenta únicamente con 3 operarios novatos para cubrir una salida de despachos que exige obligatoriamente a 5 personas.\n\nConsigna:\nDescriba en al menos 4 puntos claros cómo reorganizaría las tareas de la primera hora para minimizar el impacto operativo.\n\n<div class='renglon-respuesta'></div><div class='renglon-respuesta'></div><div class='renglon-respuesta'></div><div class='renglon-respuesta'></div><div class='renglon-respuesta'></div>",
+        "caso_o_consigna": "Reorganización express de turnos y tareas ante bajas imprevistas de personal.",
+        "guia_evaluacion": "• Éxito: Prioriza tareas neurálgicas, apoya a los novatos en puestos complejos y plantea un plan claro.\n• Alerta: Propone soluciones imposibles o traslada el problema completo a gerencia.",
+        "respuesta_esperada": "Puntos esperados (al menos 4): priorizar las tareas críticas del despacho; ubicar a los novatos en tareas simples y supervisadas; asumir o asignar las tareas complejas al más capaz; pedir refuerzo a otros sectores o evaluar horas extra; informar a gerencia o al cliente si habrá demora; dar instrucciones claras y controlar el avance durante la hora.\nNo se espera: soluciones imposibles ni delegar todo en gerencia."
+    },
+    {
+        "id": "DIN-SUP-ENC-02",
+        "cargo_id": "CAR-SUP-ENC-01",
+        "titulo": "Entrevista Situacional: Mediación de Conflictos",
+        "desc": "Evaluación de criterio de liderazgo ante disputas de personal.",
+        "tiempo_limite": "Desarrollo Libre (Aprox. 10 minutos)",
+        "hoja_postulante": "Pregunta para desarrollo escrito:\n\n'Describa detalladamente los pasos exactos que seguiría si descubre que dos operarios de su sector se niegan a colaborar mutuamente debido a diferencias personales, afectando seriamente el ritmo del equipo'.\n\nRespuesta del postulante:\n<div class='renglon-respuesta'></div><div class='renglon-respuesta'></div><div class='renglon-respuesta'></div><div class='renglon-respuesta'></div><div class='renglon-respuesta'></div><div class='renglon-respuesta'></div>",
+        "caso_o_consigna": "Abordaje y mediación ante disputas de personal en mandos medios.",
+        "guia_evaluacion": "• Éxito: Entrevista individual neutral, remarca objetivos de la empresa y establece acuerdos claros.\n• Alerta: Ignora el conflicto, toma partido sin escuchar o amenaza con sanciones arbitrarias.",
+        "respuesta_esperada": "Pasos esperados: hablar con cada operario por separado y escuchar; reunirlos luego centrando la charla en los objetivos de trabajo y no en lo personal; acordar compromisos concretos con un plazo; hacer seguimiento; escalar a RR.HH. solo si el conflicto persiste.\nNo se espera: ignorar el problema, tomar partido ni sancionar sin escuchar."
+    },
+    {
+        "id": "DIN-SUP-ENC-03",
+        "cargo_id": "CAR-SUP-ENC-01",
+        "titulo": "Delegación de Tareas y Seguimiento del Turno",
+        "desc": "Asignación escrita de tareas a un equipo con perfiles distintos.",
+        "tiempo_limite": "6 Minutos",
+        "hoja_postulante": "Caso Práctico:\nTiene a su cargo 4 operarios: uno con mucha experiencia, dos con experiencia media y uno recién ingresado. Debe completar en el turno: (1) recepción de mercadería, (2) control de calidad, (3) armado de pedidos y (4) limpieza y cierre del sector.\n\nConsigna:\nIndique a quién asignaría cada tarea, por qué, y cómo haría seguimiento durante el turno.\n\n<div class='renglon-respuesta'></div><div class='renglon-respuesta'></div><div class='renglon-respuesta'></div><div class='renglon-respuesta'></div><div class='renglon-respuesta'></div>",
+        "caso_o_consigna": "Delegación según capacidades y control de avance durante el turno.",
+        "guia_evaluacion": "• Éxito: Asigna según experiencia, acompaña al novato, define puntos de control y deja claro qué espera.\n• Alerta: Reparte sin criterio, se queda con todo o no plantea ningún seguimiento.",
+        "respuesta_esperada": "Asignación de referencia (se aceptan variantes fundamentadas): operario con más experiencia en control de calidad (tarea crítica); los de experiencia media en recepción y armado de pedidos; el recién ingresado en limpieza y cierre, o apoyando a un compañero, siempre acompañado.\nSeguimiento esperado: puntos de control al inicio, a mitad y al final del turno, y disponibilidad para resolver dudas."
+    },
+    {
+        "id": "DIN-SUP-ENC-04",
+        "cargo_id": "CAR-SUP-ENC-01",
+        "titulo": "Devolución de Feedback a un Colaborador",
+        "desc": "Simulación escrita de una conversación correctiva con un operario.",
+        "tiempo_limite": "5 Minutos",
+        "hoja_postulante": "Caso Práctico:\nUn operario valioso llegó tarde tres veces en la misma semana sin avisar. El equipo ya lo comentó.\n\nConsigna:\nRedacte cómo iniciaría la conversación con él (2 o 3 frases textuales) y qué acuerdo buscaría al final.\n\n<div class='renglon-respuesta'></div><div class='renglon-respuesta'></div><div class='renglon-respuesta'></div><div class='renglon-respuesta'></div><div class='renglon-respuesta'></div>",
+        "caso_o_consigna": "Liderazgo práctico: feedback correctivo claro, respetuoso y orientado a acuerdos.",
+        "guia_evaluacion": "• Éxito: Habla en privado, describe hechos concretos, escucha y cierra con un compromiso medible.\n• Alerta: Reprende en público, generaliza ('siempre llegás tarde') o evita el tema.",
+        "respuesta_esperada": "Inicio esperado (ejemplo): 'Quiero hablar con vos en privado. Noté que llegaste tarde tres veces esta semana sin avisar. Valoro tu trabajo y quiero entender qué está pasando.'\nAcuerdo esperado: avisar con anticipación ante cualquier demora, cumplir el horario y revisar el avance en un plazo definido (por ejemplo, dos semanas)."
+    },
+    {
+        "id": "DIN-SUP-JEF-01",
+        "cargo_id": "CAR-SUP-JEF-01",
+        "titulo": "Análisis de Caso Directivo: Restricción Presupuestaria",
+        "desc": "Ejercicio de pensamiento estratégico y asignación de recursos.",
+        "tiempo_limite": "10 Minutos",
+        "hoja_postulante": "Caso Directivo:\nLa dirección general le solicita afrontar un recorte del 15% en el presupuesto de horas extras de su área sin que decaiga el nivel de servicio en plena temporada alta.\n\nConsigna:\nDesarrolle en 3 ejes principales cómo rediseñaría la operación para alcanzar la meta financiera sin afectar los objetivos centrales.\n\n<div class='renglon-respuesta'></div><div class='renglon-respuesta'></div><div class='renglon-respuesta'></div><div class='renglon-respuesta'></div><div class='renglon-respuesta'></div>",
+        "caso_o_consigna": "Afrontar un recorte porcentual de presupuesto u horas extras sin degradar el nivel de servicio.",
+        "guia_evaluacion": "• Éxito: Propone mejoras de eficiencia y redistribución inteligente antes que un corte lineal.\n• Alerta: Plantea que el objetivo es inalcanzable o propone medidas arbitrarias sin sustento.",
+        "respuesta_esperada": "Tres ejes de referencia: 1) Eficiencia operativa: reprogramar turnos según la demanda y eliminar tareas redundantes. 2) Flexibilidad del equipo: polivalencia, rotación de turnos o personal temporal acotado en vez de horas extra. 3) Control y comunicación: indicador de horas extra con autorización previa e informe periódico a la dirección.\nSe valora priorizar el nivel de servicio antes que un recorte lineal."
+    },
+    {
+        "id": "DIN-SUP-JEF-02",
+        "cargo_id": "CAR-SUP-JEF-01",
+        "titulo": "Simulación de Negociación: Resistencia al Cambio",
+        "desc": "Role-playing de alineación de mandos medios frente a una nueva directiva.",
+        "tiempo_limite": "2 Minutos de Simulación",
+        "hoja_postulante": "Instrucciones de la Prueba:\nEsta sección corresponde a una simulación de rol (Role-playing) conducida por el evaluador. Se evaluará su capacidad de persuasión y manejo de objeciones ante un colaborador que rechaza implementar un cambio operativo.\n\n[ Espacio reservado para notas o apuntes previos del candidato ]\n<div class='renglon-respuesta'></div><div class='renglon-respuesta'></div><div class='renglon-respuesta'></div><div class='renglon-respuesta'></div>",
+        "caso_o_consigna": "Negociación con un encargado que rechaza implementar un nuevo sistema o protocolo.",
+        "guia_evaluacion": "• Éxito: Valida la preocupación operativa, explica el beneficio estratégico y capacita con firmeza.\n• Alerta: Se impone autoritariamente o cede totalmente ante la queja del subordinado.",
+        "respuesta_esperada": "Secuencia esperada: escuchar y validar la preocupación; explicar el motivo y el beneficio del cambio; preguntar qué necesita para implementarlo; ofrecer capacitación o una prueba piloto; cerrar con un acuerdo, una fecha y un seguimiento.\nEl evaluador asume el rol de quien se resiste. Se valora firmeza sin autoritarismo y sin ceder por completo."
+    },
+    {
+        "id": "DIN-SUP-JEF-03",
+        "cargo_id": "CAR-SUP-JEF-01",
+        "titulo": "Gestión de Crisis: Falla Crítica en Plena Operación",
+        "desc": "Plan de respuesta escrito ante una contingencia con impacto en clientes.",
+        "tiempo_limite": "8 Minutos",
+        "hoja_postulante": "Caso Directivo:\nUn viernes a las 16:00 se cae el sistema principal de despachos. Hay 40 pedidos comprometidos para entrega hoy y un cliente clave amenaza con rescindir el contrato si no recibe su mercadería.\n\nConsigna:\nDescriba su plan de acción para las próximas 2 horas: qué decide, a quién comunica y cómo protege al cliente clave.\n\n<div class='renglon-respuesta'></div><div class='renglon-respuesta'></div><div class='renglon-respuesta'></div><div class='renglon-respuesta'></div><div class='renglon-respuesta'></div>",
+        "caso_o_consigna": "Respuesta estructurada ante una contingencia crítica con impacto en clientes.",
+        "guia_evaluacion": "• Éxito: Mantiene la calma, activa un plan alternativo manual, comunica con transparencia y prioriza al cliente clave.\n• Alerta: Se paraliza, busca culpables o oculta el problema al cliente.",
+        "respuesta_esperada": "Plan esperado: activar un procedimiento manual de contingencia; escalar a sistemas con un tiempo de resolución; priorizar los pedidos del cliente clave; llamar al cliente de forma proactiva con transparencia y una nueva ventana de entrega; asignar roles claros al equipo; informar a la dirección; y planear una revisión posterior para evitar que se repita.\nNo se espera: paralizarse, buscar culpables ni ocultar el problema."
+    },
+    {
+        "id": "DIN-SUP-JEF-04",
+        "cargo_id": "CAR-SUP-JEF-01",
+        "titulo": "Planificación Estratégica: Objetivos y Desarrollo del Equipo",
+        "desc": "Definición escrita de prioridades de área a mediano plazo.",
+        "tiempo_limite": "10 Minutos",
+        "hoja_postulante": "Caso Directivo:\nAsume la jefatura de un área con alta rotación de personal, quejas frecuentes de clientes y sin indicadores de gestión definidos.\n\nConsigna:\nIndique sus 3 prioridades para los primeros 90 días, cómo medirá el avance de cada una y cómo involucrará a los encargados.\n\n<div class='renglon-respuesta'></div><div class='renglon-respuesta'></div><div class='renglon-respuesta'></div><div class='renglon-respuesta'></div><div class='renglon-respuesta'></div>",
+        "caso_o_consigna": "Visión estratégica, definición de indicadores y alineación de mandos medios.",
+        "guia_evaluacion": "• Éxito: Diagnostica antes de actuar, fija prioridades con indicadores medibles e involucra a los encargados.\n• Alerta: Plantea cambios drásticos sin diagnóstico o objetivos genéricos sin forma de medirlos.",
+        "respuesta_esperada": "Prioridades de referencia: 1) Diagnóstico: escuchar a los encargados y analizar las causas de la rotación y de las quejas. 2) Indicadores: definir pocos indicadores (rotación, quejas, cumplimiento de entregas) con línea de base y meta. 3) Plan de acción: mejoras rápidas y desarrollo de los encargados con reuniones y feedback periódicos.\nMedición esperada: un indicador y una meta por prioridad, con revisión mensual."
+    },
+    {
+        "id": "DIN-FIN-CON-01",
+        "cargo_id": "CAR-FIN-CON-01",
+        "titulo": "Prueba de Criterio Técnico y Resolución de Conciliación",
+        "desc": "Resolución analítica de una inconsistencia contable típica.",
+        "tiempo_limite": "8 Minutos",
+        "hoja_postulante": "Caso Práctico:\nEn la conciliación bancaria mensual surge una partida en tránsito de origen desconocido registrada el último día hábil del período. El directorio presiona fuertemente para cerrar el balance general sin demora.\n\nConsigna:\nFundamente por escrito cuál es el procedimiento técnico y ético correcto que aplicaría en esta situación:\n\n<div class='renglon-respuesta'></div><div class='renglon-respuesta'></div><div class='renglon-respuesta'></div><div class='renglon-respuesta'></div><div class='renglon-respuesta'></div>",
+        "caso_o_consigna": "Manejo técnico y ético ante una partida en tránsito bajo presión de cierre de balance.",
+        "guia_evaluacion": "• Éxito: Aplica principio de prudencia contable, no inventa asientos y exige respaldo documental.\n• Alerta: Cede a la presión gerencial registrando un ajuste ficticio para cumplir fechas.",
+        "respuesta_esperada": "Procedimiento esperado: no registrar un asiento ficticio; investigar el origen con extractos y comprobantes; mantener la partida como pendiente de conciliación y documentarla; informar al directorio del riesgo de cerrar sin respaldo; cerrar solo con la información respaldada o con la salvedad correspondiente.\nCriterio: prudencia y honestidad por encima de la presión de fechas."
+    },
+    {
+        "id": "DIN-FIN-CON-02",
+        "cargo_id": "CAR-FIN-CON-01",
+        "titulo": "Entrevista de Criterio Profesional y Prevención de Riesgos",
+        "desc": "Evaluación de postura ante zonas grises normativas.",
+        "tiempo_limite": "Desarrollo Libre (Aprox. 10 minutos)",
+        "hoja_postulante": "Pregunta para desarrollo escrito:\n\n'¿Cómo procedería técnicamente si detecta que un procedimiento impositivo histórico de la empresa se ha venido realizando bajo un criterio interpretativo que hoy la normativa fiscal comienza a cuestionar en auditorías recientes?'\n\nRespuesta del postulante:\n<div class='renglon-respuesta'></div><div class='renglon-respuesta'></div><div class='renglon-respuesta'></div><div class='renglon-respuesta'></div><div class='renglon-respuesta'></div>",
+        "caso_o_consigna": "Procedimiento ante la detección de un criterio impositivo histórico cuestionado por la normativa.",
+        "guia_evaluacion": "• Éxito: Dimensiona el riesgo fiscal y propone una regularización o consulta formal preventiva.\n• Alerta: Minimiza el riesgo o busca ocultarlo esperando no ser auditado.",
+        "respuesta_esperada": "Se espera que: dimensione el riesgo (montos, períodos, posibles sanciones); consulte la normativa y a un asesor fiscal; informe a la dirección; proponga regularizar (por ejemplo, con declaraciones rectificativas) y adoptar el criterio actualizado; y documente lo actuado.\nNo se espera: minimizar el riesgo ni ocultarlo."
+    },
+    {
+        "id": "DIN-FIN-CON-03",
+        "cargo_id": "CAR-FIN-CON-01",
+        "titulo": "Detección de Inconsistencias en Balance de Sumas y Saldos",
+        "desc": "Análisis de un balance simplificado que no cuadra.",
+        "tiempo_limite": "6 Minutos",
+        "hoja_postulante": "Caso Práctico:\nEn el balance de sumas y saldos del mes figuran:\n\n• Total Debe: $1.248.500\n• Total Haber: $1.238.500\n• Caja con saldo acreedor de $15.000\n• Proveedores con saldo deudor de $42.000\n\nConsigna:\nIndique qué anomalías detecta, cuál puede ser el origen probable de cada una y qué pasos seguiría para corregirlas.\n\n<div class='renglon-respuesta'></div><div class='renglon-respuesta'></div><div class='renglon-respuesta'></div><div class='renglon-respuesta'></div><div class='renglon-respuesta'></div>",
+        "caso_o_consigna": "Pensamiento analítico para detectar descuadres y saldos anómalos en el balance.",
+        "guia_evaluacion": "• Éxito: Identifica la diferencia de $10.000 entre Debe y Haber y los saldos contrarios a su naturaleza, y propone revisar asientos y comprobantes.\n• Alerta: No detecta los saldos anómalos o propone ajustar un asiento para que cuadre sin investigar.",
+        "respuesta_esperada": "Anomalías a detectar:\n1) Debe y Haber no coinciden: diferencia de $10.000 (origen probable: asiento descuadrado, omitido o mal transcripto).\n2) Caja con saldo acreedor de $15.000 (no es posible: pago no registrado, error de imputación o ingreso omitido).\n3) Proveedores con saldo deudor de $42.000 (posible pago duplicado, anticipo o nota de crédito mal imputada).\nPasos esperados: revisar diario y mayor, arquear la caja, conciliar con los proveedores y corregir con asientos de ajuste documentados."
+    },
+    {
+        "id": "DIN-FIN-CON-04",
+        "cargo_id": "CAR-FIN-CON-01",
+        "titulo": "Confidencialidad: Solicitud Indebida de Información",
+        "desc": "Evaluación de postura ética ante un pedido de datos reservados.",
+        "tiempo_limite": "5 Minutos",
+        "hoja_postulante": "Caso Práctico:\nUn compañero de otra área, de confianza, le pide los sueldos del personal y el resultado del ejercicio 'solo para tener una idea'. No tiene autorización formal para acceder a esa información.\n\nConsigna:\nIndique cómo respondería y qué haría si la presión continúa.\n\n<div class='renglon-respuesta'></div><div class='renglon-respuesta'></div><div class='renglon-respuesta'></div><div class='renglon-respuesta'></div><div class='renglon-respuesta'></div>",
+        "caso_o_consigna": "Confidencialidad y ética profesional ante pedidos informales de información reservada.",
+        "guia_evaluacion": "• Éxito: Se niega con cordialidad, remite al canal formal de autorización y escala si la presión persiste.\n• Alerta: Entrega parte de la información por confianza o minimiza el pedido.",
+        "respuesta_esperada": "Respuesta esperada: negarse con cordialidad ('no tengo autorización para compartir eso'); indicar el canal formal (solicitarlo a gerencia o RR.HH.); no dar información parcial ni 'una idea'; si la presión sigue, informar al superior.\nSe valora la firmeza amable y sostener la reserva aun con alguien de confianza."
+    }
+]
