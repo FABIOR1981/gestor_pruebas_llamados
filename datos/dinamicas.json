@@ -218,49 +218,5 @@
         "caso_o_consigna": "Confidencialidad y ética profesional ante pedidos informales de información reservada.",
         "guia_evaluacion": "• Éxito: Se niega con cordialidad, remite al canal formal de autorización y escala si la presión persiste.\n• Alerta: Entrega parte de la información por confianza o minimiza el pedido.",
         "respuesta_esperada": "Respuesta esperada: negarse con cordialidad ('no tengo autorización para compartir eso'); indicar el canal formal (solicitarlo a gerencia o RR.HH.); no dar información parcial ni 'una idea'; si la presión sigue, informar al superior.\nSe valora la firmeza amable y sostener la reserva aun con alguien de confianza."
-    },
-    {
-        "id": "DIN-SUP-JEF-05",
-        "cargo_id": "CAR-SUP-JEF-01",
-        "titulo": "de prueba",
-        "desc": "no tienen sentido",
-        "tiempo_limite": "4",
-        "hoja_postulante": "axd\n\n<div class='renglon-respuesta'></div><div class='renglon-respuesta'></div><div class='renglon-respuesta'></div><div class='renglon-respuesta'></div><div class='renglon-respuesta'></div>",
-        "caso_o_consigna": "adae",
-        "guia_evaluacion": "qeeqe",
-        "respuesta_esperada": ""
-    },
-    {
-        "id": "DIN-SUP-JEF-07",
-        "cargo_id": "CAR-SUP-JEF-01",
-        "titulo": "de prueba",
-        "desc": "no tienen sentido",
-        "tiempo_limite": "4",
-        "hoja_postulante": "axd\n\n<div class='renglon-respuesta'></div><div class='renglon-respuesta'></div><div class='renglon-respuesta'></div><div class='renglon-respuesta'></div><div class='renglon-respuesta'></div>",
-        "caso_o_consigna": "adae",
-        "guia_evaluacion": "qeeqe",
-        "respuesta_esperada": ""
-    },
-    {
-        "id": "DIN-SUP-JEF-08",
-        "cargo_id": "CAR-SUP-JEF-01",
-        "titulo": "de prueba",
-        "desc": "no tienen sentido",
-        "tiempo_limite": "4",
-        "hoja_postulante": "axd\n\n<div class='renglon-respuesta'></div><div class='renglon-respuesta'></div><div class='renglon-respuesta'></div><div class='renglon-respuesta'></div><div class='renglon-respuesta'></div>",
-        "caso_o_consigna": "adae",
-        "guia_evaluacion": "qeeqe",
-        "respuesta_esperada": ""
-    },
-    {
-        "id": "DIN-SUP-JEF-09",
-        "cargo_id": "CAR-SUP-JEF-01",
-        "titulo": "de prueba",
-        "desc": "no tienen sentido",
-        "tiempo_limite": "4",
-        "hoja_postulante": "axd\n\n<div class='renglon-respuesta'></div><div class='renglon-respuesta'></div><div class='renglon-respuesta'></div><div class='renglon-respuesta'></div><div class='renglon-respuesta'></div>",
-        "caso_o_consigna": "adae",
-        "guia_evaluacion": "qeeqe",
-        "respuesta_esperada": ""
     }
 ]
