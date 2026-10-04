@@ -138,28 +138,28 @@ function generarEvaluacion() {
 
     // Informe para el evaluador
     const bloquesDinamicas = seleccionadas.map((din, idx) => `
-        <div class="bloque-dinamica" style="margin-bottom: 14px;">
-        <p><strong>Dinámica ${idx + 1}:</strong> ${din.titulo} <span style="background: #eaeded; padding: 2px 6px; border-radius: 4px; font-family: monospace; font-size: 13px; color: #2c3e50;">ID: ${din.id}</span></p>
+        <div class="bloque-dinamica" style="margin-bottom: 0.875rem;">
+        <p><strong>Dinámica ${idx + 1}:</strong> ${din.titulo} <span style="background: #eaeded; padding: 2px 0.375rem; border-radius: 0.25rem; font-family: monospace; font-size: 0.8125rem; color: #2c3e50;">ID: ${din.id}</span></p>
         <p class="dynamics-list"><strong>Descripción:</strong> ${din.desc}</p>
-        <div style="background: #f4ecf7; border-left: 3px solid #8e44ad; padding: 10px; margin-top: 8px; font-size: 13px;">
-            <strong>⏱️ Tiempo Límite:</strong> <span style="font-size: 14px; font-weight: bold; color: #6c3483;">${din.tiempo_limite || 'Sin límite especificado'}</span>
+        <div style="background: #f4ecf7; border-left: 0.1875rem solid #8e44ad; padding: 0.625rem; margin-top: 0.5rem; font-size: 0.8125rem;">
+            <strong>⏱️ Tiempo Límite:</strong> <span style="font-size: 0.875rem; font-weight: bold; color: #6c3483;">${din.tiempo_limite || 'Sin límite especificado'}</span>
         </div>
-        <div style="background: #f9f9f9; border-left: 3px solid #e67e22; padding: 10px; margin-top: 8px; font-size: 13px;">
+        <div style="background: #f9f9f9; border-left: 0.1875rem solid #e67e22; padding: 0.625rem; margin-top: 0.5rem; font-size: 0.8125rem;">
             <strong>🎯 Objetivo de la Prueba:</strong><br>
             ${din.caso_o_consigna || 'Sin objetivo específico.'}
         </div>
-        <div class="bloque-guia" style="background: #fdfefe; border-left: 3px solid #27ae60; padding: 10px; margin-top: 8px; font-size: 12px; color: #333;">
+        <div class="bloque-guia" style="background: #fdfefe; border-left: 0.1875rem solid #27ae60; padding: 0.625rem; margin-top: 0.5rem; font-size: 0.75rem; color: #333;">
             <strong>🔍 Guía de Observación para el Evaluador:</strong><br>
             ${(din.guia_evaluacion || 'Sin guía específica.').replace(/\n/g, '<br>')}
         </div>
-        <div class="bloque-guia" style="background: #eafaf1; border: 1px dashed #1e8449; border-left: 3px solid #1e8449; padding: 10px; margin-top: 8px; font-size: 12px; color: #333;">
+        <div class="bloque-guia" style="background: #eafaf1; border: 1px dashed #1e8449; border-left: 0.1875rem solid #1e8449; padding: 0.625rem; margin-top: 0.5rem; font-size: 0.75rem; color: #333;">
             <strong>✅ Corrector: Respuestas Correctas / Esperadas:</strong><br>
             ${(din.respuesta_esperada || 'Sin respuesta esperada definida.').replace(/\n/g, '<br>')}
         </div>
         </div>`).join('');
 
     const tiempoTotalHTML = seleccionadas.length > 1 ? `
-        <div style="background: #f4ecf7; border: 1px solid #8e44ad; padding: 10px; font-size: 14px; font-weight: bold; color: #6c3483;">
+        <div style="background: #f4ecf7; border: 1px solid #8e44ad; padding: 0.625rem; font-size: 0.875rem; font-weight: bold; color: #6c3483;">
             ⏱️ Tiempo total estimado (${seleccionadas.length} dinámicas): ${tiempoTotal} minutos
         </div>` : '';
 
@@ -222,7 +222,7 @@ function generarEvaluacion() {
             <div class="candidate-box">
                 <h4>Postulante #${i}: __________________________________________________</h4>
                 ${tablaPuntajeHTML}
-                <div style="font-size:12px; font-weight:600; color:var(--secondary); margin-top:8px;">Observaciones y notas de conducta del postulante:</div>
+                <div style="font-size:0.75rem; font-weight:600; color:var(--secondary); margin-top:0.5rem;">Observaciones y notas de conducta del postulante:</div>
                 <div class="observations-box"></div>
             </div>
         `;
@@ -230,26 +230,26 @@ function generarEvaluacion() {
         seleccionadas.forEach(din => {
         contenedorHojasPostulantes.innerHTML += `
             <div class="candidate-sheet">
-                <h3 style="color: var(--primary); margin-top: 0; border-bottom: 2px solid var(--primary); padding-bottom: 5px;">HOJA DE TRABAJO / CONSIGNA</h3>
-                <div style="margin-bottom: 15px; font-size: 14px; background: #fdfefe; border: 1px solid var(--border); padding: 12px; border-radius: 4px; line-height: 1.8;">
+                <h3 style="color: var(--primary); margin-top: 0; border-bottom: 2px solid var(--primary); padding-bottom: 0.3125rem;">HOJA DE TRABAJO / CONSIGNA</h3>
+                <div style="margin-bottom: 0.9375rem; font-size: 0.875rem; background: #fdfefe; border: 1px solid var(--border); padding: 0.75rem; border-radius: 0.25rem; line-height: 1.8;">
                     <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <div style="flex-grow: 1; margin-right: 20px;">
+                        <div style="flex-grow: 1; margin-right: 1.25rem;">
                             <strong>Nombre del Postulante:</strong> __________________________________________________
                         </div>
                         <div>
                             <strong>Fecha:</strong> ____/____/20___
                         </div>
                     </div>
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px; border-top: 1px dashed var(--border); pt: 8px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.5rem; border-top: 1px dashed var(--border); pt: 0.5rem;">
                         <div>
-                            <strong>Dinámica ID:</strong> <span style="font-family: monospace; font-weight: bold; background: #eaeded; padding: 2px 6px; border-radius: 3px;">${din.id}</span>
+                            <strong>Dinámica ID:</strong> <span style="font-family: monospace; font-weight: bold; background: #eaeded; padding: 2px 0.375rem; border-radius: 0.1875rem;">${din.id}</span>
                         </div>
                         <div>
                             <span style="color: #8e44ad; font-weight: bold;">⏱️ Tiempo Límite: ${din.tiempo_limite || 'Sin límite especificado'}</span>
                         </div>
                     </div>
                 </div>
-                <div style="background: #ffffff; border: 1px solid var(--border); padding: 25px; border-radius: 6px; margin-top: 10px; font-size: 15px; line-height: 1.7; white-space: pre-line; min-height: 350px;">
+                <div style="background: #ffffff; border: 1px solid var(--border); padding: 1.5625rem; border-radius: 0.375rem; margin-top: 0.625rem; font-size: 0.9375rem; line-height: 1.7; white-space: pre-line; min-height: 21.875rem;">
                     ${din.hoja_postulante || "Sin material específico definido."}
                 </div>
             </div>

@@ -65,7 +65,7 @@ function renderizarDinamicas() {
     const dinamicasFiltradas = baseDatosGlobal.dinamicas.filter(din => din.cargo_id === cargoKey);
 
     if (dinamicasFiltradas.length === 0) {
-        contenedor.innerHTML = '<div style="padding: 20px; text-align: center; color: #777; background: white; border: 1px solid var(--border); border-radius: 6px;">No hay dinámicas registradas para este cargo.</div>';
+        contenedor.innerHTML = '<div style="padding: 1.25rem; text-align: center; color: #777; background: white; border: 1px solid var(--border); border-radius: 0.375rem;">No hay dinámicas registradas para este cargo.</div>';
         return;
     }
 
@@ -73,7 +73,7 @@ function renderizarDinamicas() {
         contenedor.innerHTML += `
             <div class="dynamics-card">
                 <div class="dynamics-info">
-                    <h4><span style="font-family: monospace; background: var(--light); padding: 2px 6px; border-radius: 4px; font-size: 13px; color: var(--accent);">[${din.id}]</span> ${din.titulo}</h4>
+                    <h4><span style="font-family: monospace; background: var(--light); padding: 2px 0.375rem; border-radius: 0.25rem; font-size: 0.8125rem; color: var(--accent);">[${din.id}]</span> ${din.titulo}</h4>
                     <p><strong>Tiempo Límite:</strong> ${din.tiempo_limite || 'N/A'}</p>
                     <p><strong>Descripción:</strong> ${din.desc}</p>
                 </div>
