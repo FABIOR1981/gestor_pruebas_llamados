@@ -1,0 +1,157 @@
+/* Módulo independiente: lee las bases (.docx) en el navegador, extrae directrices,
+   las anonimiza y arma un prompt genérico para IA. El texto original nunca sale del equipo. */
+(function () {
+    const MAMMOTH_URL = 'https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js';
+
+    const COMPETENCIAS = {
+        'Atención al público': /atenci[oó]n (al|a) (p[uú]blico|cliente|usuario)|trato con (el )?p[uú]blico/i,
+        'Trabajo en equipo': /trabajo en equipo|colaboraci[oó]n|cuadrilla/i,
+        'Comunicación efectiva': /comunicaci[oó]n|redacci[oó]n|expresi[oó]n (oral|escrita)/i,
+        'Atención al detalle': /atenci[oó]n al detalle|minuciosidad|prolijidad|control de (datos|calidad)/i,
+        'Gestión del tiempo': /gesti[oó]n del tiempo|priorizaci[oó]n|planificaci[oó]n|organizaci[oó]n/i,
+        'Resolución de problemas': /resoluci[oó]n de problemas|toma de decisiones|iniciativa/i,
+        'Liderazgo': /liderazgo|supervisi[oó]n|conducci[oó]n de (equipos|personal)/i,
+        'Normativa y seguridad': /normativa|seguridad (laboral|e higiene)|protocolos?/i,
+        'Manejo de herramientas informáticas': /excel|word|planillas?|inform[aá]tic|sistemas? de gesti[oó]n/i,
+        'Manejo de dinero / valores': /caja|arqueo|valores|cobranza|facturaci[oó]n/i,
+        'Tolerancia a la presión': /presi[oó]n|estr[eé]s|alta demanda|urgencia/i,
+        'Esfuerzo físico': /esfuerzo f[ií]sico|carga y descarga|levantar|manipulaci[oó]n de cargas/i
+    };
+
+    const SECCIONES = /^(perfil|funciones|tareas|requisitos|competencias|descripci[oó]n del cargo|cometidos|responsabilidades)/i;
+
+    function anonimizar(texto, terminos) {
+        let t = texto
+            .replace(/[\w.+-]+@[\w-]+\.[\w.-]+/g, '[EMAIL]')
+            .replace(/\b\d{1}\.?\d{3}\.?\d{3}-?\d\b/g, '[DOC]')
+            .replace(/\b\d{1,2}[\/\-.]\d{1,2}[\/\-.]\d{2,4}\b/g, '[FECHA]')
+            .replace(/(\$|U\$S|USD|UYU)\s?[\d.,]+/gi, '[MONTO]')
+            .replace(/\b(llamado|concurso|licitaci[oó]n)\s*(n[°ºo.]*\s*)?[\w\/-]*\d[\w\/-]*/gi, '[LLAMADO]');
+        terminos.forEach(w => {
+            if (w.trim()) t = t.replace(new RegExp(w.trim().replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi'), '[X]');
+        });
+        return t;
+    }
+
+    function extraerTareas(texto) {
+        const lineas = texto.split(/\n+/).map(l => l.trim()).filter(Boolean);
+        const tareas = [];
+        let enSeccion = false;
+        lineas.forEach(l => {
+            if (SECCIONES.test(l) && l.length < 60) { enSeccion = /funciones|tareas|cometidos|responsabilidades/i.test(l); return; }
+            if (enSeccion && l.length > 8 && l.length < 200) tareas.push(l.replace(/^[-•·*\d.)\s]+/, ''));
+        });
+        return tareas.slice(0, 12);
+    }
+
+    function cargarMammoth() {
+        if (window.mammoth) return Promise.resolve();
+        return new Promise((ok, err) => {
+            const s = document.createElement('script');
+            s.src = MAMMOTH_URL; s.onload = ok; s.onerror = () => err(new Error('No se pudo cargar el lector de .docx'));
+            document.head.appendChild(s);
+        });
+    }
+
+    function inyectarUI() {
+        const css = document.createElement('style');
+        css.textContent = `
+        #bia-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9999;align-items:center;justify-content:center}
+        #bia-modal.abierto{display:flex}
+        #bia-box{background:#fff;width:min(46rem,94vw);max-height:90vh;overflow:auto;border-radius:.5rem;padding:1.25rem;box-sizing:border-box}
+        #bia-box h2{margin:0 0 .5rem;font-size:1.2rem;color:var(--primary,#2c3e50)}
+        #bia-box textarea,#bia-box input[type=text]{width:100%;box-sizing:border-box;padding:.5rem;border:1px solid #bdc3c7;border-radius:.25rem;font:inherit;font-size:.85rem}
+        #bia-box textarea{min-height:5rem}
+        #bia-box .bia-aviso{font-size:.8rem;color:#7f8c8d;margin:.25rem 0 .75rem}
+        #bia-box .bia-paso{display:none;margin-top:.75rem}
+        #bia-box .bia-chips label{display:inline-flex;gap:.3rem;align-items:center;margin:.15rem .5rem .15rem 0;font-weight:normal}
+        #bia-box .bia-chips input{width:auto}
+        #bia-box .bia-fila{display:flex;gap:.5rem;justify-content:flex-end;margin-top:.75rem}
+        #bia-btn-abrir{background:#8e44ad}`;
+        document.head.appendChild(css);
+
+        const modal = document.createElement('div');
+        modal.id = 'bia-modal';
+        modal.innerHTML = `
+        <div id="bia-box">
+            <h2>Directrices desde las bases (local)</h2>
+            <p class="bia-aviso">El archivo se lee en este navegador y no se envía a ningún servidor. Solo el resumen que usted revise irá en el prompt.</p>
+            <input type="file" id="bia-file" accept=".docx">
+            <div id="bia-error" style="color:#c0392b;font-size:.85rem"></div>
+
+            <div class="bia-paso" id="bia-paso2">
+                <label>Términos a enmascarar (organismo, nombres, sectores; separados por coma)</label>
+                <input type="text" id="bia-terminos" placeholder="Ej: Intendencia, Departamento X">
+                <label style="margin-top:.6rem;display:block">Competencias detectadas</label>
+                <div class="bia-chips" id="bia-comps"></div>
+                <label style="margin-top:.6rem;display:block">Tareas típicas (editar / borrar lo sensible)</label>
+                <textarea id="bia-tareas"></textarea>
+                <div class="bia-fila"><button id="bia-gen">Generar prompt</button></div>
+            </div>
+
+            <div class="bia-paso" id="bia-paso3">
+                <label>Prompt para la IA (sin datos de las bases)</label>
+                <textarea id="bia-prompt" style="min-height:14rem"></textarea>
+            </div>
+            <div class="bia-fila">
+                <button id="bia-copiar" style="display:none;background:#27ae60">Copiar</button>
+                <button id="bia-cerrar" style="background:#7f8c8d">Cerrar</button>
+            </div>
+        </div>`;
+        document.body.appendChild(modal);
+
+        const btn = document.createElement('button');
+        btn.id = 'bia-btn-abrir';
+        btn.textContent = 'Directrices desde bases (IA)';
+        const cont = document.querySelector('.no-print .btn-container') || document.querySelector('.no-print') || document.body;
+        cont.appendChild(btn);
+
+        const $ = id => document.getElementById(id);
+        let textoBase = '';
+
+        btn.onclick = () => modal.classList.add('abierto');
+        $('bia-cerrar').onclick = () => modal.classList.remove('abierto');
+
+        $('bia-file').onchange = async e => {
+            const f = e.target.files[0];
+            $('bia-error').textContent = '';
+            if (!f) return;
+            try {
+                await cargarMammoth();
+                const r = await window.mammoth.extractRawText({ arrayBuffer: await f.arrayBuffer() });
+                textoBase = r.value;
+                $('bia-comps').innerHTML = Object.keys(COMPETENCIAS).map(k =>
+                    `<label><input type="checkbox" value="${k}" ${COMPETENCIAS[k].test(textoBase) ? 'checked' : ''}>${k}</label>`).join('');
+                $('bia-tareas').value = extraerTareas(textoBase).join('\n');
+                $('bia-paso2').style.display = 'block';
+            } catch (ex) { $('bia-error').textContent = ex.message; }
+        };
+
+        $('bia-gen').onclick = () => {
+            const terminos = $('bia-terminos').value.split(',');
+            const comps = [...document.querySelectorAll('#bia-comps input:checked')].map(i => i.value);
+            const tareas = anonimizar($('bia-tareas').value, terminos).split('\n').filter(l => l.trim());
+            const cargoSel = document.getElementById('cargoSelect');
+            const cargo = cargoSel && cargoSel.selectedOptions[0] ? cargoSel.selectedOptions[0].text : 'cargo genérico';
+            const prompt =
+`Actúa como psicólogo laboral. Diseña 4 dinámicas de evaluación para un cargo genérico tipo "${cargo}".
+
+Competencias a evaluar:
+${comps.map(c => '- ' + c).join('\n') || '- (sin definir)'}
+
+Tareas típicas del puesto (genéricas):
+${tareas.map(t => '- ' + t).join('\n') || '- (sin definir)'}
+
+Devuelve SOLO un arreglo JSON, cada elemento con estos campos:
+id, cargo_id, titulo, desc, tiempo_limite, hoja_postulante, caso_o_consigna, guia_evaluacion, respuesta_esperada.
+Requisitos: consignas escritas, resolubles en 2 a 8 minutos, sin nombres reales ni datos de organismos, con respuesta esperada verificable.`;
+            $('bia-prompt').value = prompt;
+            $('bia-paso3').style.display = 'block';
+            $('bia-copiar').style.display = 'inline-block';
+        };
+
+        $('bia-copiar').onclick = () => navigator.clipboard.writeText($('bia-prompt').value);
+    }
+
+    document.addEventListener('DOMContentLoaded', inyectarUI);
+})();
