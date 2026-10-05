@@ -38,7 +38,7 @@
         const tareas = [];
         let enSeccion = false;
         lineas.forEach(l => {
-            if (SECCIONES.test(l) && l.length < 60) { enSeccion = /funciones|tareas|cometidos|responsabilidades/i.test(l); return; }
+            if (SECCIONES.test(l.replace(/^[\d.\s)]+/, '')) && l.length < 80) { enSeccion = /funciones|tareas|cometidos|responsabilidades/i.test(l); return; }
             if (enSeccion && l.length > 8 && l.length < 200) tareas.push(l.replace(/^[-•·*\d.)\s]+/, ''));
         });
         return tareas.slice(0, 12);
@@ -114,8 +114,9 @@
         const inicio = (usados.length ? Math.max(...usados) : 0) + 1;
         const idsDin = [0, 1, 2, 3].map(i => `${prefijoDin}-${dos(inicio + i)}`);
 
-        const areaNombreFinal = areaNueva ? areaNombre : areas[areaId].nombre;
-        return { areaId, areaNueva, areaNombreFinal, cargoId, cargoNuevo, idsDin };
+        const areaNombreFinal = cargoNuevo ? (areaNueva ? areaNombre : areas[areaId].nombre) : (cargos[cargoId].area || areas[areaId]?.nombre || areaNombre);
+        const existentes = dins.filter(d => d.cargo_id === cargoId);
+        return { areaId, areaNueva: areaNueva && cargoNuevo, areaNombreFinal, cargoId, cargoNuevo, idsDin, existentes };
     }
 
     function detectarCargo(texto) {
@@ -281,6 +282,9 @@ Completa 3 competencias a partir de la lista dada, cada una con su descripción 
             }
             bloques.push(`${bloques.length + 1}) DINAMICAS.JSON (elementos para agregar al arreglo):
 Usa exactamente estos ids, en orden: ${ids.idsDin.join(', ')}. En todos, cargo_id = "${ids.cargoId}".`);
+            const previas = ids.existentes.length
+                ? `\n\nDinámicas YA existentes para este cargo (las nuevas deben ser claramente distintas en tema, escenario y formato; no las repitas ni las reformules):\n${ids.existentes.map(d => `- ${d.titulo}: ${d.caso_o_consigna}`).join('\n')}`
+                : '';
             const prompt =
 `Actúa como psicólogo laboral. Diseña 4 dinámicas de evaluación para el cargo "${cargo}" (área: ${ids.areaNombreFinal}).
 
@@ -288,7 +292,7 @@ Competencias a evaluar:
 ${comps.map(c => '- ' + c).join('\n') || '- (sin definir)'}
 
 Tareas típicas del puesto (genéricas):
-${tareas.map(t => '- ' + t).join('\n') || '- (sin definir)'}
+${tareas.map(t => '- ' + t).join('\n') || '- (sin definir)'}${previas}
 
 Devuelve cada bloque en un bloque de código JSON separado y rotulado, listo para pegar:
 ${bloques.join('\n\n')}
