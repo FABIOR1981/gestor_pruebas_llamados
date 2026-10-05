@@ -44,6 +44,34 @@
         return tareas.slice(0, 12);
     }
 
+    function cargosConocidos() {
+        return typeof baseDatosGlobal !== 'undefined' ? baseDatosGlobal.cargos || {} : {};
+    }
+
+    function areasConocidas() {
+        return typeof baseDatosGlobal !== 'undefined' ? baseDatosGlobal.areas || {} : {};
+    }
+
+    function detectarArea(texto) {
+        const m = texto.match(/[\u00e1a]rea de\s+([^,.;\n]{3,50})/i);
+        if (m) return m[1].trim();
+        const hallada = Object.values(areasConocidas()).find(a => new RegExp('\\b' + a.nombre + '\\b', 'i').test(texto));
+        return hallada ? hallada.nombre : '';
+    }
+
+    function existe(valor, catalogo) {
+        const n = s => s.trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        return Object.values(catalogo).some(o => n(o.nombre) === n(valor));
+    }
+
+    function detectarCargo(texto) {
+        const m = texto.match(/cargo de\s+([^,.;\n]{3,80})/i) || texto.match(/llamado[^\n]*?[-–]\s*([^\n]{3,80})/i);
+        if (m) return m[1].trim();
+        const conocidos = cargosConocidos();
+        const hallado = Object.values(conocidos).find(c => new RegExp('\\b' + c.nombre + '\\b', 'i').test(texto));
+        return hallado ? hallado.nombre : '';
+    }
+
     function cargarMammoth() {
         if (window.mammoth) return Promise.resolve();
         return new Promise((ok, err) => {
@@ -62,6 +90,9 @@
         #bia-box h2{margin:0 0 .5rem;font-size:1.2rem;color:var(--primary,#2c3e50)}
         #bia-box textarea,#bia-box input[type=text]{width:100%;box-sizing:border-box;padding:.5rem;border:1px solid #bdc3c7;border-radius:.25rem;font:inherit;font-size:.85rem}
         #bia-box textarea{min-height:5rem}
+        #bia-box .bia-estado{font-size:.8rem;margin-top:.25rem}
+        #bia-box .bia-estado.ok{color:#27ae60}
+        #bia-box .bia-estado.falta{color:#c0392b;font-weight:600}
         #bia-box .bia-aviso{font-size:.8rem;color:#7f8c8d;margin:.25rem 0 .75rem}
         #bia-box .bia-paso{display:none;margin-top:.75rem}
         #bia-box .bia-chips label{display:inline-flex;gap:.3rem;align-items:center;margin:.15rem .5rem .15rem 0;font-weight:normal}
@@ -80,7 +111,15 @@
             <div id="bia-error" style="color:#c0392b;font-size:.85rem"></div>
 
             <div class="bia-paso" id="bia-paso2">
-                <label>Términos a enmascarar (organismo, nombres, sectores; separados por coma)</label>
+                <label>Cargo del llamado (detectado en las bases; editable)</label>
+                <input type="text" id="bia-cargo" list="bia-cargos-lista" placeholder="Ej: Jefe de Sucursal">
+                <datalist id="bia-cargos-lista"></datalist>
+                <div class="bia-estado" id="bia-estado-cargo"></div>
+                <label style="margin-top:.6rem;display:block">Área (detectada en las bases; editable)</label>
+                <input type="text" id="bia-area" list="bia-areas-lista" placeholder="Ej: Administración">
+                <datalist id="bia-areas-lista"></datalist>
+                <div class="bia-estado" id="bia-estado-area"></div>
+                <label style="margin-top:.6rem;display:block">Términos a enmascarar (organismo, nombres, sectores; separados por coma)</label>
                 <input type="text" id="bia-terminos" placeholder="Ej: Intendencia, Departamento X">
                 <label style="margin-top:.6rem;display:block">Competencias detectadas</label>
                 <div class="bia-chips" id="bia-comps"></div>
@@ -110,6 +149,22 @@
         let textoBase = '';
 
         btn.onclick = () => modal.classList.add('abierto');
+
+        function estado(idInput, idMsg, catalogo, etiqueta, archivo) {
+            const v = $(idInput).value.trim();
+            const el = $(idMsg);
+            if (!v) { el.className = 'bia-estado'; el.textContent = ''; return; }
+            const ok = existe(v, catalogo);
+            el.className = 'bia-estado ' + (ok ? 'ok' : 'falta');
+            el.textContent = ok
+                ? `${etiqueta} existente en ${archivo}.`
+                : `${etiqueta} "${v}" no existe en ${archivo}: debe crearse antes de cargar las din\u00e1micas.`;
+        }
+        function actualizarEstados() {
+            estado('bia-cargo', 'bia-estado-cargo', cargosConocidos(), 'Cargo', 'cargos.json');
+            estado('bia-area', 'bia-estado-area', areasConocidas(), '\u00c1rea', 'areas.json');
+        }
+        $('bia-cargo').oninput = $('bia-area').oninput = actualizarEstados;
         $('bia-cerrar').onclick = () => modal.classList.remove('abierto');
 
         $('bia-file').onchange = async e => {
@@ -123,7 +178,13 @@
                 $('bia-comps').innerHTML = Object.keys(COMPETENCIAS).map(k =>
                     `<label><input type="checkbox" value="${k}" ${COMPETENCIAS[k].test(textoBase) ? 'checked' : ''}>${k}</label>`).join('');
                 $('bia-tareas').value = extraerTareas(textoBase).join('\n');
+                $('bia-cargo').value = detectarCargo(textoBase);
+                $('bia-area').value = detectarArea(textoBase);
+                $('bia-areas-lista').innerHTML = Object.values(areasConocidas()).map(a => `<option value="${a.nombre}">`).join('');
+                const lista = cargosConocidos();
+                $('bia-cargos-lista').innerHTML = Object.values(lista).map(c => `<option value="${c.nombre}">`).join('');
                 $('bia-paso2').style.display = 'block';
+                actualizarEstados();
             } catch (ex) { $('bia-error').textContent = ex.message; }
         };
 
@@ -131,8 +192,7 @@
             const terminos = $('bia-terminos').value.split(',');
             const comps = [...document.querySelectorAll('#bia-comps input:checked')].map(i => i.value);
             const tareas = anonimizar($('bia-tareas').value, terminos).split('\n').filter(l => l.trim());
-            const cargoSel = document.getElementById('cargoSelect');
-            const cargo = cargoSel && cargoSel.selectedOptions[0] ? cargoSel.selectedOptions[0].text : 'cargo genérico';
+            const cargo = anonimizar($('bia-cargo').value.trim(), terminos) || 'cargo genérico';
             const prompt =
 `Actúa como psicólogo laboral. Diseña 4 dinámicas de evaluación para un cargo genérico tipo "${cargo}".
 
