@@ -64,6 +64,17 @@
         return Object.values(catalogo).some(o => n(o.nombre) === n(valor));
     }
 
+    function similar(valor, catalogo) {
+        const norm = s => s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        const toks = s => norm(s).split(/[^a-z0-9]+/).filter(t => t.length > 2);
+        const tv = toks(valor);
+        const hit = Object.values(catalogo).find(o => {
+            const to = toks(o.nombre);
+            return to.length && (to.every(t => tv.includes(t)) || (tv.length && tv.every(t => to.includes(t))));
+        });
+        return hit ? hit.nombre : '';
+    }
+
     function detectarCargo(texto) {
         const m = texto.match(/cargo de\s+([^,.;\n]{3,80})/i) || texto.match(/llamado[^\n]*?[-–]\s*([^\n]{3,80})/i);
         if (m) return m[1].trim();
@@ -150,15 +161,35 @@
 
         btn.onclick = () => modal.classList.add('abierto');
 
+        const decidido = {};
         function estado(idInput, idMsg, catalogo, etiqueta, archivo) {
             const v = $(idInput).value.trim();
             const el = $(idMsg);
-            if (!v) { el.className = 'bia-estado'; el.textContent = ''; return; }
-            const ok = existe(v, catalogo);
-            el.className = 'bia-estado ' + (ok ? 'ok' : 'falta');
-            el.textContent = ok
-                ? `${etiqueta} existente en ${archivo}.`
-                : `${etiqueta} "${v}" no existe en ${archivo}: debe crearse antes de cargar las din\u00e1micas.`;
+            el.className = 'bia-estado';
+            el.textContent = '';
+            if (!v) return;
+            if (existe(v, catalogo)) {
+                el.className = 'bia-estado ok';
+                el.textContent = `${etiqueta} existente en ${archivo}.`;
+                return;
+            }
+            const sim = similar(v, catalogo);
+            if (sim && decidido[idInput] !== v) {
+                el.className = 'bia-estado falta';
+                el.append(`${etiqueta} "${v}" no existe en ${archivo}, pero hay uno similar: "${sim}". `);
+                const usar = document.createElement('button');
+                usar.textContent = 'Usar existente';
+                usar.style.cssText = 'padding:.15rem .5rem;font-size:.75rem;margin-right:.3rem';
+                usar.onclick = () => { $(idInput).value = sim; actualizarEstados(); };
+                const crear = document.createElement('button');
+                crear.textContent = 'Crear nuevo';
+                crear.style.cssText = 'padding:.15rem .5rem;font-size:.75rem;background:#7f8c8d';
+                crear.onclick = () => { decidido[idInput] = v; actualizarEstados(); };
+                el.append(usar, crear);
+                return;
+            }
+            el.className = 'bia-estado falta';
+            el.textContent = `${etiqueta} "${v}" no existe en ${archivo}: debe crearse antes de cargar las din\u00e1micas.`;
         }
         function actualizarEstados() {
             estado('bia-cargo', 'bia-estado-cargo', cargosConocidos(), 'Cargo', 'cargos.json');
