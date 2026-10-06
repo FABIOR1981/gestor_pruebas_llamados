@@ -21,6 +21,7 @@ Catálogo incluido: 4 áreas, 5 cargos (Carga / Descarga, Administrativo, Encarg
 ## Documentación
 
 - 📘 [Manual de Usuario](docs/MANUAL_USUARIO.md) ([PDF](docs/Manual_de_Usuario.pdf)): uso de las pantallas, para evaluadores y administradores.
+- 🧠 [Propuesta para profesionales de la Psicología](docs/PROPUESTA_PSICOLOGOS.md) ([PDF](docs/Propuesta_para_Psicologos.pdf)): presentación de la herramienta para psicólogos, con énfasis en la confidencialidad de las bases.
 - 🛠️ [Manual Técnico](docs/MANUAL_TECNICO.md) ([PDF](docs/Manual_Tecnico.pdf)): funcionamiento, modelo de datos, instalación y mantenimiento.
 
 ## Ejecución local
