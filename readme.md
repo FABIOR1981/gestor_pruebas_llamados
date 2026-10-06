@@ -6,7 +6,7 @@ Aplicación web para armar e imprimir **evaluaciones psicotécnicas** en proceso
 - la **tabla de puntaje** por competencia (escala 0 a 5), con el dictamen de cada postulante;
 - las **hojas de trabajo** de cada postulante, que al imprimir empiezan en página nueva.
 
-![Generador de evaluaciones](docs/img/02_seleccion.png)
+![Generador de evaluaciones](https://raw.githubusercontent.com/FABIOR1981/documentacion-central/main/gestor_pruebas_llamados/documentacion/img/02_seleccion.png)
 
 ## Funcionalidades
 
@@ -20,9 +20,9 @@ Catálogo incluido: 4 áreas, 5 cargos (Carga / Descarga, Administrativo, Encarg
 
 ## Documentación
 
-- 📘 [Manual de Usuario](docs/MANUAL_USUARIO.md) ([PDF](docs/Manual_de_Usuario.pdf)): uso de las pantallas, para evaluadores y administradores.
-- 🧠 [Propuesta para profesionales de la Psicología](docs/PROPUESTA_PSICOLOGOS.md) ([PDF](docs/Propuesta_para_Psicologos.pdf)): presentación de la herramienta para psicólogos, con énfasis en la confidencialidad de las bases.
-- 🛠️ [Manual Técnico](docs/MANUAL_TECNICO.md) ([PDF](docs/Manual_Tecnico.pdf)): funcionamiento, modelo de datos, instalación y mantenimiento.
+- 📘 [Manual de Usuario](https://github.com/FABIOR1981/documentacion-central/blob/main/gestor_pruebas_llamados/documentacion/MANUAL_USUARIO.md) ([PDF](https://github.com/FABIOR1981/documentacion-central/blob/main/gestor_pruebas_llamados/documentacion/Manual_de_Usuario.pdf)): uso de las pantallas, para evaluadores y administradores.
+- 🧠 [Propuesta para profesionales de la Psicología](https://github.com/FABIOR1981/documentacion-central/blob/main/gestor_pruebas_llamados/documentacion/PROPUESTA_PSICOLOGOS.md) ([PDF](https://github.com/FABIOR1981/documentacion-central/blob/main/gestor_pruebas_llamados/documentacion/Propuesta_para_Psicologos.pdf)): presentación de la herramienta para psicólogos, con énfasis en la confidencialidad de las bases.
+- 🛠️ [Manual Técnico](https://github.com/FABIOR1981/documentacion-central/blob/main/gestor_pruebas_llamados/documentacion/MANUAL_TECNICO.md) ([PDF](https://github.com/FABIOR1981/documentacion-central/blob/main/gestor_pruebas_llamados/documentacion/Manual_Tecnico.pdf)): funcionamiento, modelo de datos, instalación y mantenimiento.
 
 ## Ejecución local
 
@@ -63,5 +63,5 @@ Se puede publicar en cualquier hosting estático (Netlify, GitHub Pages, Apache,
 │   ├── areas.json                       Áreas
 │   ├── cargos.json                      Cargos y competencias
 │   └── dinamicas.json                   Dinámicas por cargo
-└── docs/                                Manuales (Markdown y PDF) y capturas
+└── documentacion/LEEME.md               Aviso: los manuales están en documentacion-central
 ```
