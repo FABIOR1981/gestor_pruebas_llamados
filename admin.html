@@ -159,9 +159,9 @@
                 </div>
 
                 <div class="form-group" style="margin-bottom: 0.9375rem; max-width: 13.75rem;">
-                    <label for="modalRenglones">Renglones para escribir:</label>
-                    <input type="number" id="modalRenglones" min="0" max="30" value="5">
-                    <small style="color: #7f8c8d; font-size: 0.75rem; margin-top: 0.25rem;">Líneas en blanco al final de la hoja (0 a 30).</small>
+                    <label for="modalRenglones">Renglones particulares de esta dinámica:</label>
+                    <input type="number" id="modalRenglones" min="0" max="30" placeholder="Usar global">
+                    <small style="color: #7f8c8d; font-size: 0.75rem; margin-top: 0.25rem;">Vacío usa el valor global; 0 no agrega renglones; de 1 a 30 reemplaza el global.</small>
                 </div>
 
                 <div class="form-group" style="margin-bottom: 0.9375rem;">
@@ -207,6 +207,7 @@
         </div>
     </div>
 
+    <script src="utilidades.js"></script>
     <script src="datos/datos.js"></script>
     <script src="admin.js"></script>
     <script src="bases_ia.js"></script>

@@ -230,7 +230,7 @@ function editarDinamica(dinId) {
     document.getElementById('modalTiempo').value = din.tiempo_limite || '';
     const hoja = separarRenglones(din.hoja_postulante || '');
     document.getElementById('modalHoja').value = hoja.texto;
-    document.getElementById('modalRenglones').value = hoja.renglones;
+    document.getElementById('modalRenglones').value = din.renglones_hoja ?? '';
     document.getElementById('modalCaso').value = din.caso_o_consigna || '';
     document.getElementById('modalPeso').value = din.peso || 1;
     document.getElementById('modalGuia').value = din.guia_evaluacion || '';
@@ -240,30 +240,14 @@ function editarDinamica(dinId) {
     document.getElementById('modalDinamica').style.display = 'flex';
 }
 
-// Los renglones finales se editan en un campo numérico aparte, no como HTML dentro del texto.
-const REGEX_RENGLONES_FINALES = /(?:<div class=['"]renglon-respuesta['"]><\/div>)+\s*$/;
-
-function separarRenglones(html) {
-    const final = html.match(REGEX_RENGLONES_FINALES);
-    const renglones = final ? (final[0].match(/<div/g) || []).length : 0;
-    const texto = html.replace(REGEX_RENGLONES_FINALES, '').replace(/&nbsp;/g, '\u00a0').trim();
-    return { texto, renglones };
-}
-
-function componerHoja(texto, renglones) {
-    const cuerpo = texto.replace(/\u00a0/g, '&nbsp;').trim();
-    const cantidad = Math.min(Math.max(parseInt(renglones, 10) || 0, 0), 30);
-    return cantidad > 0
-        ? `${cuerpo}\n\n${"<div class='renglon-respuesta'></div>".repeat(cantidad)}`
-        : cuerpo;
-}
-
 function guardarDinamica(event, crearOtra = false) {
     event.preventDefault();
     if (crearOtra && !document.getElementById('formDinamica').reportValidity()) return;
     const cargoKey = document.getElementById('modalCargo').value;
     const dinIdEditando = document.getElementById('editIndex').value;
     const idIngresado = document.getElementById('modalCodigo').value.trim();
+    const renglonesInput = document.getElementById('modalRenglones').value.trim();
+    const renglones = renglonesInput === '' ? RENGLONES_HOJA_GLOBAL : normalizarCantidadRenglones(renglonesInput);
 
     const nuevaDin = {
         id: idIngresado,
@@ -272,7 +256,8 @@ function guardarDinamica(event, crearOtra = false) {
         desc: document.getElementById('modalDesc').value.trim(),
         tiempo_limite: document.getElementById('modalTiempo').value.trim(),
         peso: Math.min(Math.max(parseInt(document.getElementById('modalPeso').value, 10) || 1, 1), 5),
-        hoja_postulante: componerHoja(document.getElementById('modalHoja').value, document.getElementById('modalRenglones').value),
+        hoja_postulante: componerHoja(document.getElementById('modalHoja').value, renglones),
+        renglones_hoja: renglonesInput === '' ? undefined : renglones,
         caso_o_consigna: document.getElementById('modalCaso').value.trim(),
         guia_evaluacion: document.getElementById('modalGuia').value.trim(),
         respuesta_esperada: document.getElementById('modalRespuesta').value.trim()
@@ -316,7 +301,7 @@ function duplicarDinamica(dinId) {
     document.getElementById('modalTiempo').value = din.tiempo_limite || '';
     const hoja = separarRenglones(din.hoja_postulante || '');
     document.getElementById('modalHoja').value = hoja.texto;
-    document.getElementById('modalRenglones').value = hoja.renglones;
+    document.getElementById('modalRenglones').value = din.renglones_hoja ?? '';
     document.getElementById('modalCaso').value = din.caso_o_consigna || '';
     document.getElementById('modalPeso').value = din.peso || 1;
     document.getElementById('modalGuia').value = din.guia_evaluacion || '';
