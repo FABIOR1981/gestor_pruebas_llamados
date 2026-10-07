@@ -102,6 +102,7 @@ function renderizarDinamicas() {
                 </div>
                 <div class="actions">
                     <button onclick="editarDinamica('${din.id}')">✏️ Editar</button>
+                    <button class="btn-secondary" onclick="duplicarDinamica('${din.id}')">📄 Duplicar</button>
                     <button class="btn-danger" onclick="eliminarDinamica('${din.id}')">🗑️ Borrar</button>
                 </div>
             </div>
@@ -208,6 +209,7 @@ function abrirModalDinamica() {
     
     actualizarCodigoDinamicaAutogenerado();
     
+    document.getElementById('btnGuardarOtra').style.display = '';
     document.getElementById('modalDinamica').style.display = 'flex';
 }
 
@@ -234,6 +236,7 @@ function editarDinamica(dinId) {
     document.getElementById('modalGuia').value = din.guia_evaluacion || '';
     document.getElementById('modalRespuesta').value = din.respuesta_esperada || '';
     
+    document.getElementById('btnGuardarOtra').style.display = 'none';
     document.getElementById('modalDinamica').style.display = 'flex';
 }
 
@@ -255,8 +258,9 @@ function componerHoja(texto, renglones) {
         : cuerpo;
 }
 
-function guardarDinamica(event) {
+function guardarDinamica(event, crearOtra = false) {
     event.preventDefault();
+    if (crearOtra && !document.getElementById('formDinamica').reportValidity()) return;
     const cargoKey = document.getElementById('modalCargo').value;
     const dinIdEditando = document.getElementById('editIndex').value;
     const idIngresado = document.getElementById('modalCodigo').value.trim();
@@ -291,7 +295,35 @@ function guardarDinamica(event) {
     document.getElementById('cargoSelectAdmin').value = cargoKey;
     renderizarDinamicas();
     marcarCambios();
+    if (crearOtra) {
+        abrirModalDinamica();
+        return;
+    }
     alert("¡Dinámica guardada! Haz clic en 'Guardar en GitHub' cuando termines.");
+}
+
+// Abre el formulario como dinámica nueva (código nuevo) con los datos de otra ya existente.
+function duplicarDinamica(dinId) {
+    const din = baseDatosGlobal.dinamicas.find(d => d.id === dinId);
+    if (!din) return;
+
+    document.getElementById('modalTitulo').textContent = "Nueva Dinámica (copia de " + din.id + ")";
+    document.getElementById('editIndex').value = "";
+    document.getElementById('modalCargo').value = din.cargo_id;
+    actualizarCodigoDinamicaAutogenerado();
+    document.getElementById('modalTituloDin').value = (din.titulo || '') + ' (copia)';
+    document.getElementById('modalDesc').value = din.desc || '';
+    document.getElementById('modalTiempo').value = din.tiempo_limite || '';
+    const hoja = separarRenglones(din.hoja_postulante || '');
+    document.getElementById('modalHoja').value = hoja.texto;
+    document.getElementById('modalRenglones').value = hoja.renglones;
+    document.getElementById('modalCaso').value = din.caso_o_consigna || '';
+    document.getElementById('modalPeso').value = din.peso || 1;
+    document.getElementById('modalGuia').value = din.guia_evaluacion || '';
+    document.getElementById('modalRespuesta').value = din.respuesta_esperada || '';
+
+    document.getElementById('btnGuardarOtra').style.display = '';
+    document.getElementById('modalDinamica').style.display = 'flex';
 }
 
 function eliminarDinamica(dinId) {

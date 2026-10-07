@@ -196,8 +196,10 @@
 
         const btn = document.createElement('button');
         btn.id = 'bia-btn-abrir';
-        btn.textContent = 'Directrices desde bases (IA)';
-        const cont = document.querySelector('.no-print .btn-container') || document.querySelector('.no-print') || document.body;
+        btn.textContent = '🤖 Asistente IA (opcional)';
+        btn.type = 'button';
+        btn.title = 'Opcional: genera un prompt a partir de las bases del llamado para que una IA proponga dinámicas';
+        const cont = document.getElementById('contenedorAsistenteIA') || document.querySelector('.no-print .btn-container') || document.querySelector('.no-print') || document.body;
         cont.appendChild(btn);
 
         const $ = id => document.getElementById(id);

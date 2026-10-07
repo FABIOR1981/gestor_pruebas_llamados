@@ -10,7 +10,7 @@
 
     <div class="container">
         <h1>Panel de Administración y ABM</h1>
-        <p class="subtitle">Gestione de forma limpia y ordenada las áreas, cargos y dinámicas de la carpeta <code>datos</code>.</p>
+        <p class="subtitle">Cree áreas y cargos, y cargue a mano las dinámicas de cada cargo. El código de cada dinámica se genera solo.</p>
 
         <div class="toolbar" style="flex-direction: column; align-items: stretch; gap: 0.9375rem;">
             <div class="status-badge">
@@ -22,6 +22,7 @@
                     <button class="btn-success" style="background-color: #27ae60;" onclick="abrirModalArea()">+ Crear Nueva Área</button>
                     <button class="btn-warning" onclick="abrirModalCargo()">+ Crear Nuevo Cargo</button>
                     <button class="btn-secondary" onclick="descargarJSON()">📥 Descargar copia JSON</button>
+                    <span id="contenedorAsistenteIA"></span>
                 </div>
                 <div>
                     <button onclick="window.location.href='index.html'" style="background-color: #34495e; color: white; border: none; padding: 0.625rem 1rem; border-radius: 0.25rem; cursor: pointer; font-weight: bold; transition: background 0.2s;" onmouseover="this.style.backgroundColor='#2c3e50'" onmouseout="this.style.backgroundColor='#34495e'">
@@ -181,6 +182,7 @@
 
                 <div style="display: flex; gap: 0.625rem; margin-top: 1.5625rem;">
                     <button type="submit" class="btn-success">Guardar Dinámica</button>
+                    <button type="button" class="btn-warning" id="btnGuardarOtra" onclick="guardarDinamica(event, true)">Guardar y crear otra</button>
                     <button type="button" class="btn-danger" onclick="cerrarModalDinamica()">Cancelar</button>
                 </div>
             </form>
@@ -208,5 +210,6 @@
 
     <script src="datos/datos.js"></script>
     <script src="admin.js"></script>
+    <script src="bases_ia.js"></script>
 </body>
 </html>

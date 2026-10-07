@@ -13,8 +13,7 @@ Aplicación web para armar e imprimir **evaluaciones psicotécnicas** en proceso
 | Pantalla | Para qué sirve |
 |---|---|
 | **Generador** (`index.html`) | Armar la evaluación, mostrar u ocultar la guía y el corrector, e imprimir en A4. |
-| **Directrices desde bases (IA)** | Leer las bases del llamado (`.docx`), anonimizar los datos sensibles y generar un *prompt* para que una IA proponga dinámicas nuevas. El archivo se procesa en el navegador y no se sube a ningún servidor. |
-| **Panel de Administración** (`admin.html`) | Crear áreas y cargos, y crear, editar o borrar dinámicas. Los cambios se guardan descargando los JSON actualizados. |
+| **Panel de Administración** (`admin.html`) | Núcleo del sistema: crear áreas y cargos, y **cargar a mano** las dinámicas de cada cargo (el código se genera solo según área y cargo; se puede duplicar una dinámica existente como base o crear varias seguidas). Incluye el **Asistente IA (opcional)**: lee las bases del llamado (`.docx`), anonimiza los datos sensibles y genera un *prompt* para que una IA proponga dinámicas. El archivo se procesa en el navegador y no se sube a ningún servidor. |
 
 Catálogo incluido: 4 áreas, 5 cargos (Carga / Descarga, Administrativo, Encargado, Jefe y Contador) y 20 dinámicas.
 
