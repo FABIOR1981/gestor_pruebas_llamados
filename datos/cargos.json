@@ -89,18 +89,22 @@
             }
         ]
     },
-    "CAR-SUP-JSM-01": {
-        "nombre": "JEFE DE SUCURSAL MERCEDES",
+    "CAR-SUP-JDS-01": {
+        "nombre": "JEFE DE SUCURSAL",
         "area": "Supervisión",
         "competencias": [
-            {
-                "comp": "Competencia General 1",
-                "desc": "Descripción de ejemplo a modificar."
-            },
-            {
-                "comp": "Competencia General 2",
-                "desc": "Descripción de ejemplo a modificar."
-            }
+        {
+            "comp": "Liderazgo",
+            "desc": "Capacidad para guiar, motivar y alinear al equipo de trabajo hacia los objetivos de la sucursal y la organización."
+        },
+        {
+            "comp": "Gestión del tiempo",
+            "desc": "Habilidad para priorizar tareas operativas, administrativas y de atención bajo presión, cumpliendo plazos críticos."
+        },
+        {
+            "comp": "Manejo de dinero / valores",
+            "desc": "Precisión y control estricto en la supervisión de la caja diaria, cuentas corrientes, créditos y cobranzas."
+        }
         ]
     }
 }

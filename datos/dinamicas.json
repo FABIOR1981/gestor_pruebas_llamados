@@ -218,5 +218,49 @@
         "caso_o_consigna": "Confidencialidad y ética profesional ante pedidos informales de información reservada.",
         "guia_evaluacion": "• Éxito: Se niega con cordialidad, remite al canal formal de autorización y escala si la presión persiste.\n• Alerta: Entrega parte de la información por confianza o minimiza el pedido.",
         "respuesta_esperada": "Respuesta esperada: negarse con cordialidad ('no tengo autorización para compartir eso'); indicar el canal formal (solicitarlo a gerencia o RR.HH.); no dar información parcial ni 'una idea'; si la presión sigue, informar al superior.\nSe valora la firmeza amable y sostener la reserva aun con alguien de confianza."
-    }
+    },
+    {
+    "id": "DIN-SUP-JEF-05",
+    "cargo_id": "CAR-SUP-JDS-01",
+    "titulo": "Verificación de Cuadre de Caja",
+    "desc": "Ejercicio breve para evaluar la atención al detalle y control de valores en el cierre de caja.",
+    "tiempo_limite": "5 minutos",
+    "hoja_postulante": "Se le presenta un resumen de movimientos de caja diarios con un saldo inicial de $2.000, ingresos por cobros de $15.000, pagos efectuados de $4.000 y depósito bancario registrado de $10.000.",
+    "caso_o_consigna": "Calcule el saldo final teórico de la caja y compárelo con el efectivo físico contado de $2.800. Indique claramente si existe diferencia y de cuánto es.",
+    "guia_evaluacion": "Evalúa la precisión matemática, la atención a los rubros involucrados y la claridad en la identificación de la diferencia de caja.",
+    "respuesta_esperada": "Saldo teórico = 2000 + 15000 - 4000 - 10000 = 3000. Efectivo contado = 2800. Existe un faltante de 200."
+  },
+  {
+    "id": "DIN-SUP-JEF-06",
+    "cargo_id": "CAR-SUP-JDS-01",
+    "titulo": "Priorización de Urgencias Operativas",
+    "desc": "Ejercicio de ordenamiento y priorización de múltiples solicitudes simultáneas de la sucursal.",
+    "tiempo_limite": "4 minutos",
+    "hoja_postulante": "A las 09:00 hrs se presentan cuatro eventos operativos concurrentes: a) Reclamo de un socio por error en su cuenta corriente; b) Falta de clave de inicio en el sistema de caja; c) Solicitud de reporte financiero por Gerencia antes de las 10:00 hrs; d) Consulta de agente de retención sobre cobranzas.",
+    "caso_o_consigna": "Numere del 1 (más urgente) al 4 (menos urgente) las tareas según su criticidad e impacto operativo, justificando brevemente el criterio.",
+    "guia_evaluacion": "Valora la capacidad de discernir entre bloqueos operativos inmediatos (b), requerimientos gerenciales con plazo fijo (c), atención de socios (a) y gestiones secundarias (d).",
+    "respuesta_esperada": "Orden esperado: 1. b (bloquea la operativa general de caja), 2. c (plazo estricto de gerencia), 3. a (reclamo directo de socio), 4. d (gestión de menor urgencia temporal)."
+  },
+  {
+    "id": "DIN-SUP-JEF-07",
+    "cargo_id": "CAR-SUP-JDS-01",
+    "titulo": "Comunicación de Desvío Operativo",
+    "desc": "Dinámica escrita de redacción de directriz ante un incumplimiento detectado en el equipo.",
+    "tiempo_limite": "5 minutos",
+    "hoja_postulante": "Se detectó que en los últimos días se otorgaron créditos a socios sin verificar previamente la libreta de deudas, incumpliendo el protocolo establecido.",
+    "caso_o_consigna": "Redacte un mensaje breve dirigido a los colaboradores de la sucursal para corregir este procedimiento de inmediato, manteniendo un tono firme y constructivo.",
+    "guia_evaluacion": "Evalúa el uso de un tono asertivo, claridad en la instrucción correctiva, enfoque en el proceso y firmeza en la aplicación de la norma.",
+    "respuesta_esperada": "Mensaje que señale la obligatoriedad del paso previo de verificación, refuerce el apego estricto al protocolo de créditos y mantenga una disposición abierta para resolver dudas."
+  },
+  {
+    "id": "DIN-SUP-JEF-08",
+    "cargo_id": "CAR-SUP-JDS-01",
+    "titulo": "Análisis de Caso de Morosidad",
+    "desc": "Evaluación rápida de estrategia de cobranza ante un socio con atraso prolongado.",
+    "tiempo_limite": "6 minutos",
+    "hoja_postulante": "Un socio presenta un atraso de 90 días en su cuota de crédito y ha incumplido dos promesas de pago telefónicas previas realizadas por el equipo.",
+    "caso_o_consigna": "Defina los dos pasos operativos inmediatos que debe ejecutar el jefe de sucursal según la normativa interna de recuperación de valores.",
+    "guia_evaluacion": "Evalúa el criterio de escalamiento, el equilibrio entre la relación con el socio y el cumplimiento estricto de las políticas de cobranza.",
+    "respuesta_esperada": "1. Envío de notificación formal o intimación de pago por escrito. 2. Derivación del caso al área jurídica o central para evaluación de bloqueo definitivo o reestructuración."
+  }
 ]
