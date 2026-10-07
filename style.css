@@ -531,6 +531,24 @@ button:hover {
 .candidate-sheet {
     margin-top: 2.5rem;
     padding-top: 1.25rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.area-respuesta-postulante {
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 0.375rem;
+    padding: 1.5625rem;
+    margin-top: 0.625rem;
+    font-size: 0.9375rem;
+    line-height: 1.7;
+    white-space: pre-line;
+    min-height: 21.875rem;
+}
+
+.area-respuesta-libre {
+    flex: 1;
 }
 
 /* Configuración de Impresión */
@@ -568,9 +586,15 @@ button:hover {
     .candidate-sheet {
         margin-top: 0;
         padding-top: 0;
+        height: 267mm;
+        box-sizing: border-box;
         page-break-before: always; /* Una hoja de trabajo por página */
         break-before: page;
         break-inside: avoid;
+    }
+
+    .area-respuesta-libre {
+        min-height: 0;
     }
 }
 

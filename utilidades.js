@@ -22,13 +22,17 @@ function componerHoja(texto, renglones) {
         : cuerpo;
 }
 
-function prepararHojaDinamica(dinamica) {
-    const { texto } = separarRenglones(dinamica.hoja_postulante || '');
+function cantidadRenglonesDinamica(dinamica) {
     const particular = dinamica.renglones_hoja;
     const cantidad = particular === undefined || particular === null || particular === ''
         ? RENGLONES_HOJA_GLOBAL
         : particular;
-    return componerHoja(texto, cantidad);
+    return normalizarCantidadRenglones(cantidad);
+}
+
+function prepararHojaDinamica(dinamica) {
+    const { texto } = separarRenglones(dinamica.hoja_postulante || '');
+    return componerHoja(texto, cantidadRenglonesDinamica(dinamica));
 }
 
 // Escapa texto para insertarlo de forma segura dentro de innerHTML o de atributos HTML.

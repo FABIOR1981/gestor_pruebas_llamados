@@ -278,7 +278,7 @@ function generarEvaluacion() {
                         </div>
                     </div>
                 </div>
-                <div style="background: #ffffff; border: 1px solid var(--border); padding: 1.5625rem; border-radius: 0.375rem; margin-top: 0.625rem; font-size: 0.9375rem; line-height: 1.7; white-space: pre-line; min-height: 21.875rem;">
+                <div class="area-respuesta-postulante ${cantidadRenglonesDinamica(din) === 0 ? 'area-respuesta-libre' : ''}">
                     ${prepararHojaDinamica(din) || "Sin material específico definido."}
                 </div>
             </div>
