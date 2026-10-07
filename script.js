@@ -181,15 +181,16 @@ function generarEvaluacion() {
         : `Σ (Total dinámica ÷ ${maxPorDinamica} × peso) ÷ ${sumaPesos} × ${PUNTAJE_FINAL_MAX}`;
 
     // Una sola tabla: cada dinámica es una fila y cada competencia una columna de puntaje.
+    const codigoCompetencia = idx => `C${String(idx + 1).padStart(2, '0')}`;
     const leyendaHTML = `
         <div class="leyenda-dinamicas bloque-dinamica">
             <strong>Competencias a observar</strong>
-            <ul>${comps.map(c => `
-                <li><strong>${c.comp}:</strong> ${c.desc}</li>`).join('')}
+            <ul>${comps.map((c, idx) => `
+                <li><strong>${codigoCompetencia(idx)} - ${c.comp}:</strong> ${c.desc}</li>`).join('')}
             </ul>
         </div>`;
 
-    const encabezadosHTML = comps.map(c => `<th class="col-puntaje">${c.comp}</th>`).join('');
+    const encabezadosHTML = comps.map((c, idx) => `<th class="col-puntaje" aria-label="${c.comp}" title="${c.comp}">${codigoCompetencia(idx)}</th>`).join('');
     const celdasVaciasHTML = comps.map(() => `<td class="celda-puntaje"><span class="max">/ 5</span></td>`).join('');
 
     const filasDinamicasHTML = seleccionadas.map((din, idx) => `
