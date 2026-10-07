@@ -172,6 +172,7 @@ function generarEvaluacion() {
     const maxPorDinamica = comps.length * 5;
     const maxPorCompetencia = seleccionadas.length * 5;
     const maxTotal = maxPorDinamica * seleccionadas.length;
+    const PUNTAJE_FINAL_MAX = 30; // el psicotécnico siempre se reporta sobre 30, sin importar cuántas dinámicas se usen
 
     // Una sola tabla: cada dinámica es una fila y cada competencia una columna de puntaje.
     const leyendaHTML = `
@@ -207,6 +208,10 @@ function generarEvaluacion() {
                 <tr class="fila-total">
                     <td>TOTAL</td>${totalesCompetenciaHTML}
                     <td class="celda-puntaje"><span class="max">/ ${maxTotal}</span></td>
+                </tr>
+                <tr class="fila-total">
+                    <td>PUNTAJE FINAL</td>
+                    <td colspan="${comps.length + 1}" class="celda-puntaje"><span class="max">Total ÷ ${maxTotal} × ${PUNTAJE_FINAL_MAX} = ______ / ${PUNTAJE_FINAL_MAX}</span></td>
                 </tr>
             </tbody>
         </table>`;
