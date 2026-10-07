@@ -258,9 +258,9 @@
         "titulo": "Análisis de Caso de Morosidad",
         "desc": "Análisis escrito de la estrategia de cobranza ante un socio con atraso prolongado.",
         "tiempo_limite": "6 Minutos",
-        "hoja_postulante": "Caso Práctico:\nUn socio presenta un atraso de 90 días en su cuota de crédito y ha incumplido dos promesas de pago telefónicas previas realizadas por el equipo.\n\nConsigna:\nIndique los dos pasos operativos inmediatos que ejecutaría como jefe de sucursal según la normativa interna de recuperación de valores y fundamente brevemente cada uno.\n\n<div class='renglon-respuesta'></div><div class='renglon-respuesta'></div><div class='renglon-respuesta'></div><div class='renglon-respuesta'></div><div class='renglon-respuesta'></div>",
+        "hoja_postulante": "Caso Práctico:\nUn socio presenta un atraso de 90 días en su cuota de crédito y ha incumplido dos compromisos de pago firmados previamente en la sucursal.\n\nConsigna:\nIndique los dos pasos operativos inmediatos que ejecutaría como jefe de sucursal según la normativa interna de recuperación de valores y fundamente brevemente cada uno.\n\n<div class='renglon-respuesta'></div><div class='renglon-respuesta'></div><div class='renglon-respuesta'></div><div class='renglon-respuesta'></div><div class='renglon-respuesta'></div>",
         "caso_o_consigna": "Criterio de escalamiento y equilibrio entre la relación con el socio y el cumplimiento de las políticas de cobranza.",
-        "guia_evaluacion": "• Éxito: Propone pasos formales y graduales (notificación escrita y escalamiento), fundamenta cada uno y respeta la normativa.\n• Alerta: Insiste solo con llamadas informales, omite la formalización o toma medidas arbitrarias sin respaldo normativo.",
+        "guia_evaluacion": "• Éxito: Propone pasos formales y graduales (notificación escrita y escalamiento), fundamenta cada uno y respeta la normativa.\n• Alerta: Insiste solo con gestiones informales, omite la formalización o toma medidas arbitrarias sin respaldo normativo.",
         "respuesta_esperada": "Pasos esperados:\n1) Enviar una notificación formal o intimación de pago por escrito.\n2) Derivar el caso al área jurídica o a la central para evaluar el bloqueo definitivo o una reestructuración.\nSe valora que fundamente cada paso y conserve el registro de las gestiones realizadas."
     }
 ]
