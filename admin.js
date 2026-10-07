@@ -1,6 +1,6 @@
 let baseDatosGlobal = { areas: {}, cargos: {}, dinamicas: [] };
 let cambiosPendientes = false;
-const MAX_COMPETENCIAS = 6;
+const MAX_COMPETENCIAS = 20;
 
 function pintarEstado() {
     const el = document.getElementById('estadoCarga');
@@ -336,14 +336,21 @@ function eliminarDinamica(dinId) {
 
 function filaCompetencia(c) {
     const fila = document.createElement('div');
-    fila.style.cssText = 'display:grid;grid-template-columns:1fr 2fr auto;gap:0.5rem;margin-bottom:0.5rem;';
+    fila.className = 'fila-competencia';
+
+    const codigo = document.createElement('input');
+    codigo.type = 'text'; codigo.maxLength = 12;
+    codigo.className = 'competencia-codigo';
+    codigo.placeholder = 'Código'; codigo.value = c.codigo || '';
 
     const nombre = document.createElement('input');
     nombre.type = 'text'; nombre.maxLength = 60; nombre.required = true;
+    nombre.className = 'competencia-nombre';
     nombre.placeholder = 'Competencia'; nombre.value = c.comp || '';
 
     const desc = document.createElement('input');
     desc.type = 'text'; desc.maxLength = 200; desc.required = true;
+    desc.className = 'competencia-desc';
     desc.placeholder = 'Qué se observa'; desc.value = c.desc || '';
 
     const quitar = document.createElement('button');
@@ -357,7 +364,7 @@ function filaCompetencia(c) {
         fila.remove();
     };
 
-    fila.append(nombre, desc, quitar);
+    fila.append(codigo, nombre, desc, quitar);
     return fila;
 }
 
@@ -372,7 +379,11 @@ function agregarCompetencia(c = {}) {
 
 function leerCompetencias() {
     return [...document.getElementById('listaCompetencias').children]
-        .map(f => ({ comp: f.children[0].value.trim(), desc: f.children[1].value.trim() }))
+        .map(f => ({
+            codigo: f.children[0].value.trim(),
+            comp: f.children[1].value.trim(),
+            desc: f.children[2].value.trim()
+        }))
         .filter(c => c.comp);
 }
 
@@ -425,6 +436,11 @@ function guardarCargo(event) {
     const nombresComp = competencias.map(c => c.comp.toLowerCase());
     if (new Set(nombresComp).size !== nombresComp.length) {
         alert("Hay competencias repetidas.");
+        return;
+    }
+    const codigosComp = competencias.map(c => c.codigo).filter(Boolean);
+    if (new Set(codigosComp).size !== codigosComp.length) {
+        alert("Hay códigos de competencia repetidos.");
         return;
     }
 

@@ -490,6 +490,11 @@ button:hover {
     text-align: right;
 }
 
+.tabla-puntaje td.celda-no-aplica {
+    background-color: #e1e4e7 !important;
+    color: #7f8c8d;
+}
+
 .celda-puntaje .max {
     color: #95a5a6;
     font-size: 0.75rem;

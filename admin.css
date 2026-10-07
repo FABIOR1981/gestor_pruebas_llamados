@@ -111,6 +111,26 @@ button:hover { opacity: 0.9; }
     flex-direction: column;
 }
 
+.fila-competencia {
+    display: grid;
+    grid-template-columns: minmax(4rem, 0.65fr) minmax(8rem, 1fr) minmax(10rem, 2fr) auto;
+    grid-template-areas: "codigo nombre desc quitar";
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.competencia-codigo { grid-area: codigo; }
+.competencia-nombre { grid-area: nombre; }
+.competencia-desc { grid-area: desc; }
+.fila-competencia button { grid-area: quitar; }
+
+@media (max-width: 700px) {
+    .fila-competencia {
+        grid-template-columns: minmax(4rem, 0.65fr) minmax(0, 1.5fr) auto;
+        grid-template-areas: "codigo nombre quitar" "desc desc desc";
+    }
+}
+
 label {
     font-weight: 600;
     margin-bottom: 0.375rem;

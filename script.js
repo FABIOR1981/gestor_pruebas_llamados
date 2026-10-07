@@ -169,41 +169,58 @@ function generarEvaluacion() {
     `;
 
     const comps = datosCargo.competencias;
-    const maxPorDinamica = comps.length * 5;
-    const maxPorCompetencia = seleccionadas.length * 5;
-    const maxTotal = maxPorDinamica * seleccionadas.length;
+    const codigoCompetencia = (c, idx) => c.codigo || `C${String(idx + 1).padStart(2, '0')}`;
+    const competenciasPorDinamica = seleccionadas.map(din => {
+        const referencias = [...String(din.caso_o_consigna || '').matchAll(/\b\d+\.\d+\b/g)].map(([codigo]) => codigo);
+        return new Set(comps
+            .map((comp, idx) => codigoCompetencia(comp, idx))
+            .filter(codigo => referencias.length === 0 || referencias.includes(codigo)));
+    });
+    const maximosPorDinamica = competenciasPorDinamica.map(aplicables => aplicables.size * 5);
+    const maximosPorCompetencia = comps.map((comp, compIdx) =>
+        competenciasPorDinamica.filter(aplicables => aplicables.has(codigoCompetencia(comp, compIdx))).length * 5);
+    const maxTotal = maximosPorDinamica.reduce((total, maximo) => total + maximo, 0);
     const PUNTAJE_FINAL_MAX = 30; // el psicotécnico siempre se reporta sobre 30, sin importar cuántas dinámicas se usen
     const pesos = seleccionadas.map(d => Number(d.peso) > 0 ? Number(d.peso) : 1);
-    const sumaPesos = pesos.reduce((a, b) => a + b, 0);
-    const pesosIguales = pesos.every(p => p === pesos[0]);
-    const formulaFinal = pesosIguales
+    const pesosAplicables = pesos.filter((_, idx) => maximosPorDinamica[idx] > 0);
+    const sumaPesos = pesosAplicables.reduce((a, b) => a + b, 0);
+    const pesosIguales = pesosAplicables.length > 0 && pesosAplicables.every(p => p === pesosAplicables[0]);
+    const formulaFinal = maxTotal === 0
+        ? 'Sin competencias aplicables'
+        : pesosIguales
         ? `Total ÷ ${maxTotal} × ${PUNTAJE_FINAL_MAX}`
-        : `Σ (Total dinámica ÷ ${maxPorDinamica} × peso) ÷ ${sumaPesos} × ${PUNTAJE_FINAL_MAX}`;
+        : `Σ (Total dinámica ÷ máximo aplicable × peso) ÷ ${sumaPesos} × ${PUNTAJE_FINAL_MAX}`;
 
     // Una sola tabla: cada dinámica es una fila y cada competencia una columna de puntaje.
-    const codigoCompetencia = idx => `C${String(idx + 1).padStart(2, '0')}`;
     const leyendaHTML = `
         <div class="leyenda-dinamicas bloque-dinamica">
             <strong>Competencias a observar</strong>
             <ul>${comps.map((c, idx) => `
-                <li><strong>${codigoCompetencia(idx)} - ${c.comp}:</strong> ${c.desc}</li>`).join('')}
+                <li><strong>${codigoCompetencia(c, idx)} - ${c.comp}:</strong> ${c.desc}</li>`).join('')}
             </ul>
         </div>`;
 
-    const encabezadosHTML = comps.map((c, idx) => `<th class="col-puntaje" aria-label="${c.comp}" title="${c.comp}">${codigoCompetencia(idx)}</th>`).join('');
-    const celdasVaciasHTML = comps.map(() => `<td class="celda-puntaje"><span class="max">/ 5</span></td>`).join('');
+    const encabezadosHTML = comps.map((c, idx) => `<th class="col-puntaje" aria-label="${c.comp}" title="${c.comp}">${codigoCompetencia(c, idx)}</th>`).join('');
 
-    const filasDinamicasHTML = seleccionadas.map((din, idx) => `
+    const filasDinamicasHTML = seleccionadas.map((din, idx) => {
+        const celdas = comps.map((comp, compIdx) => competenciasPorDinamica[idx].has(codigoCompetencia(comp, compIdx))
+            ? `<td class="celda-puntaje"><span class="max">/ 5</span></td>`
+            : '<td class="celda-no-aplica" aria-label="No aplica"></td>').join('');
+        const maximo = maximosPorDinamica[idx];
+        return `
         <tr>
             <td class="celda-comp">
                 <strong><span class="badge-d">D${idx + 1}</span>${din.titulo}</strong>
                 <span><span class="chip chip-id">${din.id}</span> <span class="chip chip-tiempo">⏱️ ${din.tiempo_limite || 'sin límite'}</span>${pesosIguales ? '' : ` <span class="chip chip-id">Peso ${pesos[idx]}</span>`}</span>
             </td>
-            ${celdasVaciasHTML}
-            <td class="celda-puntaje col-subtotal"><span class="max">/ ${maxPorDinamica}</span></td>
-        </tr>`).join('');
+            ${celdas}
+            <td class="celda-puntaje col-subtotal"><span class="max">${maximo ? `/ ${maximo}` : 'No aplica'}</span></td>
+        </tr>`;
+    }).join('');
 
-    const totalesCompetenciaHTML = comps.map(() => `<td class="celda-puntaje"><span class="max">/ ${maxPorCompetencia}</span></td>`).join('');
+    const totalesCompetenciaHTML = maximosPorCompetencia.map(maximo => maximo
+        ? `<td class="celda-puntaje"><span class="max">/ ${maximo}</span></td>`
+        : '<td class="celda-no-aplica" aria-label="No aplica"></td>').join('');
 
     const tablaPuntajeHTML = `
         <table class="tabla-puntaje">
@@ -218,7 +235,7 @@ function generarEvaluacion() {
                 </tr>
                 <tr class="fila-total">
                     <td>PUNTAJE FINAL</td>
-                    <td colspan="${comps.length + 1}" class="celda-puntaje"><span class="max">${formulaFinal} = ______ / ${PUNTAJE_FINAL_MAX}</span></td>
+                    <td colspan="${comps.length + 1}" class="celda-puntaje"><span class="max">${formulaFinal}${maxTotal ? ` = ______ / ${PUNTAJE_FINAL_MAX}` : ''}</span></td>
                 </tr>
             </tbody>
         </table>`;
