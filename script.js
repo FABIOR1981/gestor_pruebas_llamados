@@ -189,7 +189,7 @@ function generarEvaluacion() {
         ? 'Sin competencias aplicables'
         : pesosIguales
         ? `Total ÷ ${maxTotal} × ${PUNTAJE_FINAL_MAX}`
-        : `Σ (Total dinámica ÷ máximo aplicable × peso) ÷ ${sumaPesos} × ${PUNTAJE_FINAL_MAX}`;
+        : `Σ (Sub total ÷ máximo aplicable × peso) ÷ ${sumaPesos} × ${PUNTAJE_FINAL_MAX}`;
 
     // Una sola tabla: cada dinámica es una fila y cada competencia una columna de puntaje.
     const leyendaHTML = `
@@ -225,7 +225,7 @@ function generarEvaluacion() {
     const tablaPuntajeHTML = `
         <table class="tabla-puntaje">
             <thead>
-                <tr><th>Dinámica</th>${encabezadosHTML}<th class="col-subtotal">Total dinámica</th></tr>
+                <tr><th>Dinámica</th>${encabezadosHTML}<th class="col-subtotal">Sub total</th></tr>
             </thead>
             <tbody>
                 ${filasDinamicasHTML}
@@ -235,7 +235,7 @@ function generarEvaluacion() {
                 </tr>
                 <tr class="fila-total">
                     <td>PUNTAJE FINAL</td>
-                    <td colspan="${comps.length + 1}" class="celda-puntaje"><span class="max">${formulaFinal}${maxTotal ? ` = ______ / ${PUNTAJE_FINAL_MAX}` : ''}</span></td>
+                    <td colspan="${comps.length + 1}" class="celda-puntaje celda-formula"><span class="max">${formulaFinal}${maxTotal ? ` = ______ / ${PUNTAJE_FINAL_MAX}` : ''}</span></td>
                 </tr>
             </tbody>
         </table>`;

@@ -450,7 +450,22 @@ button:hover {
 
 .tabla-puntaje thead th:first-child {
     text-align: left;
-    width: 34%;
+    width: 28%;
+}
+
+/* Columnas de competencias: compactas y sin salto de línea para que los códigos no se desalineen */
+.tabla-puntaje thead th.col-puntaje {
+    padding: 0.5rem 0.0625rem;
+    font-size: 0.75rem;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.tabla-puntaje td.celda-puntaje {
+    padding-left: 0.125rem;
+    padding-right: 0.25rem;
+    white-space: nowrap;
+    overflow: hidden;
 }
 
 .tabla-puntaje thead th small {
@@ -476,7 +491,7 @@ button:hover {
 }
 
 .tabla-puntaje .col-subtotal {
-    width: 15%;
+    width: 11%;
 }
 
 .tabla-puntaje tbody .col-subtotal {
@@ -488,6 +503,11 @@ button:hover {
     height: 2.75rem;
     vertical-align: bottom;
     text-align: right;
+}
+
+.tabla-puntaje td.celda-formula {
+    white-space: normal;
+    padding: 0.5rem 0.625rem;
 }
 
 .tabla-puntaje td.celda-no-aplica {
