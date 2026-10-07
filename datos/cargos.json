@@ -3,45 +3,104 @@
         "nombre": "Carga / Descarga",
         "area": "Operativa",
         "competencias": [
-            { "comp": "Actitud hacia la Normativa", "desc": "Muestra disposición a respetar protocolos de seguridad y a priorizar el cuidado propio y ajeno." },
-            { "comp": "Resistencia / Dinamismo", "desc": "Mantiene ritmo de ejecución constante y eficiencia." },
-            { "comp": "Trabajo en Equipo", "desc": "Colabora de forma armónica con sus compañeros de cuadrilla." }
+            {
+                "comp": "Actitud hacia la Normativa",
+                "desc": "Muestra disposición a respetar protocolos de seguridad y a priorizar el cuidado propio y ajeno."
+            },
+            {
+                "comp": "Resistencia / Dinamismo",
+                "desc": "Mantiene ritmo de ejecución constante y eficiencia."
+            },
+            {
+                "comp": "Trabajo en Equipo",
+                "desc": "Colabora de forma armónica con sus compañeros de cuadrilla."
+            }
         ]
     },
     "CAR-ADM-GEN-01": {
         "nombre": "Administrativo",
         "area": "Administración",
         "competencias": [
-            { "comp": "Atención al Detalle y Orden", "desc": "Revisa con método y cuidado, manteniendo la concentración en tareas repetitivas." },
-            { "comp": "Gestión del Tiempo", "desc": "Prioriza tareas administrativas eficientemente." },
-            { "comp": "Comunicación Efectiva", "desc": "Transmite información clara y formal de manera escrita y oral." }
+            {
+                "comp": "Atención al Detalle y Orden",
+                "desc": "Revisa con método y cuidado, manteniendo la concentración en tareas repetitivas."
+            },
+            {
+                "comp": "Gestión del Tiempo",
+                "desc": "Prioriza tareas administrativas eficientemente."
+            },
+            {
+                "comp": "Comunicación Efectiva",
+                "desc": "Transmite información clara y formal de manera escrita y oral."
+            }
         ]
     },
     "CAR-SUP-ENC-01": {
         "nombre": "Encargado",
         "area": "Supervisión",
         "competencias": [
-            { "comp": "Liderazgo Práctico", "desc": "Guía al equipo con claridad y firmeza empática." },
-            { "comp": "Toma de Decisiones", "desc": "Actúa con criterio ante imprevistos cotidianos." },
-            { "comp": "Orientación a Resultados", "desc": "Supervisa el cumplimiento de metas diarias." }
+            {
+                "comp": "Liderazgo Práctico",
+                "desc": "Guía al equipo con claridad y firmeza empática."
+            },
+            {
+                "comp": "Toma de Decisiones",
+                "desc": "Actúa con criterio ante imprevistos cotidianos."
+            },
+            {
+                "comp": "Orientación a Resultados",
+                "desc": "Supervisa el cumplimiento de metas diarias."
+            }
         ]
     },
     "CAR-SUP-JEF-01": {
         "nombre": "Jefe",
         "area": "Supervisión",
         "competencias": [
-            { "comp": "Visión Estratégica", "desc": "Comprende el impacto global de sus decisiones." },
-            { "comp": "Negociación e Influencia", "desc": "Persuade y alinea equipos hacia metas complejas." },
-            { "comp": "Gestión de Crisis", "desc": "Mantiene la templanza y el foco estratégico en momentos críticos." }
+            {
+                "comp": "Visión Estratégica",
+                "desc": "Comprende el impacto global de sus decisiones."
+            },
+            {
+                "comp": "Negociación e Influencia",
+                "desc": "Persuade y alinea equipos hacia metas complejas."
+            },
+            {
+                "comp": "Gestión de Crisis",
+                "desc": "Mantiene la templanza y el foco estratégico en momentos críticos."
+            }
         ]
     },
     "CAR-FIN-CON-01": {
         "nombre": "Contador",
         "area": "Finanzas",
         "competencias": [
-            { "comp": "Método y Criterio Profesional", "desc": "Ordena su razonamiento y actúa con prudencia ante datos o situaciones dudosas." },
-            { "comp": "Pensamiento Analítico", "desc": "Analiza con lógica, detecta incoherencias y evalúa riesgos antes de decidir." },
-            { "comp": "Integridad y Confidencialidad", "desc": "Sostiene sus valores y la reserva de información aun bajo presión o insistencia." }
+            {
+                "comp": "Método y Criterio Profesional",
+                "desc": "Ordena su razonamiento y actúa con prudencia ante datos o situaciones dudosas."
+            },
+            {
+                "comp": "Pensamiento Analítico",
+                "desc": "Analiza con lógica, detecta incoherencias y evalúa riesgos antes de decidir."
+            },
+            {
+                "comp": "Integridad y Confidencialidad",
+                "desc": "Sostiene sus valores y la reserva de información aun bajo presión o insistencia."
+            }
+        ]
+    },
+    "CAR-SUP-JSM-01": {
+        "nombre": "JEFE DE SUCURSAL MERCEDES",
+        "area": "Supervisión",
+        "competencias": [
+            {
+                "comp": "Competencia General 1",
+                "desc": "Descripción de ejemplo a modificar."
+            },
+            {
+                "comp": "Competencia General 2",
+                "desc": "Descripción de ejemplo a modificar."
+            }
         ]
     }
 }
