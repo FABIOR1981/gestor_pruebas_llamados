@@ -45,11 +45,20 @@ Se puede publicar en cualquier hosting estático (Netlify, GitHub Pages, Apache,
 
 ## Actualizar los datos
 
-1. En el **Panel de Administración**, hacer los cambios.
-2. Hacer clic en **Descargar JSON Actualizado**. Se descargan `areas.json`, `cargos.json` y `dinamicas.json`.
-3. Reemplazar esos archivos en `datos/` y volver a publicar.
+Los datos viven en `bd/pruebas_llamados/` (`areas.json`, `cargos.json`, `dinamicas.json`) y se leen y guardan mediante la función de Netlify `netlify/functions/pruebas.js`. Si la función no está disponible, la app usa los JSON de `datos/` como respaldo.
 
-> Los cambios del panel quedan solo en memoria. Si se recarga la página antes de descargar los JSON, se pierden.
+Variables de entorno en Netlify:
+
+| Variable | Uso |
+|---|---|
+| `GITHUB_TOKEN_PRUEBAS` | Token con permiso de lectura y escritura de contenido sobre el repositorio `bd`. |
+| `CLAVE_PRUEBAS` | Contraseña que pide el panel para guardar. |
+| `PRUEBAS_REPO`, `PRUEBAS_RUTA` | Opcionales. Por defecto `FABIOR1981/bd` y `pruebas_llamados`. |
+
+1. En el **Panel de Administración**, hacer los cambios.
+2. Hacer clic en **Guardar en GitHub** e ingresar la contraseña. Si los archivos todavía no existen en `bd/pruebas_llamados/`, se crean en el primer guardado.
+
+> Los cambios del panel quedan en memoria hasta guardar. Si se recarga la página antes, se pierden. **Descargar copia JSON** sirve como respaldo manual.
 
 ## Estructura
 

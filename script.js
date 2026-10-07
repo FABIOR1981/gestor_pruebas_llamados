@@ -173,6 +173,12 @@ function generarEvaluacion() {
     const maxPorCompetencia = seleccionadas.length * 5;
     const maxTotal = maxPorDinamica * seleccionadas.length;
     const PUNTAJE_FINAL_MAX = 30; // el psicotécnico siempre se reporta sobre 30, sin importar cuántas dinámicas se usen
+    const pesos = seleccionadas.map(d => Number(d.peso) > 0 ? Number(d.peso) : 1);
+    const sumaPesos = pesos.reduce((a, b) => a + b, 0);
+    const pesosIguales = pesos.every(p => p === pesos[0]);
+    const formulaFinal = pesosIguales
+        ? `Total ÷ ${maxTotal} × ${PUNTAJE_FINAL_MAX}`
+        : `Σ (Total dinámica ÷ ${maxPorDinamica} × peso) ÷ ${sumaPesos} × ${PUNTAJE_FINAL_MAX}`;
 
     // Una sola tabla: cada dinámica es una fila y cada competencia una columna de puntaje.
     const leyendaHTML = `
@@ -190,7 +196,7 @@ function generarEvaluacion() {
         <tr>
             <td class="celda-comp">
                 <strong><span class="badge-d">D${idx + 1}</span>${din.titulo}</strong>
-                <span><span class="chip chip-id">${din.id}</span> <span class="chip chip-tiempo">⏱️ ${din.tiempo_limite || 'sin límite'}</span></span>
+                <span><span class="chip chip-id">${din.id}</span> <span class="chip chip-tiempo">⏱️ ${din.tiempo_limite || 'sin límite'}</span>${pesosIguales ? '' : ` <span class="chip chip-id">Peso ${pesos[idx]}</span>`}</span>
             </td>
             ${celdasVaciasHTML}
             <td class="celda-puntaje col-subtotal"><span class="max">/ ${maxPorDinamica}</span></td>
@@ -211,7 +217,7 @@ function generarEvaluacion() {
                 </tr>
                 <tr class="fila-total">
                     <td>PUNTAJE FINAL</td>
-                    <td colspan="${comps.length + 1}" class="celda-puntaje"><span class="max">Total ÷ ${maxTotal} × ${PUNTAJE_FINAL_MAX} = ______ / ${PUNTAJE_FINAL_MAX}</span></td>
+                    <td colspan="${comps.length + 1}" class="celda-puntaje"><span class="max">${formulaFinal} = ______ / ${PUNTAJE_FINAL_MAX}</span></td>
                 </tr>
             </tbody>
         </table>`;

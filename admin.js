@@ -1,11 +1,34 @@
 let baseDatosGlobal = { areas: {}, cargos: {}, dinamicas: [] };
+let cambiosPendientes = false;
+const MAX_COMPETENCIAS = 6;
+
+function pintarEstado() {
+    const el = document.getElementById('estadoCarga');
+    if (cambiosPendientes) {
+        el.textContent = "Cambios sin guardar";
+        el.style.color = "var(--danger)";
+        return;
+    }
+    el.textContent = Datos.origen === 'bd'
+        ? "Datos cargados desde bd/pruebas_llamados"
+        : "Datos locales (al guardar se crearán en bd/pruebas_llamados)";
+    el.style.color = "var(--success)";
+}
+
+function marcarCambios() {
+    cambiosPendientes = true;
+    pintarEstado();
+}
+
+window.addEventListener('beforeunload', e => {
+    if (cambiosPendientes) { e.preventDefault(); e.returnValue = ''; }
+});
 
 window.onload = async function() {
     try {
         baseDatosGlobal = await Datos.cargar();
 
-        document.getElementById('estadoCarga').textContent = "Datos cargados";
-        document.getElementById('estadoCarga').style.color = "var(--success)";
+        pintarEstado();
         
         inicializarAdmin();
     } catch (error) {
@@ -111,6 +134,7 @@ function guardarArea(event) {
     }
 
     baseDatosGlobal.areas[sigla] = { nombre: nombre };
+    marcarCambios();
     cerrarModalArea();
     cargarSelectAreas();
     alert(`Área '${nombre}' [${sigla}] creada con éxito.`);
@@ -206,6 +230,7 @@ function editarDinamica(dinId) {
     document.getElementById('modalHoja').value = hoja.texto;
     document.getElementById('modalRenglones').value = hoja.renglones;
     document.getElementById('modalCaso').value = din.caso_o_consigna || '';
+    document.getElementById('modalPeso').value = din.peso || 1;
     document.getElementById('modalGuia').value = din.guia_evaluacion || '';
     document.getElementById('modalRespuesta').value = din.respuesta_esperada || '';
     
@@ -242,6 +267,7 @@ function guardarDinamica(event) {
         titulo: document.getElementById('modalTituloDin').value.trim(),
         desc: document.getElementById('modalDesc').value.trim(),
         tiempo_limite: document.getElementById('modalTiempo').value.trim(),
+        peso: Math.min(Math.max(parseInt(document.getElementById('modalPeso').value, 10) || 1, 1), 5),
         hoja_postulante: componerHoja(document.getElementById('modalHoja').value, document.getElementById('modalRenglones').value),
         caso_o_consigna: document.getElementById('modalCaso').value.trim(),
         guia_evaluacion: document.getElementById('modalGuia').value.trim(),
@@ -264,19 +290,92 @@ function guardarDinamica(event) {
     cerrarModalDinamica();
     document.getElementById('cargoSelectAdmin').value = cargoKey;
     renderizarDinamicas();
-    alert("¡Dinámica guardada! Haz clic en 'Descargar JSON Actualizado' cuando termines.");
+    marcarCambios();
+    alert("¡Dinámica guardada! Haz clic en 'Guardar en GitHub' cuando termines.");
 }
 
 function eliminarDinamica(dinId) {
     if (confirm(`¿Estás seguro de eliminar la dinámica ${dinId}?`)) {
         baseDatosGlobal.dinamicas = baseDatosGlobal.dinamicas.filter(d => d.id !== dinId);
         renderizarDinamicas();
+        marcarCambios();
     }
+}
+
+function filaCompetencia(c) {
+    const fila = document.createElement('div');
+    fila.style.cssText = 'display:grid;grid-template-columns:1fr 2fr auto;gap:0.5rem;margin-bottom:0.5rem;';
+
+    const nombre = document.createElement('input');
+    nombre.type = 'text'; nombre.maxLength = 60; nombre.required = true;
+    nombre.placeholder = 'Competencia'; nombre.value = c.comp || '';
+
+    const desc = document.createElement('input');
+    desc.type = 'text'; desc.maxLength = 200; desc.required = true;
+    desc.placeholder = 'Qué se observa'; desc.value = c.desc || '';
+
+    const quitar = document.createElement('button');
+    quitar.type = 'button'; quitar.className = 'btn-danger'; quitar.textContent = '✕';
+    quitar.setAttribute('aria-label', 'Quitar competencia');
+    quitar.onclick = () => {
+        if (document.getElementById('listaCompetencias').children.length <= 1) {
+            alert("El cargo necesita al menos una competencia.");
+            return;
+        }
+        fila.remove();
+    };
+
+    fila.append(nombre, desc, quitar);
+    return fila;
+}
+
+function agregarCompetencia(c = {}) {
+    const lista = document.getElementById('listaCompetencias');
+    if (lista.children.length >= MAX_COMPETENCIAS) {
+        alert(`Máximo ${MAX_COMPETENCIAS} competencias por cargo.`);
+        return;
+    }
+    lista.appendChild(filaCompetencia(c));
+}
+
+function leerCompetencias() {
+    return [...document.getElementById('listaCompetencias').children]
+        .map(f => ({ comp: f.children[0].value.trim(), desc: f.children[1].value.trim() }))
+        .filter(c => c.comp);
 }
 
 function abrirModalCargo() {
     document.getElementById('formCargo').reset();
-    document.getElementById('cargoKeyInput').value = ""; 
+    document.getElementById('cargoEditKey').value = "";
+    document.getElementById('cargoKeyInput').value = "";
+    document.getElementById('tituloModalCargo').textContent = "Crear Nuevo Cargo";
+    document.getElementById('btnGuardarCargo').textContent = "Crear Cargo";
+    document.getElementById('cargoAreaSelect').disabled = false;
+    document.getElementById('cargoEspecialidad').disabled = false;
+    document.getElementById('listaCompetencias').innerHTML = '';
+    for (let i = 0; i < 3; i++) agregarCompetencia();
+    document.getElementById('modalCargoNuevo').style.display = 'flex';
+}
+
+function editarCargo() {
+    const key = document.getElementById('cargoSelectAdmin').value;
+    const cargo = baseDatosGlobal.cargos[key];
+    if (!cargo) return;
+
+    const [, sigla, especialidad] = key.split('-');
+    document.getElementById('formCargo').reset();
+    document.getElementById('cargoEditKey').value = key;
+    document.getElementById('tituloModalCargo').textContent = "Editar Cargo y Competencias";
+    document.getElementById('btnGuardarCargo').textContent = "Guardar Cambios";
+    document.getElementById('cargoNombreInput').value = cargo.nombre;
+    document.getElementById('cargoAreaSelect').value = sigla;
+    document.getElementById('cargoAreaSelect').disabled = true;
+    document.getElementById('cargoEspecialidad').value = especialidad || '';
+    document.getElementById('cargoEspecialidad').disabled = true;
+    document.getElementById('cargoKeyInput').value = key;
+    document.getElementById('listaCompetencias').innerHTML = '';
+    (cargo.competencias || []).forEach(c => agregarCompetencia(c));
+    if (!document.getElementById('listaCompetencias').children.length) agregarCompetencia();
     document.getElementById('modalCargoNuevo').style.display = 'flex';
 }
 
@@ -286,9 +385,33 @@ function cerrarModalCargo() {
 
 function guardarCargo(event) {
     event.preventDefault();
-    const key = document.getElementById('cargoKeyInput').value.trim();
+    const competencias = leerCompetencias();
+    if (competencias.length === 0) {
+        alert("Defina al menos una competencia.");
+        return;
+    }
+    const nombresComp = competencias.map(c => c.comp.toLowerCase());
+    if (new Set(nombresComp).size !== nombresComp.length) {
+        alert("Hay competencias repetidas.");
+        return;
+    }
+
+    const editKey = document.getElementById('cargoEditKey').value;
     const nombre = document.getElementById('cargoNombreInput').value.trim();
-    
+
+    if (editKey) {
+        baseDatosGlobal.cargos[editKey].nombre = nombre;
+        baseDatosGlobal.cargos[editKey].competencias = competencias;
+        cerrarModalCargo();
+        inicializarAdmin();
+        document.getElementById('cargoSelectAdmin').value = editKey;
+        renderizarDinamicas();
+        marcarCambios();
+        alert(`Cargo '${nombre}' [${editKey}] actualizado.`);
+        return;
+    }
+
+    const key = document.getElementById('cargoKeyInput').value.trim();
     const selectArea = document.getElementById('cargoAreaSelect');
     const areaSigla = selectArea.value;
     const nombreArea = baseDatosGlobal.areas[areaSigla] ? baseDatosGlobal.areas[areaSigla].nombre : areaSigla;
@@ -306,17 +429,46 @@ function guardarCargo(event) {
     baseDatosGlobal.cargos[key] = {
         nombre: nombre,
         area: nombreArea,
-        competencias: [
-            { comp: "Competencia General 1", desc: "Descripción de ejemplo a modificar." },
-            { comp: "Competencia General 2", desc: "Descripción de ejemplo a modificar." }
-        ]
+        competencias: competencias
     };
 
     cerrarModalCargo();
     inicializarAdmin();
     document.getElementById('cargoSelectAdmin').value = key;
     renderizarDinamicas();
+    marcarCambios();
     alert(`¡Cargo '${nombre}' [${key}] creado con éxito!`);
+}
+
+function abrirModalGuardar() {
+    document.getElementById('formGuardar').reset();
+    document.getElementById('avGuardar').textContent = '';
+    document.getElementById('modalGuardar').style.display = 'flex';
+    document.getElementById('pwGuardar').focus();
+}
+
+function cerrarModalGuardar() {
+    document.getElementById('modalGuardar').style.display = 'none';
+}
+
+async function confirmarGuardado(event) {
+    event.preventDefault();
+    const boton = document.getElementById('btnConfirmarGuardado');
+    const aviso = document.getElementById('avGuardar');
+    boton.disabled = true;
+    aviso.style.color = '#555';
+    aviso.textContent = 'Guardando…';
+    try {
+        const r = await Datos.guardar(baseDatosGlobal, document.getElementById('pwGuardar').value);
+        cambiosPendientes = false;
+        pintarEstado();
+        cerrarModalGuardar();
+        alert(r.escritos.length ? `Guardado en GitHub: ${r.escritos.join(', ')}.` : 'No había cambios para guardar.');
+    } catch (error) {
+        aviso.style.color = 'var(--danger)';
+        aviso.textContent = error.message;
+    }
+    boton.disabled = false;
 }
 
 function descargarJSON() {

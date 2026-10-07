@@ -18,9 +18,10 @@
             </div>
             <div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.625rem;">
                 <div class="btn-group">
+                    <button class="btn-success" style="background-color: #27ae60;" onclick="abrirModalGuardar()">💾 Guardar en GitHub</button>
                     <button class="btn-success" style="background-color: #27ae60;" onclick="abrirModalArea()">+ Crear Nueva Área</button>
                     <button class="btn-warning" onclick="abrirModalCargo()">+ Crear Nuevo Cargo</button>
-                    <button class="btn-secondary" onclick="descargarJSON()">📥 Descargar JSON Actualizado</button>
+                    <button class="btn-secondary" onclick="descargarJSON()">📥 Descargar copia JSON</button>
                 </div>
                 <div>
                     <button onclick="window.location.href='index.html'" style="background-color: #34495e; color: white; border: none; padding: 0.625rem 1rem; border-radius: 0.25rem; cursor: pointer; font-weight: bold; transition: background 0.2s;" onmouseover="this.style.backgroundColor='#2c3e50'" onmouseout="this.style.backgroundColor='#34495e'">
@@ -36,6 +37,7 @@
                 <select id="cargoSelectAdmin" onchange="renderizarDinamicas()"></select>
             </div>
             <div>
+                <button class="btn-warning" onclick="editarCargo()" style="width: 100%; margin-bottom: 0.5rem;">✏️ Editar Cargo y Competencias</button>
                 <button class="btn-success" onclick="abrirModalDinamica()" style="width: 100%;">+ Nueva Dinámica</button>
             </div>
         </div>
@@ -72,8 +74,9 @@
     <!-- Modal: Crear Nuevo Cargo -->
     <div id="modalCargoNuevo" class="modal">
         <div class="modal-content" style="max-width: 34.375rem;">
-            <h3>Crear Nuevo Cargo</h3>
+            <h3 id="tituloModalCargo">Crear Nuevo Cargo</h3>
             <form id="formCargo" onsubmit="guardarCargo(event)">
+                <input type="hidden" id="cargoEditKey" value="">
                 
                 <div class="form-group" style="margin-bottom: 0.9375rem;">
                     <label for="cargoNombreInput">Nombre legible del Cargo:</label>
@@ -98,8 +101,14 @@
                     <input type="text" id="cargoKeyInput" style="background-color: #eaeded; font-family: monospace; font-weight: bold; color: #7f8c8d; border: 1px dashed #bdc3c7;" readonly required placeholder="Seleccione área y sigla para generar">
                 </div>
 
+                <div class="form-group" style="margin-bottom: 0.9375rem;">
+                    <label>Competencias a evaluar (de 1 a 6): definen las columnas de la tabla de puntaje</label>
+                    <div id="listaCompetencias"></div>
+                    <button type="button" class="btn-secondary" onclick="agregarCompetencia()">+ Agregar competencia</button>
+                </div>
+
                 <div style="display: flex; gap: 0.625rem; margin-top: 1.5625rem;">
-                    <button type="submit" class="btn-success">Crear Cargo</button>
+                    <button type="submit" class="btn-success" id="btnGuardarCargo">Crear Cargo</button>
                     <button type="button" class="btn-danger" onclick="cerrarModalCargo()">Cancelar</button>
                 </div>
             </form>
@@ -138,6 +147,12 @@
                     <input type="text" id="modalTiempo" placeholder="Ej: 3 Minutos Exactos" required>
                 </div>
 
+                <div class="form-group" style="margin-bottom: 0.9375rem; max-width: 13.75rem;">
+                    <label for="modalPeso">Peso en el puntaje final (1 a 5):</label>
+                    <input type="number" id="modalPeso" min="1" max="5" step="1" value="1" required>
+                    <small style="color: #7f8c8d; font-size: 0.75rem; margin-top: 0.25rem;">1 = peso normal. Un 2 vale el doble que una dinámica de peso 1.</small>
+                </div>
+
                 <div class="form-group" style="margin-bottom: 0.9375rem;">
                     <label for="modalHoja">Hoja de Trabajo / Consigna para el Postulante:</label>
                     <textarea id="modalHoja" rows="4" placeholder="Texto o consigna que verá el candidato..." required></textarea>
@@ -167,6 +182,25 @@
                 <div style="display: flex; gap: 0.625rem; margin-top: 1.5625rem;">
                     <button type="submit" class="btn-success">Guardar Dinámica</button>
                     <button type="button" class="btn-danger" onclick="cerrarModalDinamica()">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: Guardar en GitHub -->
+    <div id="modalGuardar" class="modal">
+        <div class="modal-content" style="max-width: 28.125rem;">
+            <h3>Guardar en GitHub</h3>
+            <p style="font-size: 0.875rem; color: #555;">Escribe los cambios en <code>bd/pruebas_llamados</code>.</p>
+            <form id="formGuardar" onsubmit="confirmarGuardado(event)">
+                <div class="form-group" style="margin-bottom: 0.9375rem;">
+                    <label for="pwGuardar">Contraseña:</label>
+                    <input type="password" id="pwGuardar" autocomplete="current-password" required>
+                </div>
+                <p id="avGuardar" style="font-size: 0.8125rem; min-height: 1.2em;"></p>
+                <div style="display: flex; gap: 0.625rem; margin-top: 1rem;">
+                    <button type="submit" class="btn-success" id="btnConfirmarGuardado">Guardar</button>
+                    <button type="button" class="btn-danger" onclick="cerrarModalGuardar()">Cancelar</button>
                 </div>
             </form>
         </div>
