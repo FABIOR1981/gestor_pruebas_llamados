@@ -50,8 +50,10 @@ Variables de entorno en Netlify:
 
 | Variable | Uso |
 |---|---|
-| `GITHUB_TOKEN_PRUEBAS` | Token con permiso de lectura y escritura de contenido sobre el repositorio `bd`. |
+| `GITHUB_TOKEN_PRUEBAS` | Token con permiso de escritura de contenido sobre el repositorio `bd`; solo se usa al guardar. |
 | `CLAVE_PRUEBAS` | Contraseña que pide el panel para guardar. |
+
+La lectura (`GET`) consulta el repositorio público y no requiere estas variables. Para guardar (`POST`), Netlify debe tener configuradas ambas.
 
 1. En el **Panel de Administración**, hacer los cambios.
 2. Hacer clic en **Guardar en GitHub** e ingresar la contraseña. Si los archivos todavía no existen en `bd/pruebas_llamados/`, se crean en el primer guardado.
