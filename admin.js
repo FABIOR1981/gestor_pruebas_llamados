@@ -502,7 +502,3 @@ async function confirmarGuardado(event) {
     }
     boton.disabled = false;
 }
-
-function descargarJSON() {
-    Datos.exportar(baseDatosGlobal);
-}

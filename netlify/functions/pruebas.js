@@ -1,8 +1,8 @@
 // Interfaz con los JSON de bd/pruebas_llamados (areas, cargos y dinamicas).
-// Variables de entorno en Netlify: GITHUB_TOKEN_PRUEBAS, CLAVE_PRUEBAS (opcionales: PRUEBAS_REPO, PRUEBAS_RUTA)
+// Variables de entorno en Netlify: GITHUB_TOKEN_PRUEBAS y CLAVE_PRUEBAS.
 const crypto = require('crypto');
-const REPO = process.env.PRUEBAS_REPO || 'FABIOR1981/bd';
-const RUTA = process.env.PRUEBAS_RUTA || 'pruebas_llamados';
+const REPO = 'FABIOR1981/bd';
+const RUTA = 'pruebas_llamados';
 const RAMA = 'main';
 const ARCHIVOS = ['areas', 'cargos', 'dinamicas'];
 

@@ -44,7 +44,7 @@ Se puede publicar en cualquier hosting estático (Netlify, GitHub Pages, Apache,
 
 ## Actualizar los datos
 
-Los datos viven en `bd/pruebas_llamados/` (`areas.json`, `cargos.json`, `dinamicas.json`) y se leen y guardan mediante la función de Netlify `netlify/functions/pruebas.js`. Si la función no está disponible, la app usa los JSON de `datos/` como respaldo.
+Los datos viven únicamente en el repositorio `FABIOR1981/bd`, carpeta `pruebas_llamados/` (`areas.json`, `cargos.json`, `dinamicas.json`). El navegador los lee y guarda mediante la función de Netlify `netlify/functions/pruebas.js`; no hay respaldo ni lectura/escritura de JSON locales en este proyecto. Si la función no está disponible, la app muestra el error y no carga datos locales.
 
 Variables de entorno en Netlify:
 
@@ -52,12 +52,11 @@ Variables de entorno en Netlify:
 |---|---|
 | `GITHUB_TOKEN_PRUEBAS` | Token con permiso de lectura y escritura de contenido sobre el repositorio `bd`. |
 | `CLAVE_PRUEBAS` | Contraseña que pide el panel para guardar. |
-| `PRUEBAS_REPO`, `PRUEBAS_RUTA` | Opcionales. Por defecto `FABIOR1981/bd` y `pruebas_llamados`. |
 
 1. En el **Panel de Administración**, hacer los cambios.
 2. Hacer clic en **Guardar en GitHub** e ingresar la contraseña. Si los archivos todavía no existen en `bd/pruebas_llamados/`, se crean en el primer guardado.
 
-> Los cambios del panel quedan en memoria hasta guardar. Si se recarga la página antes, se pierden. **Descargar copia JSON** sirve como respaldo manual.
+> Los cambios del panel quedan en memoria hasta guardar. Si se recarga la página antes, se pierden.
 
 ## Estructura
 
@@ -67,9 +66,6 @@ Variables de entorno en Netlify:
 ├── bases_ia.js                          Asistente "Directrices desde bases (IA)"
 ├── utilidades.js                        Utilidades (escape de HTML)
 ├── datos/
-│   ├── datos.js                         Carga y exportación de datos
-│   ├── areas.json                       Áreas
-│   ├── cargos.json                      Cargos y competencias
-│   └── dinamicas.json                   Dinámicas por cargo
+│   └── datos.js                         Acceso exclusivo a la función de Netlify
 └── documentacion/LEEME.md               Aviso: los manuales están en documentacion-central
 ```
