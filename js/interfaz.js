@@ -4,13 +4,15 @@ let D={areas:{},cargos:{},dinamicas:[]};
 const S={area:null,cargo:null,sel:new Set(),n:2,guia:true};
 const nombreArea=c=>(D.areas[c.area]&&D.areas[c.area].nombre)||c.area;
 const deArea=(c,sigla)=>c.area===sigla||c.area===(D.areas[sigla]&&D.areas[sigla].nombre);
-const dinDe=id=>D.dinamicas.filter(d=>d.cargo_id===id);
+// Bajas lógicas: lo que tiene "activo": false no se muestra (un área o cargo inactivo oculta lo que cuelga de él).
+const act=o=>o.activo!==false;
+const dinDe=id=>D.dinamicas.filter(d=>d.cargo_id===id&&act(d));
 
-function pintaAreas(){const cnt=k=>Object.values(D.cargos).filter(c=>deArea(c,k)).length;
- $('#areas').innerHTML=Object.entries(D.areas).map(([k,a])=>`<button class="area" aria-pressed="${k===S.area}" data-a="${esc(k)}"><strong>${esc(a.nombre)}</strong><small>${cnt(k)} cargo${cnt(k)===1?'':'s'}</small></button>`).join('')}
+function pintaAreas(){const cnt=k=>Object.values(D.cargos).filter(c=>act(c)&&deArea(c,k)).length;
+ $('#areas').innerHTML=Object.entries(D.areas).filter(([,a])=>act(a)).map(([k,a])=>`<button class="area" aria-pressed="${k===S.area}" data-a="${esc(k)}"><strong>${esc(a.nombre)}</strong><small>${cnt(k)} cargo${cnt(k)===1?'':'s'}</small></button>`).join('')}
 function pintaCargos(){const el=$('#cargos');
  if(!S.area){el.innerHTML='<div class="vacio-box">Primero elige un área.</div>';return}
- el.innerHTML=Object.entries(D.cargos).filter(([k,c])=>deArea(c,S.area)).map(([k,c])=>`<button class="cargo" aria-pressed="${k===S.cargo}" data-c="${k}"><strong>${esc(c.nombre.toLowerCase())}</strong><small>${dinDe(k).length} dinámicas · ${c.competencias.length} competencias</small><span class="cod">${k}</span></button>`).join('')}
+ el.innerHTML=Object.entries(D.cargos).filter(([k,c])=>act(c)&&deArea(c,S.area)).map(([k,c])=>`<button class="cargo" aria-pressed="${k===S.cargo}" data-c="${k}"><strong>${esc(c.nombre.toLowerCase())}</strong><small>${dinDe(k).length} dinámicas · ${c.competencias.length} competencias</small><span class="cod">${k}</span></button>`).join('')}
 function pintaDin(){const car=D.cargos[S.cargo];
  $('#p2').classList.toggle('off',!S.area);$('#p3').classList.toggle('off',!S.cargo);$('#cab').hidden=!car;
  if(!car){$('#lista').innerHTML=`<div class="vacio-box" style="grid-column:1/-1"><b>${S.area?'Ahora elige un cargo':'Empieza eligiendo un área'}</b><br>Las dinámicas disponibles aparecerán acá.</div>`;return}

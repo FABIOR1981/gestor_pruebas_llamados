@@ -1,0 +1,26 @@
+/* Panel de administración (ABM): lista de áreas, cargos y dinámicas, formularios y asistente. Usa las variables de aplicacion.css. */
+.seg{display:flex;border:1px solid var(--linea);border-radius:10px;padding:3px;gap:2px;background:var(--panel);margin-bottom:18px}
+.seg button{flex:1;border:0;background:none;border-radius:8px;padding:6px;font-size:13px;color:var(--suave)}
+.seg button[aria-pressed=true]{background:var(--acento);color:var(--acento-t)}
+.cab-s{display:flex;justify-content:space-between;align-items:center;margin:0 0 10px}.cab-s .paso{margin:0}
+.lst{display:grid;gap:8px}
+.it{display:flex;align-items:center;justify-content:space-between;gap:8px;background:var(--panel);border:1px solid var(--linea);border-radius:var(--r);padding:10px 12px;cursor:pointer}
+.it:hover{border-color:var(--acento)}.it.on{border-color:var(--acento);box-shadow:0 0 0 2px var(--acento-s)}
+.it strong{font-weight:600}.it small{display:block;color:var(--suave)}
+.ina{opacity:.62;background-image:repeating-linear-gradient(135deg,transparent 0 8px,var(--acento-s) 8px 9px)}
+.ac{display:flex;gap:2px;flex:none}.ac button{border:0;background:none;border-radius:8px;padding:5px 7px;font-size:14px}.ac button:hover{background:var(--acento-s)}
+.bad{font-size:11px;font-weight:600;border-radius:6px;padding:1px 7px;background:var(--aviso-s);color:var(--aviso)}
+.din.adm{cursor:default}.din.adm:hover{transform:none}
+.cp{display:block;margin:0 0 12px;font-size:13px;font-weight:600;color:var(--suave)}
+.cp input,.cp select,.cp textarea{display:block;width:100%;margin-top:4px;padding:9px 11px;border:1px solid var(--linea);border-radius:10px;background:var(--bg);color:var(--tinta);font:inherit;font-weight:400}
+.cp textarea{min-height:84px;resize:vertical}.dos{display:grid;grid-template-columns:2fr 1fr;gap:10px}
+.fc{display:grid;grid-template-columns:84px 1fr 1.4fr 34px;gap:6px;margin-bottom:6px}
+.fc input{padding:7px 9px;border:1px solid var(--linea);border-radius:8px;background:var(--bg);color:var(--tinta);font:inherit;font-size:13px;min-width:0}
+.fc .x{width:34px;height:34px}
+.err{color:var(--aviso);font-size:13px;min-height:1.2em;margin:4px 0 0}
+.toast{position:fixed;left:50%;bottom:96px;transform:translateX(-50%);background:var(--tinta);color:var(--bg);padding:10px 16px;border-radius:12px;font-size:14px;z-index:20;box-shadow:var(--sombra)}
+.modo{display:block;border:1px solid var(--linea);border-radius:var(--r);padding:11px 14px;margin-bottom:8px;cursor:pointer}
+.modo:has(input:checked){border-color:var(--acento);box-shadow:0 0 0 2px var(--acento-s)}.modo input{margin-right:8px}.modo small{display:block;color:var(--suave);margin-left:24px}
+.pre{width:100%;min-height:230px;font:12px/1.5 ui-monospace,Menlo,monospace;padding:12px;border:1px solid var(--linea);border-radius:10px;background:var(--bg);color:var(--tinta)}
+.log li{display:block;padding:4px 0;border-top:1px solid var(--linea);font-size:13px}
+@media(max-width:560px){.fc{grid-template-columns:1fr 34px}.dos{grid-template-columns:1fr}}

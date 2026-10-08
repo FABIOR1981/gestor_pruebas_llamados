@@ -1,215 +1,35 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel ABM - Gestor de Evaluaciones Psicotécnicas</title>
-    <link rel="stylesheet" href="admin.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Administrar datos · Evaluaciones psicotécnicas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Instrument+Sans:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="estilos/aplicacion.css">
+<link rel="stylesheet" href="estilos/administracion.css">
 </head>
 <body>
-
-    <div class="container">
-        <h1>Panel de Administración y ABM</h1>
-        <p class="subtitle">Cree áreas y cargos, y cargue a mano las dinámicas de cada cargo. El código de cada dinámica se genera solo.</p>
-
-        <div class="toolbar" style="flex-direction: column; align-items: stretch; gap: 0.9375rem;">
-            <div class="status-badge">
-                📁 Estado: <span id="estadoCarga" style="color: var(--accent);">Cargando...</span>
-            </div>
-            <div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.625rem;">
-                <div class="btn-group">
-                    <button class="btn-success" style="background-color: #27ae60;" onclick="abrirModalGuardar()">💾 Guardar en GitHub</button>
-                    <button class="btn-success" style="background-color: #27ae60;" onclick="abrirModalArea()">+ Crear Nueva Área</button>
-                    <button class="btn-warning" onclick="abrirModalCargo()">+ Crear Nuevo Cargo</button>
-                    <span id="contenedorAsistenteIA"></span>
-                </div>
-                <div>
-                    <button onclick="window.location.href='index.html'" style="background-color: #34495e; color: white; border: none; padding: 0.625rem 1rem; border-radius: 0.25rem; cursor: pointer; font-weight: bold; transition: background 0.2s;" onmouseover="this.style.backgroundColor='#2c3e50'" onmouseout="this.style.backgroundColor='#34495e'">
-                        ⬅️ Volver al Generador
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <div class="control-panel">
-            <div class="form-group">
-                <label for="cargoSelectAdmin">Seleccionar Cargo a Administrar:</label>
-                <select id="cargoSelectAdmin" onchange="renderizarDinamicas()"></select>
-            </div>
-            <div>
-                <button class="btn-warning" onclick="editarCargo()" style="width: 100%; margin-bottom: 0.5rem;">✏️ Editar Cargo y Competencias</button>
-                <button class="btn-success" onclick="abrirModalDinamica()" style="width: 100%;">+ Nueva Dinámica</button>
-            </div>
-        </div>
-
-        <div class="section-header">
-            <h2 id="tituloListaCargo">Dinámicas Asociadas</h2>
-        </div>
-        <div id="listaDinamicas">
-            <!-- Se llena dinámicamente -->
-        </div>
-    </div>
-
-    <!-- Modal: Crear Nueva Área -->
-    <div id="modalAreaNueva" class="modal">
-        <div class="modal-content" style="max-width: 28.125rem;">
-            <h3>Crear Nueva Área</h3>
-            <form id="formArea" onsubmit="guardarArea(event)">
-                <div class="form-group" style="margin-bottom: 0.9375rem;">
-                    <label for="areaNombreNueva">Nombre completo del Área:</label>
-                    <input type="text" id="areaNombreNueva" placeholder="Ej: Tecnología y Sistemas" required>
-                </div>
-                <div class="form-group" style="margin-bottom: 0.9375rem;">
-                    <label for="areaSiglaNueva">Sigla (Exactamente 3 letras):</label>
-                    <input type="text" id="areaSiglaNueva" placeholder="Ej: TEC" maxlength="3" minlength="3" style="text-transform: uppercase;" required>
-                </div>
-                <div style="display: flex; gap: 0.625rem; margin-top: 1.5625rem;">
-                    <button type="submit" class="btn-success">Guardar Área</button>
-                    <button type="button" class="btn-danger" onclick="cerrarModalArea()">Cancelar</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Modal: Crear Nuevo Cargo -->
-    <div id="modalCargoNuevo" class="modal">
-        <div class="modal-content" style="max-width: 34.375rem;">
-            <h3 id="tituloModalCargo">Crear Nuevo Cargo</h3>
-            <form id="formCargo" onsubmit="guardarCargo(event)">
-                <input type="hidden" id="cargoEditKey" value="">
-                
-                <div class="form-group" style="margin-bottom: 0.9375rem;">
-                    <label for="cargoNombreInput">Nombre legible del Cargo:</label>
-                    <input type="text" id="cargoNombreInput" placeholder="Ej: Administrador de Redes" required>
-                </div>
-
-                <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 0.625rem; margin-bottom: 0.9375rem;">
-                    <div class="form-group">
-                        <label for="cargoAreaSelect">Área a la que pertenece:</label>
-                        <select id="cargoAreaSelect" onchange="actualizarCodigoCargoAutogenerado()" required>
-                            <!-- Se llena dinámicamente con las áreas del JSON -->
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="cargoEspecialidad">Sigla Especialidad:</label>
-                        <input type="text" id="cargoEspecialidad" placeholder="Ej: RED" maxlength="3" style="text-transform: uppercase;" oninput="actualizarCodigoCargoAutogenerado()" required>
-                    </div>
-                </div>
-
-                <div class="form-group" style="margin-bottom: 0.9375rem;">
-                    <label for="cargoKeyInput">Código del Cargo (Autogenerado):</label>
-                    <input type="text" id="cargoKeyInput" style="background-color: #eaeded; font-family: monospace; font-weight: bold; color: #7f8c8d; border: 1px dashed #bdc3c7;" readonly required placeholder="Seleccione área y sigla para generar">
-                </div>
-
-                <div class="form-group" style="margin-bottom: 0.9375rem;">
-                    <label>Competencias a evaluar (de 1 a 20): definen las columnas de la tabla de puntaje</label>
-                    <div id="listaCompetencias"></div>
-                    <button type="button" class="btn-secondary" onclick="agregarCompetencia()">+ Agregar competencia</button>
-                </div>
-
-                <div style="display: flex; gap: 0.625rem; margin-top: 1.5625rem;">
-                    <button type="submit" class="btn-success" id="btnGuardarCargo">Crear Cargo</button>
-                    <button type="button" class="btn-danger" onclick="cerrarModalCargo()">Cancelar</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Modal: Crear/Editar Dinámica -->
-    <div id="modalDinamica" class="modal">
-        <div class="modal-content">
-            <h3 id="modalTitulo">Nueva Dinámica</h3>
-            <form id="formDinamica" onsubmit="guardarDinamica(event)">
-                <input type="hidden" id="editIndex" value="">
-                
-                <div class="form-group" style="margin-bottom: 0.9375rem;">
-                    <label for="modalCargo">Cargo Objetivo:</label>
-                    <select id="modalCargo" onchange="actualizarCodigoDinamicaAutogenerado()"></select>
-                </div>
-
-                <div class="form-group" style="margin-bottom: 0.9375rem;">
-                    <label for="modalCodigo">Código Alfanumérico (Autogenerado):</label>
-                    <input type="text" id="modalCodigo" style="background-color: #eaeded; font-family: monospace; font-weight: bold; color: #7f8c8d;" readonly required>
-                </div>
-
-                <div class="form-group" style="margin-bottom: 0.9375rem;">
-                    <label for="modalTituloDin">Título de la Dinámica:</label>
-                    <input type="text" id="modalTituloDin" required>
-                </div>
-
-                <div class="form-group" style="margin-bottom: 0.9375rem;">
-                    <label for="modalDesc">Descripción Breve:</label>
-                    <input type="text" id="modalDesc" required>
-                </div>
-
-                <div class="form-group" style="margin-bottom: 0.9375rem;">
-                    <label for="modalTiempo">Tiempo Límite:</label>
-                    <input type="text" id="modalTiempo" placeholder="Ej: 3 Minutos Exactos" required>
-                </div>
-
-                <div class="form-group" style="margin-bottom: 0.9375rem; max-width: 13.75rem;">
-                    <label for="modalPeso">Peso en el puntaje final (1 a 5):</label>
-                    <input type="number" id="modalPeso" min="1" max="5" step="1" value="1" required>
-                    <small style="color: #7f8c8d; font-size: 0.75rem; margin-top: 0.25rem;">1 = peso normal. Un 2 vale el doble que una dinámica de peso 1.</small>
-                </div>
-
-                <div class="form-group" style="margin-bottom: 0.9375rem;">
-                    <label for="modalHoja">Hoja de Trabajo / Consigna para el Postulante:</label>
-                    <textarea id="modalHoja" rows="4" placeholder="Texto o consigna que verá el candidato..." required></textarea>
-                </div>
-
-                <div class="form-group" style="margin-bottom: 0.9375rem; max-width: 13.75rem;">
-                    <label for="modalRenglones">Renglones particulares de esta dinámica:</label>
-                    <input type="number" id="modalRenglones" min="0" max="30" placeholder="Usar global">
-                    <small style="color: #7f8c8d; font-size: 0.75rem; margin-top: 0.25rem;">Vacío usa el valor global; 0 no agrega renglones; de 1 a 30 reemplaza el global.</small>
-                </div>
-
-                <div class="form-group" style="margin-bottom: 0.9375rem;">
-                    <label for="modalCaso">Objetivo / Consigna para el Evaluador:</label>
-                    <input type="text" id="modalCaso" required>
-                </div>
-
-                <div class="form-group" style="margin-bottom: 0.9375rem;">
-                    <label for="modalGuia">Guía de Observación (Éxito / Alerta):</label>
-                    <textarea id="modalGuia" rows="3" required></textarea>
-                </div>
-
-                <div class="form-group" style="margin-bottom: 0.9375rem;">
-                    <label for="modalRespuesta">Corrector: Respuestas Correctas / Esperadas:</label>
-                    <textarea id="modalRespuesta" rows="4"></textarea>
-                </div>
-
-                <div style="display: flex; gap: 0.625rem; margin-top: 1.5625rem;">
-                    <button type="submit" class="btn-success">Guardar Dinámica</button>
-                    <button type="button" class="btn-warning" id="btnGuardarOtra" onclick="guardarDinamica(event, true)">Guardar y crear otra</button>
-                    <button type="button" class="btn-danger" onclick="cerrarModalDinamica()">Cancelar</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Modal: Guardar en GitHub -->
-    <div id="modalGuardar" class="modal">
-        <div class="modal-content" style="max-width: 28.125rem;">
-            <h3>Guardar en GitHub</h3>
-            <p style="font-size: 0.875rem; color: #555;">Escribe los cambios en <code>bd/pruebas_llamados</code>.</p>
-            <form id="formGuardar" onsubmit="confirmarGuardado(event)">
-                <div class="form-group" style="margin-bottom: 0.9375rem;">
-                    <label for="pwGuardar">Contraseña:</label>
-                    <input type="password" id="pwGuardar" autocomplete="current-password" required>
-                </div>
-                <p id="avGuardar" style="font-size: 0.8125rem; min-height: 1.2em;"></p>
-                <div style="display: flex; gap: 0.625rem; margin-top: 1rem;">
-                    <button type="submit" class="btn-success" id="btnConfirmarGuardado">Guardar</button>
-                    <button type="button" class="btn-danger" onclick="cerrarModalGuardar()">Cancelar</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <script src="utilidades.js"></script>
-    <script src="datos/datos.js"></script>
-    <script src="admin.js"></script>
-    <script src="bases_ia.js"></script>
+<header class="top"><div class="marca"><span class="logo">⚙</span>Administrar datos</div><div class="esp"></div>
+ <button class="ghost" id="bAsist">✨ Asistente de bases</button><button class="ghost" id="tema">☾ Tema</button><a class="ghost" href="index.html">← Generador</a></header>
+<main class="app">
+ <section class="col-izq">
+  <div class="seg" role="group" aria-label="Mostrar"><button data-v="act" aria-pressed="true">Activos</button><button data-v="ina" aria-pressed="false">Inactivos</button><button data-v="todos" aria-pressed="false">Todos</button></div>
+  <div class="cab-s"><p class="paso"><b>1</b> Áreas</p><button class="link" id="nA">+ Nueva</button></div><div class="lst" id="ar"></div>
+  <div class="cab-s" style="margin-top:22px"><p class="paso off" id="p2"><b>2</b> Cargos</p><button class="link" id="nC">+ Nuevo</button></div><div class="lst" id="ca"></div>
+ </section>
+ <section>
+  <p class="paso off" id="p3"><b>3</b> Dinámicas</p>
+  <div class="cab" id="cab" hidden><div><h2 id="tC"></h2><p id="sC"></p></div><div style="display:flex;gap:8px"><button class="ghost" id="eC">✏️ Cargo y competencias</button><button class="ghost" id="nD">+ Nueva dinámica</button></div></div>
+  <div class="lista" id="lista"></div>
+ </section>
+ <aside class="col-der"><div class="panel"><h2>Cambios pendientes</h2><p class="sub" id="pn"></p>
+  <div class="extra"><ul class="sel log" id="log"></ul><div class="fila" style="display:block"><b style="font-size:13px">Catálogo</b><p class="sub" id="res" style="margin:2px 0 0"></p></div></div>
+  <button class="btn" id="gu" disabled>Guardar en GitHub</button><button class="btn sec" style="width:100%;margin-top:8px" id="de" disabled>Descartar cambios</button></div></aside>
+</main>
+<dialog id="dm"><form id="fm"><div class="mh"><h2 id="mt"></h2><button type="button" class="x" data-c aria-label="Cerrar">✕</button></div><div class="mb" id="mc"></div><div class="mf"><button type="button" class="btn sec" data-c>Cancelar</button><button class="btn" id="ok">Guardar</button></div></form></dialog>
+<script src="utilidades.js"></script>
+<script src="datos/datos.js"></script>
+<script src="js/administracion.js"></script>
 </body>
 </html>
