@@ -376,17 +376,20 @@
     margin-top: 0.625rem;
     margin-bottom: 0.625rem;
 }
-#hoja{color:#333;font:14px/1.5 "Segoe UI",Tahoma,Geneva,Verdana,sans-serif;max-width:56.25rem;margin:0 auto;border-radius:4px;box-shadow:0 4px 24px rgba(0,0,0,.2)}
-#hoja h2,#hoja h3,#hoja h4{font-family:inherit;letter-spacing:0}
-#hoja .idm{background:#eaeded;padding:2px 6px;border-radius:4px;font:13px ui-monospace,Menlo,monospace;color:#2c3e50}
-#hoja .cj{padding:.625rem;margin-top:.5rem;font-size:.8125rem;border-left:3px solid;background:#f9f9f9}
-#hoja .cj.t{background:#f4ecf7;border-color:#8e44ad;color:#6c3483}
-#hoja .cj.o{border-color:#e67e22}
-#hoja .cj.g{background:#fdfefe;border-color:#27ae60;font-size:.75rem}
-#hoja .cj.c{background:#eafaf1;border:1px dashed #1e8449;border-left:3px solid #1e8449;font-size:.75rem}
-#hoja .bd{margin-bottom:.875rem}
-#hoja .ht{color:var(--primary);margin:0;border-bottom:2px solid var(--primary);padding-bottom:.3rem}
-#hoja .enc{margin:.9rem 0;font-size:.875rem;border:1px solid var(--border);padding:.75rem;border-radius:.25rem;line-height:1.8}
-#hoja .pag{font-size:11px;color:#999;text-align:center;border-top:2px dashed #cfd6d9;padding-top:6px;margin-bottom:10px}
-#hoja.ocultar-guia .bloque-guia{display:none}
-@media print{.top,.app{display:none!important}dialog:not([open]){display:none}dialog[open]{position:static;width:100%;max-width:none;max-height:none;box-shadow:none;border-radius:0;background:#fff}.mh,.mf{display:none}.fondo{padding:0;background:none;overflow:visible;max-height:none}#hoja{box-shadow:none;max-width:none;padding:0}#hoja .pag{display:none}}
+.print-container{color:#333;font:14px/1.5 "Segoe UI",Tahoma,Geneva,Verdana,sans-serif}
+#hoja{max-width:56.25rem;margin:0 auto;border-radius:4px;box-shadow:0 4px 24px rgba(0,0,0,.2)}
+.print-container h2,.print-container h3,.print-container h4{font-family:inherit;letter-spacing:0}
+.print-container .idm{background:#eaeded;padding:2px 6px;border-radius:4px;font:13px ui-monospace,Menlo,monospace;color:#2c3e50}
+.print-container .cj{padding:.625rem;margin-top:.5rem;font-size:.8125rem;border-left:3px solid;background:#f9f9f9}
+.print-container .cj.t{background:#f4ecf7;border-color:#8e44ad;color:#6c3483}
+.print-container .cj.o{border-color:#e67e22}
+.print-container .cj.g{background:#fdfefe;border-color:#27ae60;font-size:.75rem}
+.print-container .cj.c{background:#eafaf1;border:1px dashed #1e8449;border-left:3px solid #1e8449;font-size:.75rem}
+.print-container .bd{margin-bottom:.875rem}
+.print-container .ht{color:var(--primary);margin:0;border-bottom:2px solid var(--primary);padding-bottom:.3rem}
+.print-container .enc{margin:.9rem 0;font-size:.875rem;border:1px solid var(--border);padding:.75rem;border-radius:.25rem;line-height:1.8}
+.print-container .pag{font-size:11px;color:#999;text-align:center;border-top:2px dashed #cfd6d9;padding-top:6px;margin-bottom:10px}
+.print-container.ocultar-guia .bloque-guia{display:none}
+/* Impresión: el informe se copia a #zonaImpresion (fuera del modal) y es lo único que sale en papel. */
+#zonaImpresion{display:none}
+@media print{body>*:not(#zonaImpresion){display:none!important}#zonaImpresion{display:block!important}.pag{display:none}}

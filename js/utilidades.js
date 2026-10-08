@@ -40,3 +40,9 @@ function esc(valor) {
     const mapa = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
     return String(valor ?? '').replace(/[&<>"']/g, (c) => mapa[c]);
 }
+
+// Muestra "JEFE DE SUCURSAL" como "Jefe de sucursal"; los nombres que ya tienen minúsculas se dejan como están.
+function bonito(nombre) {
+    const n = String(nombre ?? '');
+    return n === n.toUpperCase() && n !== n.toLowerCase() ? n.charAt(0) + n.slice(1).toLowerCase() : n;
+}

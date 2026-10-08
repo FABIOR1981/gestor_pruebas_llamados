@@ -12,16 +12,16 @@ function pintaAreas(){const cnt=k=>Object.values(D.cargos).filter(c=>act(c)&&deA
  $('#areas').innerHTML=Object.entries(D.areas).filter(([,a])=>act(a)).map(([k,a])=>`<button class="area" aria-pressed="${k===S.area}" data-a="${esc(k)}"><strong>${esc(a.nombre)}</strong><small>${cnt(k)} cargo${cnt(k)===1?'':'s'}</small></button>`).join('')}
 function pintaCargos(){const el=$('#cargos');
  if(!S.area){el.innerHTML='<div class="vacio-box">Primero elige un área.</div>';return}
- el.innerHTML=Object.entries(D.cargos).filter(([k,c])=>act(c)&&deArea(c,S.area)).map(([k,c])=>`<button class="cargo" aria-pressed="${k===S.cargo}" data-c="${k}"><strong>${esc(c.nombre.toLowerCase())}</strong><small>${dinDe(k).length} dinámicas · ${c.competencias.length} competencias</small><span class="cod">${k}</span></button>`).join('')}
+ el.innerHTML=Object.entries(D.cargos).filter(([k,c])=>act(c)&&deArea(c,S.area)).map(([k,c])=>`<button class="cargo" aria-pressed="${k===S.cargo}" data-c="${k}"><strong>${esc(bonito(c.nombre))}</strong><small>${dinDe(k).length} dinámicas · ${c.competencias.length} competencias</small><span class="cod">${k}</span></button>`).join('')}
 function pintaDin(){const car=D.cargos[S.cargo];
  $('#p2').classList.toggle('off',!S.area);$('#p3').classList.toggle('off',!S.cargo);$('#cab').hidden=!car;
  if(!car){$('#lista').innerHTML=`<div class="vacio-box" style="grid-column:1/-1"><b>${S.area?'Ahora elige un cargo':'Empieza eligiendo un área'}</b><br>Las dinámicas disponibles aparecerán acá.</div>`;return}
  const l=dinDe(S.cargo);
- $('#tCargo').textContent=car.nombre.toLowerCase();$('#sCargo').textContent=`${nombreArea(car)} · ${l.length} dinámicas disponibles`;
+ $('#tCargo').textContent=bonito(car.nombre);$('#sCargo').textContent=`${nombreArea(car)} · ${l.length} dinámicas disponibles`;
  $('#todas').textContent=l.every(d=>S.sel.has(d.id))?'Quitar todas':'Seleccionar todas';
  $('#lista').innerHTML=l.map(d=>`<label class="din ${S.sel.has(d.id)?'on':''}"><input type="checkbox" data-d="${d.id}" ${S.sel.has(d.id)?'checked':''}><span class="tilde">✓</span><h3>${esc(d.titulo)}</h3><p>${esc(limpio(d.desc))}</p><div class="meta"><span class="tag">⏱ ${mins(d)||'—'} min</span><span class="tag id">${d.id.replace('DIN-','')}</span><button class="det" data-v="${d.id}">Ver detalle</button></div></label>`).join('')}
 function pintaPanel(){const car=D.cargos[S.cargo],sel=car?dinDe(S.cargo).filter(d=>S.sel.has(d.id)):[];
- $('#pCargo').textContent=car?car.nombre.toLowerCase():'Tu evaluación';
+ $('#pCargo').textContent=car?bonito(car.nombre):'Tu evaluación';
  $('#pSub').textContent=car?`${nombreArea(car)} · tu evaluación`:(S.area?'Ahora elige un cargo.':'Empieza eligiendo un área.');$('#n').textContent=S.n;
  $('#selLista').innerHTML=sel.length?sel.map(d=>`<li><span>${esc(d.titulo)}</span><span>${mins(d)} min</span></li>`).join(''):'<li class="vacio">Aún no elegiste dinámicas.</li>';
  const cubre=new Set(car?sel.flatMap(d=>aplica(d,car)):[]),tot=car?car.competencias.length:0;
@@ -52,6 +52,10 @@ function abre(id){const d=D.dinamicas.find(x=>x.id===id),en=S.sel.has(id);
  const b=$('#dAdd');b.textContent=en?'Quitar de la evaluación':'Agregar a la evaluación';
  b.onclick=()=>{en?S.sel.delete(id):S.sel.add(id);pintaDin();pintaPanel();$('#dDet').close()};$('#dDet').showModal()}
 
+// Al imprimir (botón o Ctrl+P) el informe se copia fuera del modal: imprimir desde el diálogo dejaba una hoja en blanco y perdía el informe.
+const preparaImpresion=()=>{const z=$('#zonaImpresion');z.className='print-container'+(S.guia?'':' ocultar-guia');z.innerHTML=$('#hoja').innerHTML};
+window.addEventListener('beforeprint',()=>{if($('#dInf').open)preparaImpresion()});
+window.addEventListener('afterprint',()=>{$('#zonaImpresion').innerHTML=''});
 $('#gen').onclick=()=>{const car=D.cargos[S.cargo],sel=dinDe(S.cargo).filter(d=>S.sel.has(d.id));if(!car||!sel.length)return;
  $('#hoja').innerHTML=construirInforme(S.cargo,car,sel,S.n);sincGuia(S.guia);$('#dInf').showModal()};
 

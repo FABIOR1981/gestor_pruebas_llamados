@@ -18,10 +18,10 @@ function pintaAreas(){const l=Object.entries(D.areas).filter(([,a])=>vis(a));
  $('#ar').innerHTML=l.map(([k,a])=>`<div class="it ${k===S.area?'on':''} ${act(a)?'':'ina'}" data-s="${k}"><div><strong>${esc(a.nombre)}</strong><small>${k} · ${cargosDe(k).filter(([,c])=>act(c)).length} cargos activos ${act(a)?'':'<span class="bad">Inactiva</span>'}</small></div>${botones('a',k,a)}</div>`).join('')||'<div class="vacio-box">Nada para mostrar en esta vista.</div>'}
 function pintaCargos(){$('#p2').classList.toggle('off',!S.area);$('#nC').hidden=!S.area;
  if(!S.area){$('#ca').innerHTML='<div class="vacio-box">Elige un área.</div>';return}
- $('#ca').innerHTML=cargosDe(S.area).filter(([,c])=>vis(c)).map(([k,c])=>`<div class="it ${k===S.cargo?'on':''} ${act(c)?'':'ina'}" data-s="${k}"><div><strong>${esc(c.nombre.toLowerCase())}</strong><small class="cod">${k} · ${dinDe(k).filter(act).length} dinámicas activas ${act(c)?'':'<span class="bad">Inactivo</span>'}</small></div>${botones('c',k,c)}</div>`).join('')||'<div class="vacio-box">Sin cargos en esta vista.</div>'}
+ $('#ca').innerHTML=cargosDe(S.area).filter(([,c])=>vis(c)).map(([k,c])=>`<div class="it ${k===S.cargo?'on':''} ${act(c)?'':'ina'}" data-s="${k}"><div><strong>${esc(bonito(c.nombre))}</strong><small class="cod">${k} · ${dinDe(k).filter(act).length} dinámicas activas ${act(c)?'':'<span class="bad">Inactivo</span>'}</small></div>${botones('c',k,c)}</div>`).join('')||'<div class="vacio-box">Sin cargos en esta vista.</div>'}
 function pintaDin(){const c=D.cargos[S.cargo];$('#p3').classList.toggle('off',!c);$('#cab').hidden=!c;
  if(!c){$('#lista').innerHTML=`<div class="vacio-box" style="grid-column:1/-1"><b>${S.area?'Ahora elige un cargo':'Empieza eligiendo un área'}</b><br>Sus dinámicas aparecerán acá.</div>`;return}
- $('#tC').textContent=c.nombre.toLowerCase();$('#sC').textContent=`${c.competencias.length} competencias · ${dinDe(S.cargo).filter(act).length} dinámicas activas`;
+ $('#tC').textContent=bonito(c.nombre);$('#sC').textContent=`${c.competencias.length} competencias · ${dinDe(S.cargo).filter(act).length} dinámicas activas`;
  $('#lista').innerHTML=dinDe(S.cargo).filter(vis).map(d=>`<div class="din adm ${act(d)?'':'ina'}"><h3>${esc(d.titulo)}</h3><p>${esc(limpio(d.desc))}</p><div class="meta"><span class="tag id">${d.id.replace('DIN-','')}</span>${act(d)?'':'<span class="bad">Inactiva</span>'}<span style="margin-left:auto">${botones('d',d.id,d)}</span></div></div>`).join('')||'<div class="vacio-box" style="grid-column:1/-1">Sin dinámicas en esta vista.</div>'}
 function pintaPanel(){const n=LOG.length;$('#pn').textContent=n?`${n} cambio${n>1?'s':''} sin guardar`:'Todo guardado.';
  $('#log').innerHTML=LOG.map(t=>`<li>${esc(t)}</li>`).join('');$('#gu').disabled=$('#de').disabled=!n;
@@ -104,7 +104,7 @@ function nuevoTexto(){const m=A.modo,ar=D.areas[A.area],ca=D.cargos[A.cargo];
  return L.filter(x=>x!==null).join('\n')}
 function pintaA(){const sel=(k,l,o)=>`<label class="cp">${l}<select name="${k}"><option value="">Elegir…</option>${o}</select></label>`;
  const oa=Object.entries(D.areas).filter(([,a])=>act(a)).map(([k,a])=>`<option value="${k}" ${A.area===k?'selected':''}>${esc(a.nombre)}</option>`).join(''),
-  oc=Object.entries(D.cargos).filter(([k,c])=>act(c)&&areaDe(c)===A.area).map(([k,c])=>`<option value="${k}" ${A.cargo===k?'selected':''}>${esc(c.nombre.toLowerCase())}</option>`).join('');
+  oc=Object.entries(D.cargos).filter(([k,c])=>act(c)&&areaDe(c)===A.area).map(([k,c])=>`<option value="${k}" ${A.cargo===k?'selected':''}>${esc(bonito(c.nombre))}</option>`).join('');
  const M=(n,t,s)=>`<label class="modo"><input type="radio" name="modo" value="${n}" ${A.modo===n?'checked':''}><b>${t}</b><small>${s}</small></label>`;
  $('#mc').innerHTML=`<p class="paso"><b>1</b> ¿Qué quieres que genere la IA?</p>${M(1,'Área, cargo y dinámicas','Todo es nuevo.')}${M(2,'Cargo y dinámicas','El área ya existe.')}${M(3,'Solo dinámicas','El área y el cargo ya existen.')}
  ${A.modo>1?`<div class="dos">${sel('area','Área existente',oa)}${A.modo===3?sel('cargo','Cargo existente',oc):'<span></span>'}</div>`:''}

@@ -54,7 +54,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 .stp output{min-width:28px;text-align:center;font-weight:600}
 .sel{margin:0;padding:0;list-style:none;font-size:13.5px}
 .sel li{display:flex;justify-content:space-between;gap:10px;padding:5px 0;color:var(--suave)}
-.sel li span:first-child{color:var(--tinta)}
+.sel li span:first-child{color:var(--tinta)}.sel li span:last-child{white-space:nowrap}
 .vacio{color:var(--suave);font-size:13.5px;padding:6px 0}
 .cob{display:flex;flex-wrap:wrap;gap:5px;margin:8px 0 4px}
 .cob i{font:600 11px ui-monospace,Menlo,monospace;font-style:normal;padding:3px 7px;border-radius:6px;border:1px dashed var(--linea);color:var(--suave)}
@@ -93,5 +93,5 @@ dialog::backdrop{background:rgba(12,20,22,.58);backdrop-filter:blur(3px)}
 .vacio-box{border:1.5px dashed var(--linea);border-radius:var(--r);padding:26px 18px;text-align:center;color:var(--suave);font-size:14px}
 .vacio-box b{color:var(--tinta);font-family:Fraunces,Georgia,serif;font-size:17px}
 a.ghost{text-decoration:none;display:inline-block}
-@media(max-width:1180px){.app{grid-template-columns:minmax(230px,290px) minmax(0,1fr);padding-bottom:130px}.col-der{position:fixed;left:0;right:0;bottom:0;z-index:6;max-height:none;overflow:visible;padding:0 10px calc(10px + env(safe-area-inset-bottom,0px))}.col-der .extra{display:none}.col-der .panel{padding:12px 14px;border-radius:16px}.col-der .btn{margin-top:8px}}
-@media(max-width:760px){.app{grid-template-columns:minmax(0,1fr)}.col-izq{position:static;max-height:none}.cargos{grid-template-columns:repeat(auto-fill,minmax(210px,1fr))}.areas{grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}}
+@media(max-width:1180px){.app{grid-template-columns:minmax(230px,290px) minmax(0,1fr);padding-bottom:130px}.col-izq{max-height:calc(100vh - 92px - 150px)}.col-der{position:fixed;top:auto;left:0;right:0;bottom:0;z-index:6;max-height:none;overflow:visible;padding:0 10px calc(10px + env(safe-area-inset-bottom,0px))}.col-der .extra{display:none}.col-der .panel{padding:12px 14px;border-radius:16px}.col-der .btn{margin-top:8px}}
+@media(max-width:760px){.app{grid-template-columns:minmax(0,1fr)}.col-izq{position:static;max-height:none;overflow:visible}.cargos{grid-template-columns:repeat(auto-fill,minmax(210px,1fr))}.areas{grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}}
