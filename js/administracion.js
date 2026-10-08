@@ -136,7 +136,7 @@ $('#ar').onclick=e=>{const x=e.target.closest('[data-x]');if(x)return acc(x.data
 $('#ca').onclick=e=>{const x=e.target.closest('[data-x]');if(x)return acc(x.dataset.x);const s=e.target.closest('[data-s]');if(s){S.cargo=s.dataset.s;todo()}};
 $('#lista').onclick=e=>{const x=e.target.closest('[data-x]');if(x)acc(x.dataset.x)};
 $('#nA').onclick=()=>fArea();$('#nC').onclick=()=>fCargo();$('#nD').onclick=()=>fDin();$('#eC').onclick=()=>fCargo(S.cargo);
-$('#gu').onclick=()=>abre('Guardar en GitHub','<p class="sub">Escribe los cambios en bd/pruebas_llamados.</p><label class="cp">Contraseña<input type="password" name="pw" autocomplete="current-password" required></label>','Guardar',f=>{
+$('#gu').onclick=()=>abre('Guardar','<p class="sub">Escribe los cambios en bd/pruebas_llamados.</p><label class="cp">Contraseña<input type="password" name="pw" autocomplete="current-password" required></label>','Guardar',f=>{
  const b=$('#ok'),e2=$('#er');b.disabled=true;e2.style.color='var(--suave)';e2.textContent='Guardando…';
  Datos.guardar(D,f.get('pw')).then(r=>{base=clon(D);LOG=[];pintaPanel();dm.close();toast(r.escritos.length?`Guardado: ${r.escritos.join(', ')}`:'No había cambios para guardar')}).catch(x=>{e2.style.color='';err(x.message)}).finally(()=>{b.disabled=false});
  return false});
