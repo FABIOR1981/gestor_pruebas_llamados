@@ -1,98 +1,59 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Generador de Evaluaciones Psicotécnicas</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Generador de Evaluaciones Psicotécnicas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Instrument+Sans:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="estilos/aplicacion.css">
+<link rel="stylesheet" href="estilos/informe.css">
 </head>
 <body>
+<header class="top">
+ <div class="marca"><span class="logo">✓</span>Evaluaciones psicotécnicas</div><div class="esp"></div>
+ <button class="ghost" id="tema" aria-label="Cambiar tema">☾ Tema</button>
+ <a class="ghost" href="admin.html">⚙ Administrar datos</a>
+</header>
+<main class="app">
+ <section class="col-izq" aria-label="Área y cargo">
+  <p class="paso" id="p1"><b>1</b> Área</p>
+  <div class="areas" id="areas"></div>
+  <p class="paso off" id="p2" style="margin-top:24px"><b>2</b> Cargo</p>
+  <div class="cargos" id="cargos"></div>
+ </section>
+ <section aria-label="Dinámicas">
+  <p class="paso off" id="p3"><b>3</b> Dinámicas a aplicar</p>
+  <div class="cab" id="cab" hidden><div><h2 id="tCargo"></h2><p id="sCargo"></p></div><button class="link" id="todas"></button></div>
+  <div class="lista" id="lista"></div>
+ </section>
+ <aside class="col-der" aria-label="Tu evaluación">
+  <div class="panel">
+   <h2 id="pCargo"></h2>
+   <p class="sub" id="pSub"></p>
+   <div class="extra">
+    <div class="fila"><span>Postulantes</span><div class="stp"><button id="menos" aria-label="Menos">−</button><output id="n">2</output><button id="mas" aria-label="Más">+</button></div></div>
+    <div class="fila" style="display:block"><b style="font-size:13px">Seleccionadas</b><ul class="sel" id="selLista"></ul></div>
+    <div class="fila" style="display:block"><div style="display:flex;justify-content:space-between;font-size:13px"><b>Cobertura de competencias</b><span id="cobTxt" style="color:var(--suave)"></span></div><div class="cob" id="cob"></div><div class="barra"><div id="cobBar"></div></div></div>
+    <div class="fila"><label class="sw"><input type="checkbox" id="guia" checked> Guía y corrector en el informe</label></div>
+   </div>
+   <div class="fila" style="border-top:1px solid var(--linea)"><span>Tiempo estimado</span><strong id="tiempo">—</strong></div>
+   <button class="btn" id="gen" disabled>Generar informe</button>
+  </div>
+ </aside>
+</main>
 
-    <!-- Panel de Control (No se imprime) -->
-    <div class="no-print">
-        <h1>Generador de Evaluaciones Psicotécnicas</h1>
-        <div class="form-grid">
-            <div class="form-group">
-                <label for="cargoSelect">Puesto / Cargo:</label>
-                <!-- Al cambiar el cargo, se actualizan las dinámicas y se limpia la pantalla para evitar errores -->
-                <select id="cargoSelect" onchange="onCargoChange()">
-                    <!-- Se llena desde el JSON -->
-                </select>
-            </div>
+<dialog id="dDet"><div class="mh"><div><span class="tag id" id="dId"></span><h2 id="dTit" style="margin-top:6px"></h2></div><button class="x" data-cerrar aria-label="Cerrar">✕</button></div>
+ <div class="mb" id="dCuerpo"></div>
+ <div class="mf"><button class="btn sec" data-cerrar>Cerrar</button><button class="btn" id="dAdd"></button></div></dialog>
 
-            <div class="form-group">
-                <label for="numPostulantes">Postulantes:</label>
-                <input type="number" id="numPostulantes" min="1" max="10" value="1">
-            </div>
-        </div>
+<dialog id="dInf" class="ancho"><div class="mh"><div><h2>Vista previa del informe</h2><p class="sub" style="margin:2px 0 0">Así saldrá en hoja A4. Revisa antes de imprimir.</p></div><button class="x" data-cerrar aria-label="Cerrar">✕</button></div>
+ <div class="fondo"><article id="hoja" class="print-container"></article></div>
+ <div class="mf"><label class="sw" style="margin-right:auto"><input type="checkbox" id="guia2" checked> Guía y corrector</label><button class="btn sec" data-cerrar>Volver a editar</button><button class="btn" onclick="print()">Imprimir A4</button></div></dialog>
 
-        <div class="dinamicas-panel">
-            <div class="dinamicas-header">
-                <label>Dinámicas a aplicar <span class="hint">(puede elegir varias)</span></label>
-                <div id="tiempoTotalSeleccion" class="tiempo-total"></div>
-            </div>
-            <div id="tipoDinamica" class="dinamicas-checks">
-                <!-- Se llena desde el JSON -->
-            </div>
-        </div>
-
-        <div class="btn-container" style="display: flex; justify-content: space-between; align-items: center;">
-            <div style="display: flex; gap: 0.625rem;">
-                <button onclick="generarEvaluacion()">Generar Formulario</button>
-                <button class="btn-print" onclick="window.print()">Imprimir Formulario</button>
-            </div>
-            <label class="switch-guia" for="incluirGuia" title="Incluye la guía de observación y el corrector en el informe">
-                <input type="checkbox" id="incluirGuia" checked onchange="toggleGuia()">
-                <span class="switch-track"></span>
-                <span class="switch-texto">Guía y corrector</span>
-            </label>
-            <div>
-                <button onclick="window.location.href='admin.html'" style="background-color: #34495e; color: white; border: none; padding: 0.625rem 1rem; border-radius: 0.25rem; cursor: pointer; font-weight: bold; transition: background 0.2s;" onmouseover="this.style.backgroundColor='#2c3e50'" onmouseout="this.style.backgroundColor='#34495e'">
-                    ⚙️ Administrar Datos
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Hoja de Salida para Imprimir -->
-    <div class="print-container" id="printArea">
-        <div class="header-eval">
-            <div>
-                <h2>INFORME DE EVALUACIÓN PSICOTÉCNICA</h2>
-                <div id="cargoTitulo" style="font-size: 1rem; font-weight: bold; color: var(--accent); margin-top: 0.3125rem;">Cargo: -</div>
-            </div>
-            <div class="meta-info">
-                <strong>Fecha:</strong> ____/____/20___<br>
-                <strong>Evaluador(a):</strong> ________________________
-            </div>
-        </div>
-
-        <div class="section-title">1. DINÁMICAS DE EVALUACIÓN SELECCIONADAS</div>
-        <div id="dinamicaDescripcion">
-            <p style="color: #7f8c8d; font-style: italic;">Seleccione un cargo y una dinámica, luego presione "Generar Formulario".</p>
-        </div>
-
-        <div class="section-title" id="tituloSeccionEvaluacion">2. EVALUACIÓN Y PUNTAJE POR POSTULANTE</div>
-        <div id="contenedorPostulantes">
-            <!-- Se generan los bloques completos por postulante -->
-        </div>
-
-        <div class="general-notes">
-            <div class="section-title" style="margin-top:0;">3. CONCLUSIÓN Y DICTAMEN GENERAL</div>
-            <div style="border: 1px solid var(--border); height: 5rem; border-radius: 0.25rem; padding: 0.5rem; font-size: 0.8125rem;">
-                <strong>Dictamen Global (Apto / Apto con reservas / No apto):</strong><br><br>
-                <strong>Comentarios finales:</strong>
-            </div>
-        </div>
-
-        <!-- HOJA ADICIONAL: Salta a la siguiente página automáticamente al imprimir -->
-        <div id="materialPostulanteContenido"></div>
-
-    </div>
-
-    <!-- Archivo JavaScript separado -->
-    <script src="utilidades.js"></script>
-    <script src="datos/datos.js"></script>
-    <script src="script.js"></script>
+<script src="utilidades.js"></script>
+<script src="datos/datos.js"></script>
+<script src="js/informe.js"></script>
+<script src="js/interfaz.js"></script>
 </body>
 </html>
