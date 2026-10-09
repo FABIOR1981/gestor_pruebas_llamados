@@ -70,7 +70,7 @@ const norm=t=>String(t||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLo
 const hoy=()=>new Date(Date.now()-new Date().getTimezoneOffset()*60000).toISOString().slice(0,10);
 const fecha=f=>fmtFecha(f)||'';
 const snapshot=()=>{const car=D.cargos[S.cargo],ar=D.areas[S.area]||{nombre:car.area},sel=dinDe(S.cargo).filter(d=>S.sel.has(d.id));
- return JSON.parse(JSON.stringify({nombre:S.nombreInf,fecha_evaluacion:S.fechaInf,postulantes:S.n,tiempo_total:tiempoEfectivo(),guia:S.guia,area:{sigla:S.area,nombre:ar.nombre},cargo:{codigo:S.cargo,...car},dinamicas:sel}))};
+ return JSON.parse(JSON.stringify({nombre:S.nombreInf||bonito(car.nombre),fecha_evaluacion:S.fechaInf,postulantes:S.n,tiempo_total:tiempoEfectivo(),guia:S.guia,area:{sigla:S.area,nombre:ar.nombre},cargo:{codigo:S.cargo,...car},dinamicas:sel}))};
 function mostrarInforme(snap,est={}){
  $('#hoja').innerHTML=construirInforme(snap.cargo.codigo,snap.cargo,snap.dinamicas,snap.postulantes,snap.tiempo_total,{codigo:est.codigo,nombre:snap.nombre,fecha:snap.fecha_evaluacion});sincGuia(snap.guia);
  $('#subInf').innerHTML=est.codigo?(est.reabierto?`Informe guardado <b class="cod-g">${esc(est.codigo)}</b>, tal como se generó. Así saldrá en hoja A4.`:`Guardado como <b class="cod-g">${esc(est.codigo)}</b>${est.actualizado?' (se actualizó el informe existente)':''}. Así saldrá en hoja A4.`)
@@ -81,9 +81,9 @@ async function reintentar(snap){const b=$('#reintGuardar');b.disabled=true;b.tex
  try{const r=await Datos.guardarInforme(snap,{clave:S.clave});mostrarInforme(snap,{codigo:r.codigo,actualizado:r.actualizado})}
  catch(x){if(x.status===401||x.status===409){$('#dInf').close();abreGuardar()}else mostrarInforme(snap,{error:x.message})}}
 const dg=$('#dGuardar'),fg=$('#fGuardar');
-function abreGuardar(){fg.nombre.value=S.nombreInf;fg.fecha.value=S.fechaInf||hoy();fg.clave.value='';$('#gClave').hidden=true;$('#gDup').hidden=true;$('#gErr').textContent='';dg.showModal();fg.nombre.focus()}
+function abreGuardar(){fg.nombre.value=S.nombreInf;fg.nombre.placeholder=`Si lo dejas vacío: ${bonito(D.cargos[S.cargo].nombre)}`;fg.fecha.value=S.fechaInf||hoy();fg.clave.value='';$('#gClave').hidden=true;$('#gDup').hidden=true;$('#gErr').textContent='';dg.showModal();fg.nombre.focus()}
 async function enviar(reemplazar){
- S.nombreInf=fg.nombre.value.trim();S.fechaInf=fg.fecha.value;if(!S.nombreInf||!S.fechaInf)return;
+ S.nombreInf=fg.nombre.value.trim();S.fechaInf=fg.fecha.value;if(!S.fechaInf)return;
  if(!$('#gClave').hidden)S.clave=fg.clave.value;
  const snap=snapshot(),ok=$('#gOk');ok.disabled=true;ok.textContent='Guardando…';$('#gErr').textContent='';$('#gDup').hidden=true;
  try{const r=await Datos.guardarInforme(snap,{clave:S.clave,reemplazar});dg.close();mostrarInforme(snap,{codigo:r.codigo,actualizado:r.actualizado})}
