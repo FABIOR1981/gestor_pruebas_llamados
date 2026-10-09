@@ -55,6 +55,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 .sel{margin:0;padding:0;list-style:none;font-size:13.5px}
 .sel li{display:flex;justify-content:space-between;gap:10px;padding:5px 0;color:var(--suave)}
 .sel li span:first-child{color:var(--tinta)}.sel li span:last-child{white-space:nowrap}
+.tmp{display:flex;align-items:center;gap:6px;color:var(--suave)}.tmp input{width:72px;padding:6px 8px;border:1px solid var(--linea);border-radius:8px;background:var(--bg);color:var(--tinta);font:inherit;font-weight:600;text-align:right}.tmp input:disabled{opacity:.5}.rest{border:0;background:none;color:var(--acento);font-size:17px;padding:2px 6px;border-radius:6px}.rest:hover{background:var(--acento-s)}.rest[hidden]{display:none}
 .vacio{color:var(--suave);font-size:13.5px;padding:6px 0}
 .cob{display:flex;flex-wrap:wrap;gap:5px;margin:8px 0 4px}
 .cob i{font:600 11px ui-monospace,Menlo,monospace;font-style:normal;padding:3px 7px;border-radius:6px;border:1px dashed var(--linea);color:var(--suave)}
