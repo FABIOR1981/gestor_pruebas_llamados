@@ -88,7 +88,7 @@ const MAMMOTH='https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.brow
 const cargaMammoth=()=>window.mammoth?Promise.resolve():new Promise((ok,ko)=>{const x=document.createElement('script');x.src=MAMMOTH;x.onload=ok;x.onerror=()=>ko(new Error('No se pudo cargar el lector de .docx'));document.head.appendChild(x)});
 function anonimizar(texto,terminos){let t=texto.replace(/[\w.+-]+@[\w-]+\.[\w.-]+/g,'[EMAIL]').replace(/\b\d{1}\.?\d{3}\.?\d{3}-?\d\b/g,'[DOC]').replace(/\b\d{1,2}[\/\-.]\d{1,2}[\/\-.]\d{2,4}\b/g,'[FECHA]').replace(/(\$|U\$S|USD|UYU)\s?[\d.,]+/gi,'[MONTO]').replace(/\b(llamado|concurso|licitaci[oó]n)\s*(n[°ºo.]*\s*)?[\w\/-]*\d[\w\/-]*/gi,'[LLAMADO]');
  terminos.forEach(w=>{if(w.trim())t=t.replace(new RegExp(w.trim().replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'gi'),'[X]')});return t}
-async function leerDocx(f){try{await cargaMammoth();const r=await window.mammoth.extractRawText({arrayBuffer:await f.arrayBuffer()});A.crudo=r.value;A.texto=anonimizar(A.crudo,A.terminos.split(','));A.out='';pintaA()}catch(x){$('#er2').textContent=x.message}}
+async function leerDocx(f){try{A.terminos=(document.querySelector('[name=terminos]')||{value:A.terminos}).value;await cargaMammoth();const r=await window.mammoth.extractRawText({arrayBuffer:await f.arrayBuffer()});A.crudo=r.value;A.texto=anonimizar(A.crudo,A.terminos.split(','));A.out='';pintaA()}catch(x){$('#er2').textContent=x.message}}
 function nuevoTexto(){const m=A.modo,ar=D.areas[A.area],ca=D.cargos[A.cargo];
  const jd='"dinamicas":[{"titulo":"","desc":"","tiempo_limite":"10 Minutos","peso":1,"hoja_postulante":"","caso_o_consigna":"","guia_evaluacion":"• Éxito: …\\n• Alerta: …","respuesta_esperada":""}]',jc='"competencias":[{"codigo":"1.1","comp":"","desc":""}]';
  const forma=m===1?`{"area":{"sigla":"3 letras","nombre":""},"cargo":{"especialidad":"3 letras","nombre":"",${jc}},${jd}}`:m===2?`{"cargo":{"especialidad":"3 letras","nombre":"",${jc}},${jd}}`:`{${jd}}`;
@@ -136,7 +136,7 @@ $('#ar').onclick=e=>{const x=e.target.closest('[data-x]');if(x)return acc(x.data
 $('#ca').onclick=e=>{const x=e.target.closest('[data-x]');if(x)return acc(x.dataset.x);const s=e.target.closest('[data-s]');if(s){S.cargo=s.dataset.s;todo()}};
 $('#lista').onclick=e=>{const x=e.target.closest('[data-x]');if(x)acc(x.dataset.x)};
 $('#nA').onclick=()=>fArea();$('#nC').onclick=()=>fCargo();$('#nD').onclick=()=>fDin();$('#eC').onclick=()=>fCargo(S.cargo);
-$('#gu').onclick=()=>abre('Guardar','<p class="sub">Escribe los cambios en bd/pruebas_llamados.</p><label class="cp">Contraseña<input type="password" name="pw" autocomplete="current-password" required></label>','Guardar',f=>{
+$('#gu').onclick=()=>abre('Guardar','<p class="sub">Escribe los cambios en bd/pruebas_llamados.</p><label class="cp">Contraseña <small style="font-weight:400">(déjela vacía si la clave está desactivada)</small><input type="password" name="pw" autocomplete="off"></label>','Guardar',f=>{
  const b=$('#ok'),e2=$('#er');b.disabled=true;e2.style.color='var(--suave)';e2.textContent='Guardando…';
  Datos.guardar(D,f.get('pw')).then(r=>{base=clon(D);LOG=[];pintaPanel();dm.close();toast(r.escritos.length?`Guardado: ${r.escritos.join(', ')}`:'No había cambios para guardar')}).catch(x=>{e2.style.color='';err(x.message)}).finally(()=>{b.disabled=false});
  return false});

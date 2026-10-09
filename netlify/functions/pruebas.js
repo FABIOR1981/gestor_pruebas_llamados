@@ -13,7 +13,9 @@ const cab = (conToken = false) => ({
 });
 const resp = (c, o) => ({ statusCode: c, headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' }, body: JSON.stringify(o) });
 const igual = (a, b) => { const x = Buffer.from(String(a)), y = Buffer.from(String(b)); return x.length === y.length && crypto.timingSafeEqual(x, y); };
-const claveOk = c => process.env.CLAVE_PRUEBAS && igual(c || '', process.env.CLAVE_PRUEBAS);
+// TEMPORAL: con SIN_CLAVE_PRUEBAS=1 en Netlify no se pide contraseña para guardar. Para volver a exigirla, borrar esa variable y redesplegar.
+const SIN_CLAVE = process.env.SIN_CLAVE_PRUEBAS === '1';
+const claveOk = c => SIN_CLAVE || (process.env.CLAVE_PRUEBAS && igual(c || '', process.env.CLAVE_PRUEBAS));
 const urlArchivo = n => `https://api.github.com/repos/${REPO}/contents/${RUTA}/${n}.json`;
 const esObjeto = x => x !== null && typeof x === 'object' && !Array.isArray(x);
 const baseValida = b => esObjeto(b) && esObjeto(b.areas) && esObjeto(b.cargos) && Array.isArray(b.dinamicas);
