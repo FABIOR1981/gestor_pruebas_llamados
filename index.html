@@ -11,9 +11,10 @@
 </head>
 <body>
 <header class="top">
- <div class="marca"><span class="logo">✓</span>Evaluaciones psicotécnicas</div><div class="esp"></div>
- <button class="ghost" id="tema" aria-label="Cambiar tema">☾ Tema</button>
- <a class="ghost" href="admin.html">⚙ Administrar datos</a>
+ <div class="marca"><span class="logo">✓</span><span class="mt">Evaluaciones psicotécnicas</span></div><div class="esp"></div>
+ <button class="ghost" id="bInformes" title="Informes guardados">📂 Informes</button>
+ <button class="ghost" id="tema" aria-label="Cambiar tema" title="Cambiar tema">☾<span class="txt"> Tema</span></button>
+ <a class="ghost" href="admin.html" aria-label="Administrar datos" title="Administrar datos">⚙<span class="txt"> Administrar datos</span></a>
 </header>
 <main class="app">
  <section class="col-izq" aria-label="Área y cargo">
@@ -47,9 +48,22 @@
  <div class="mb" id="dCuerpo"></div>
  <div class="mf"><button class="btn sec" data-cerrar>Cerrar</button><button class="btn" id="dAdd"></button></div></dialog>
 
-<dialog id="dInf" class="ancho"><div class="mh"><div><h2>Vista previa del informe</h2><p class="sub" style="margin:2px 0 0">Así saldrá en hoja A4. Revisa antes de imprimir.</p></div><button class="x" data-cerrar aria-label="Cerrar">✕</button></div>
+<dialog id="dInf" class="ancho"><div class="mh"><div><h2>Vista previa del informe</h2><p class="sub" id="subInf" style="margin:2px 0 0">Así saldrá en hoja A4. Revisa antes de imprimir.</p></div><button class="x" data-cerrar aria-label="Cerrar">✕</button></div>
  <div class="fondo"><article id="hoja" class="print-container"></article></div>
  <div class="mf"><label class="sw" style="margin-right:auto"><input type="checkbox" id="guia2" checked> Guía y corrector</label><button class="btn sec" data-cerrar>Volver a editar</button><button class="btn" onclick="print()">Imprimir A4</button></div></dialog>
+
+
+<dialog id="dGuardar"><form id="fGuardar"><div class="mh"><h2>Generar y guardar informe</h2><button type="button" class="x" data-cerrar aria-label="Cerrar">✕</button></div>
+ <div class="mb"><label class="campo">Nombre del informe<input name="nombre" maxlength="80" required autocomplete="off" placeholder="Ej.: Jefe de Sucursal Mercedes"></label>
+ <label class="campo">Fecha de evaluación<input type="date" name="fecha" required></label>
+ <div id="gClave" hidden><label class="campo">Contraseña para guardar<input type="password" name="clave" autocomplete="off"></label></div>
+ <div id="gDup" class="aviso-box" hidden></div><p class="err" id="gErr"></p></div>
+ <div class="mf"><button type="button" class="btn sec" data-cerrar>Cancelar</button><button class="btn" id="gOk">Generar y guardar</button></div></form></dialog>
+
+<dialog id="dInfs"><div class="mh"><h2>Informes guardados</h2><button type="button" class="x" data-cerrar aria-label="Cerrar">✕</button></div>
+ <div class="mb"><div class="campo-fila"><label class="campo" style="flex:1">Abrir por código<input id="infCod" autocomplete="off" placeholder="INF-2026-001"></label><button type="button" class="btn" id="infAbrir" style="width:auto;margin:0 0 12px">Abrir</button></div>
+ <input type="search" id="infBus" class="buscar" placeholder="Buscar por nombre, cargo o código…" aria-label="Buscar informe"><div class="inf-lista" id="infLista"></div><p class="err" id="infErr"></p></div>
+ <div class="mf"><button type="button" class="btn sec" data-cerrar>Cerrar</button></div></dialog>
 
 <div id="zonaImpresion" aria-hidden="true"></div>
 <script src="js/utilidades.js"></script>

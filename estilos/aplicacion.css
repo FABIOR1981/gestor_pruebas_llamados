@@ -96,3 +96,16 @@ dialog::backdrop{background:rgba(12,20,22,.58);backdrop-filter:blur(3px)}
 a.ghost{text-decoration:none;display:inline-block}
 @media(max-width:1180px){.app{grid-template-columns:minmax(230px,290px) minmax(0,1fr);padding-bottom:130px}.col-izq{max-height:calc(100vh - 92px - 150px)}.col-der{position:fixed;top:auto;left:0;right:0;bottom:0;z-index:6;max-height:none;overflow:visible;padding:0 10px calc(10px + env(safe-area-inset-bottom,0px))}.col-der .extra{display:none}.col-der .panel{padding:12px 14px;border-radius:16px}.col-der .btn{margin-top:8px}}
 @media(max-width:760px){.app{grid-template-columns:minmax(0,1fr)}.col-izq{position:static;max-height:none;overflow:visible}.cargos{grid-template-columns:repeat(auto-fill,minmax(210px,1fr))}.areas{grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}}
+.campo{display:block;margin:0 0 12px;font-size:13px;font-weight:600;color:var(--suave)}
+.campo input{display:block;width:100%;margin-top:4px;padding:9px 11px;border:1px solid var(--linea);border-radius:10px;background:var(--bg);color:var(--tinta);font:inherit;font-weight:400}
+.campo-fila{display:flex;gap:10px;align-items:end}
+.err{color:var(--aviso);font-size:13px;min-height:1.2em;margin:4px 0 0}
+.aviso-box{border:1px solid var(--aviso);background:var(--aviso-s);border-radius:var(--r);padding:12px 14px;font-size:14px;margin:0 0 10px}
+.aviso-box .btn{width:auto;margin:10px 8px 0 0;padding:8px 14px}
+.inf-lista{display:grid;gap:8px;margin-top:6px}
+.inf-item{display:flex;justify-content:space-between;align-items:center;gap:12px;text-align:left;background:var(--panel);border:1px solid var(--linea);border-radius:var(--r);padding:10px 14px}
+.inf-item:hover{border-color:var(--acento)}.inf-item small{display:block;color:var(--suave)}
+.idm-s{font:700 12px ui-monospace,Menlo,Consolas,monospace;background:var(--acento-s);color:var(--acento);border-radius:6px;padding:3px 8px;white-space:nowrap}
+.av-txt{color:var(--aviso);font-weight:600}.cod-g{font-family:ui-monospace,Menlo,Consolas,monospace}
+@media(max-width:560px){.top{gap:8px}.top .txt{display:none}.mf{flex-wrap:wrap}.mf .sw{flex:1 0 100%;margin:0 0 4px!important}}
+@media(max-width:480px){.marca .mt{display:none}}

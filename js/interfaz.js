@@ -1,7 +1,7 @@
 // Pantalla de armado. Depende de utilidades.js, datos/datos.js y js/informe.js (se cargan antes).
 const $=s=>document.querySelector(s);
 let D={areas:{},cargos:{},dinamicas:[]};
-const S={area:null,cargo:null,sel:new Set(),n:2,guia:true,tManual:null,firma:''};
+const S={area:null,cargo:null,sel:new Set(),n:2,guia:true,tManual:null,firma:'',nombreInf:'',fechaInf:null,clave:''};
 const nombreArea=c=>(D.areas[c.area]&&D.areas[c.area].nombre)||c.area;
 const deArea=(c,sigla)=>c.area===sigla||c.area===(D.areas[sigla]&&D.areas[sigla].nombre);
 // Bajas lógicas: lo que tiene "activo": false no se muestra (un área o cargo inactivo oculta lo que cuelga de él).
@@ -65,8 +65,49 @@ function abre(id){const d=D.dinamicas.find(x=>x.id===id),en=S.sel.has(id);
 const preparaImpresion=()=>{const z=$('#zonaImpresion');z.className='print-container'+(S.guia?'':' ocultar-guia');z.innerHTML=$('#hoja').innerHTML};
 window.addEventListener('beforeprint',()=>{if($('#dInf').open)preparaImpresion()});
 window.addEventListener('afterprint',()=>{$('#zonaImpresion').innerHTML=''});
-$('#gen').onclick=()=>{const car=D.cargos[S.cargo],sel=dinDe(S.cargo).filter(d=>S.sel.has(d.id));if(!car||!sel.length)return;
- $('#hoja').innerHTML=construirInforme(S.cargo,car,sel,S.n,tiempoEfectivo());sincGuia(S.guia);$('#dInf').showModal()};
+// ---------- Guardar el informe (instantánea completa) y reabrirlo por código ----------
+const norm=t=>String(t||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+const hoy=()=>new Date(Date.now()-new Date().getTimezoneOffset()*60000).toISOString().slice(0,10);
+const fecha=f=>fmtFecha(f)||'';
+const snapshot=()=>{const car=D.cargos[S.cargo],ar=D.areas[S.area]||{nombre:car.area},sel=dinDe(S.cargo).filter(d=>S.sel.has(d.id));
+ return JSON.parse(JSON.stringify({nombre:S.nombreInf,fecha_evaluacion:S.fechaInf,postulantes:S.n,tiempo_total:tiempoEfectivo(),guia:S.guia,area:{sigla:S.area,nombre:ar.nombre},cargo:{codigo:S.cargo,...car},dinamicas:sel}))};
+function mostrarInforme(snap,est={}){
+ $('#hoja').innerHTML=construirInforme(snap.cargo.codigo,snap.cargo,snap.dinamicas,snap.postulantes,snap.tiempo_total,{codigo:est.codigo,nombre:snap.nombre,fecha:snap.fecha_evaluacion});sincGuia(snap.guia);
+ $('#subInf').innerHTML=est.codigo?(est.reabierto?`Informe guardado <b class="cod-g">${esc(est.codigo)}</b>, tal como se generó. Así saldrá en hoja A4.`:`Guardado como <b class="cod-g">${esc(est.codigo)}</b>${est.actualizado?' (se actualizó el informe existente)':''}. Así saldrá en hoja A4.`)
+  :`<span class="av-txt">⚠ No se pudo guardar: ${esc(est.error||'error desconocido')}.</span> <button type="button" class="link" id="reintGuardar">Reintentar</button>`;
+ const b=$('#reintGuardar');if(b)b.onclick=()=>reintentar(snap);
+ if(!$('#dInf').open)$('#dInf').showModal()}
+async function reintentar(snap){const b=$('#reintGuardar');b.disabled=true;b.textContent='Guardando…';
+ try{const r=await Datos.guardarInforme(snap,{clave:S.clave});mostrarInforme(snap,{codigo:r.codigo,actualizado:r.actualizado})}
+ catch(x){if(x.status===401||x.status===409){$('#dInf').close();abreGuardar()}else mostrarInforme(snap,{error:x.message})}}
+const dg=$('#dGuardar'),fg=$('#fGuardar');
+function abreGuardar(){fg.nombre.value=S.nombreInf;fg.fecha.value=S.fechaInf||hoy();fg.clave.value='';$('#gClave').hidden=true;$('#gDup').hidden=true;$('#gErr').textContent='';dg.showModal();fg.nombre.focus()}
+async function enviar(reemplazar){
+ S.nombreInf=fg.nombre.value.trim();S.fechaInf=fg.fecha.value;if(!S.nombreInf||!S.fechaInf)return;
+ if(!$('#gClave').hidden)S.clave=fg.clave.value;
+ const snap=snapshot(),ok=$('#gOk');ok.disabled=true;ok.textContent='Guardando…';$('#gErr').textContent='';$('#gDup').hidden=true;
+ try{const r=await Datos.guardarInforme(snap,{clave:S.clave,reemplazar});dg.close();mostrarInforme(snap,{codigo:r.codigo,actualizado:r.actualizado})}
+ catch(x){
+  if(x.status===409&&x.detalle&&x.detalle.error==='nombre_existe'){const g=$('#gDup');
+   g.innerHTML=`Ya existe el informe <b>${esc(x.detalle.nombre)}</b> (<span class="cod-g">${esc(x.detalle.codigo)}</span>). Si lo actualizas, conserva su código y se reemplaza su contenido.<br><button type="button" class="btn" id="gAct">Actualizar ${esc(x.detalle.codigo)}</button><button type="button" class="btn sec" id="gCamb">Cambiar el nombre</button>`;g.hidden=false;
+   $('#gAct').onclick=()=>enviar(true);$('#gCamb').onclick=()=>{g.hidden=true;fg.nombre.focus();fg.nombre.select()}}
+  else if(x.status===401){$('#gClave').hidden=false;$('#gErr').textContent=S.clave?'La contraseña no es correcta.':'Para guardar hace falta la contraseña.';fg.clave.focus()}
+  else{dg.close();mostrarInforme(snap,{error:x.message})}}
+ finally{ok.disabled=false;ok.textContent='Generar y guardar'}}
+fg.onsubmit=e=>{e.preventDefault();enviar(false)};
+$('#gen').onclick=()=>{const car=D.cargos[S.cargo],sel=dinDe(S.cargo).filter(d=>S.sel.has(d.id));if(!car||!sel.length)return;abreGuardar()};
+
+let INFS=[];
+function pintaInfs(){const q=norm($('#infBus').value),l=INFS.filter(x=>!q||norm([x.nombre,x.codigo,x.cargo_nombre,x.area_nombre].join(' ')).includes(q));
+ $('#infLista').innerHTML=l.map(x=>`<button type="button" class="inf-item" data-c="${esc(x.codigo)}"><span><strong>${esc(x.nombre)}</strong><small>${esc(x.cargo_nombre)} · ${esc(x.area_nombre)} · ${esc(fecha(x.fecha_evaluacion))} · ${x.postulantes} postulante${x.postulantes>1?'s':''}</small></span><span class="idm-s">${esc(x.codigo)}</span></button>`).join('')||`<div class="vacio-box">${INFS.length?'Ningún informe coincide con la búsqueda.':'Todavía no hay informes guardados.'}</div>`}
+async function abreInformes(){$('#infErr').textContent='';$('#infCod').value='';$('#infBus').value='';$('#infLista').innerHTML='<div class="vacio-box">Cargando…</div>';$('#dInfs').showModal();
+ try{INFS=(await Datos.listarInformes()).slice().sort((a,b)=>String(b.actualizado).localeCompare(String(a.actualizado)));pintaInfs()}catch(x){$('#infLista').innerHTML='';$('#infErr').textContent=x.message}}
+async function abreGuardado(codigo){const c=String(codigo).trim().toUpperCase();if(!c)return;$('#infErr').textContent='';
+ try{const r=await Datos.leerInforme(c);$('#dInfs').close();mostrarInforme(r,{codigo:r.codigo,reabierto:true})}
+ catch(x){$('#infErr').textContent=x.status===404?`No existe el informe ${c}.`:x.message}}
+$('#bInformes').onclick=abreInformes;$('#infBus').oninput=pintaInfs;
+$('#infAbrir').onclick=()=>abreGuardado($('#infCod').value);$('#infCod').onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();abreGuardado(e.target.value)}};
+$('#infLista').onclick=e=>{const b=e.target.closest('[data-c]');if(b)abreGuardado(b.dataset.c)};
 
 async function iniciar(){
  $('#areas').innerHTML='<div class="vacio-box" style="grid-column:1/-1">Cargando catálogo…</div>';

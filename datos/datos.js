@@ -27,5 +27,25 @@ const Datos = (() => {
         return j;
     }
 
-    return { cargar, guardar, get origen() { return origen; } };
+    // ---- Informes guardados (informes.json + informes/<código>.json) ----
+    async function pedir(url, opciones) {
+        const r = await fetch(url, { cache: 'no-store', ...opciones });
+        const j = await r.json().catch(() => ({}));
+        if (!r.ok) {
+            const e = new Error(j.mensaje || j.error || 'Error ' + r.status);
+            e.status = r.status;
+            e.detalle = j;
+            throw e;
+        }
+        return j;
+    }
+    const listarInformes = () => pedir(API + '?informes=1');
+    const leerInforme = codigo => pedir(API + '?informe=' + encodeURIComponent(codigo));
+    const guardarInforme = (informe, { clave = '', reemplazar = false } = {}) => pedir(API, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ accion: 'guardar_informe', clave, reemplazar, informe })
+    });
+
+    return { cargar, guardar, listarInformes, leerInforme, guardarInforme, get origen() { return origen; } };
 })();
