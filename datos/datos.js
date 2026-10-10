@@ -40,6 +40,16 @@ const Datos = (() => {
     // ---- Pedido genérico con reintento de contraseña ----
     async function pedir(url, { metodo = 'GET', cuerpo = null } = {}) {
         let reintento = false;
+        // Sin contraseña guardada: se pide antes de llamar, así no aparece un error 401 en la consola.
+        if (!clave && !(cuerpo && cuerpo.clave)) {
+            const primera = await obtenerClave('');
+            if (primera === null) {
+                const e = new Error('Se necesita la contraseña.');
+                e.status = 401;
+                throw e;
+            }
+            recordar(primera);
+        }
         for (;;) {
             const usada = cuerpo && cuerpo.clave && !reintento ? cuerpo.clave : clave;
             const opciones = { method: metodo, cache: 'no-store', headers: { 'X-Clave': usada } };
