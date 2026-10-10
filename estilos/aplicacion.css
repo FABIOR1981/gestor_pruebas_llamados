@@ -109,3 +109,4 @@ a.ghost{text-decoration:none;display:inline-block}
 .av-txt{color:var(--aviso);font-weight:600}.cod-g{font-family:ui-monospace,Menlo,Consolas,monospace}
 @media(max-width:560px){.top{gap:8px}.top .txt{display:none}.mf{flex-wrap:wrap}.mf .sw{flex:1 0 100%;margin:0 0 4px!important}}
 @media(max-width:480px){.marca .mt{display:none}}
+.av-rel{margin-top:8px;font-size:12px;color:var(--aviso);line-height:1.4}.av-rel p{margin:0 0 4px}

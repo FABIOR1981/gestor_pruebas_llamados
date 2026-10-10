@@ -27,6 +27,8 @@ function pintaPanel(){const car=D.cargos[S.cargo],sel=car?dinDe(S.cargo).filter(
  const cubre=new Set(car?sel.flatMap(d=>aplica(d,car)):[]),tot=car?car.competencias.length:0;
  $('#cob').innerHTML=car?car.competencias.map((c,i)=>`<i class="${cubre.has(cod(c,i))?'ok':''}" title="${esc(c.comp)}">${esc(cod(c,i))}</i>`).join(''):'';
  $('#cobTxt').textContent=car?`${cubre.size} de ${tot}`:'';$('#cobBar').style.width=tot?(100*cubre.size/tot)+'%':'0';
+ const sinC=car?sel.filter(d=>competenciasDeDinamica(d,car).length===0):[],av=$('#avRel');
+ av.innerHTML=sinC.length?`<p>⚠ Sin competencia relacionada: <b>${sinC.map(d=>esc(d.titulo)).join(', ')}</b>.</p>`:'';av.hidden=!sinC.length;
  // Tiempo estimado: se ofrece la suma de las dinámicas, pero se puede editar. Al cambiar la selección vuelve a ofrecerse el valor calculado.
  const firma=[...S.sel].sort().join();if(firma!==S.firma){S.firma=firma;S.tManual=null}
  const t=sel.reduce((a,d)=>a+mins(d),0),inp=$('#tiempoIn');inp.disabled=!sel.length;
@@ -81,7 +83,10 @@ async function reintentar(snap){const b=$('#reintGuardar');b.disabled=true;b.tex
  try{const r=await Datos.guardarInforme(snap,{clave:S.clave});mostrarInforme(snap,{codigo:r.codigo,actualizado:r.actualizado})}
  catch(x){if(x.status===401||x.status===409){$('#dInf').close();abreGuardar()}else mostrarInforme(snap,{error:x.message})}}
 const dg=$('#dGuardar'),fg=$('#fGuardar');
-function abreGuardar(){fg.nombre.value=S.nombreInf;fg.nombre.placeholder=`Si lo dejas vacío: ${bonito(D.cargos[S.cargo].nombre)}`;fg.fecha.value=S.fechaInf||hoy();fg.clave.value='';$('#gClave').hidden=true;$('#gDup').hidden=true;$('#gErr').textContent='';dg.showModal();fg.nombre.focus()}
+function abreGuardar(){fg.nombre.value=S.nombreInf;fg.nombre.placeholder=`Si lo dejas vacío: ${bonito(D.cargos[S.cargo].nombre)}`;fg.fecha.value=S.fechaInf||hoy();fg.clave.value='';$('#gClave').hidden=true;$('#gDup').hidden=true;$('#gErr').textContent='';
+ const av=avisosRelaciones(D.cargos[S.cargo],dinDe(S.cargo).filter(d=>S.sel.has(d.id))),gr=$('#gRel');
+ gr.innerHTML=av.length?av.map(t=>`<p style="margin:0 0 6px">⚠ ${t}</p>`).join('')+'<p style="margin:0">Puedes generar el informe igual.</p>':'';gr.hidden=!av.length;
+ dg.showModal();fg.nombre.focus()}
 async function enviar(reemplazar){
  S.nombreInf=fg.nombre.value.trim();S.fechaInf=fg.fecha.value;if(!S.fechaInf)return;
  if(!$('#gClave').hidden)S.clave=fg.clave.value;

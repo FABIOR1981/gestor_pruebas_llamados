@@ -35,7 +35,7 @@
    <div class="extra">
     <div class="fila"><span>Postulantes</span><div class="stp"><button id="menos" aria-label="Menos">−</button><output id="n">2</output><button id="mas" aria-label="Más">+</button></div></div>
     <div class="fila" style="display:block"><b style="font-size:13px">Seleccionadas</b><ul class="sel" id="selLista"></ul></div>
-    <div class="fila" style="display:block"><div style="display:flex;justify-content:space-between;font-size:13px"><b>Cobertura de competencias</b><span id="cobTxt" style="color:var(--suave)"></span></div><div class="cob" id="cob"></div><div class="barra"><div id="cobBar"></div></div></div>
+    <div class="fila" style="display:block"><div style="display:flex;justify-content:space-between;font-size:13px"><b>Cobertura de competencias</b><span id="cobTxt" style="color:var(--suave)"></span></div><div class="cob" id="cob"></div><div class="barra"><div id="cobBar"></div></div><div class="av-rel" id="avRel" hidden></div></div>
     <div class="fila"><label class="sw"><input type="checkbox" id="guia" checked> Guía y corrector en el informe</label></div>
    </div>
    <div class="fila" style="border-top:1px solid var(--linea)"><label for="tiempoIn">Tiempo total</label><span class="tmp"><button type="button" class="rest" id="tReset" title="Volver al valor calculado" aria-label="Volver al valor calculado" hidden>↺</button><input id="tiempoIn" type="number" min="0" max="999" step="1" inputmode="numeric" placeholder="—" disabled><span>min</span></span></div>
@@ -57,6 +57,7 @@
  <div class="mb"><label class="campo">Nombre del informe <small style="font-weight:400">(opcional)</small><input name="nombre" id="gNombre" maxlength="80" autocomplete="off" placeholder="Ej.: Jefe de Sucursal Mercedes"></label>
  <label class="campo">Fecha de evaluación<input type="date" name="fecha" required></label>
  <div id="gClave" hidden><label class="campo">Contraseña para guardar<input type="password" name="clave" autocomplete="off"></label></div>
+ <div id="gRel" class="aviso-box" hidden></div>
  <div id="gDup" class="aviso-box" hidden></div><p class="err" id="gErr"></p></div>
  <div class="mf"><button type="button" class="btn sec" data-cerrar>Cancelar</button><button class="btn" id="gOk">Generar y guardar</button></div></form></dialog>
 

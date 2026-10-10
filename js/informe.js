@@ -3,9 +3,7 @@ const limpio=t=>String(t||'').replace(/\s*\[cite:[^\]]*\]/g,'').trim();
 // Sin tiempo = campo vacío o con valor 0 ("0", "0 minutos"). Un texto sin números ("Sin límite") se muestra tal cual.
 const sinTiempo=d=>{const t=String(d.tiempo_limite??'').trim();if(!t)return true;const n=t.match(/\d+/g);return !!n&&Math.max(...n.map(Number))===0};
 const mins=d=>{const n=(d.tiempo_limite||'').match(/\d+/g);return n?Math.max(...n.map(Number)):0};
-const cod=(c,i)=>c.codigo||'C'+String(i+1).padStart(2,'0');
-const aplica=(d,car)=>{const r=[...String(d.caso_o_consigna||'').matchAll(/\b\d+\.\d+\b/g)].map(m=>m[0]);
- return car.competencias.map(cod).filter(c=>!r.length||r.includes(c))};
+const cod=codigoCompetencia,aplica=competenciasDeDinamica; // definidas en utilidades.js (relación competencias ↔ dinámicas)
 const nl=(t,v)=>esc(limpio(t)||v).replace(/\n/g,'<br>');
 
 const fmtFecha=f=>/^\d{4}-\d{2}-\d{2}$/.test(f||'')?f.split('-').reverse().join('/'):'';
@@ -17,12 +15,12 @@ function construirInforme(key,car,sel,n,tiempoTotal,meta){meta=meta||{};const co
   <div class="cj o"><strong>🎯 Objetivo de la prueba:</strong><br>${nl(d.caso_o_consigna,'Sin objetivo específico.')}</div>
   <div class="cj g bloque-guia"><strong>🔍 Guía de observación para el evaluador:</strong><br>${nl(d.guia_evaluacion,'Sin guía específica.')}</div>
   <div class="cj c bloque-guia"><strong>✅ Corrector: respuestas correctas / esperadas:</strong><br>${nl(d.respuesta_esperada,'Sin respuesta esperada definida.')}</div></div>`).join('');
- const cpd=sel.map(d=>new Set(aplica(d,car))),maxD=cpd.map(s=>s.size*5),maxC=comps.map((c,i)=>cpd.filter(s=>s.has(cod(c,i))).length*5),maxT=maxD.reduce((a,b)=>a+b,0);
+ const pm=sel.map(puntajeMaximoDinamica),cpd=sel.map(d=>new Set(aplica(d,car))),maxD=cpd.map((s,i)=>s.size*pm[i]),maxC=comps.map((c,j)=>cpd.reduce((a,s,i)=>a+(s.has(cod(c,j))?pm[i]:0),0)),maxT=maxD.reduce((a,b)=>a+b,0);
  const pesos=sel.map(d=>Number(d.peso)>0?Number(d.peso):1),pA=pesos.filter((_,i)=>maxD[i]>0),sumP=pA.reduce((a,b)=>a+b,0),iguales=pA.length>0&&pA.every(p=>p===pA[0]);
  const formula=maxT===0?'Sin competencias aplicables':iguales?`Total ÷ ${maxT} × ${MAXF}`:`Σ (Sub total ÷ máximo aplicable × peso) ÷ ${sumP} × ${MAXF}`;
  const leyenda=`<div class="leyenda-dinamicas bloque-dinamica"><strong>Competencias a observar</strong><ul>${comps.map((c,i)=>`<li><strong>${esc(cod(c,i))} - ${esc(c.comp)}:</strong> ${esc(limpio(c.desc))}</li>`).join('')}</ul></div>`;
  const celdaMax=m=>m?`<td class="celda-puntaje"><span class="max">/ ${m}</span></td>`:'<td class="celda-no-aplica"></td>';
- const filas=sel.map((d,i)=>`<tr><td class="celda-comp"><strong><span class="badge-d">D${i+1}</span>${esc(d.titulo)}</strong><span><span class="chip chip-id">${esc(d.id)}</span>${sinTiempo(d)?'':` <span class="chip chip-tiempo">⏱️ ${esc(d.tiempo_limite)}</span>`}${iguales?'':` <span class="chip chip-id">Peso ${pesos[i]}</span>`}</span></td>${comps.map((c,j)=>cpd[i].has(cod(c,j))?'<td class="celda-puntaje"><span class="max">/ 5</span></td>':'<td class="celda-no-aplica"></td>').join('')}<td class="celda-puntaje col-subtotal"><span class="max">${maxD[i]?`/ ${maxD[i]}`:'No aplica'}</span></td></tr>`).join('');
+ const filas=sel.map((d,i)=>`<tr><td class="celda-comp"><strong><span class="badge-d">D${i+1}</span>${esc(d.titulo)}</strong><span><span class="chip chip-id">${esc(d.id)}</span>${sinTiempo(d)?'':` <span class="chip chip-tiempo">⏱️ ${esc(d.tiempo_limite)}</span>`}${iguales?'':` <span class="chip chip-id">Peso ${pesos[i]}</span>`}${pm[i]!==PUNTAJE_MAX_COMPETENCIA?` <span class="chip chip-id">Máx. ${pm[i]} c/u</span>`:''}</span></td>${comps.map((c,j)=>cpd[i].has(cod(c,j))?`<td class="celda-puntaje"><span class="max">/ ${pm[i]}</span></td>`:'<td class="celda-no-aplica"></td>').join('')}<td class="celda-puntaje col-subtotal"><span class="max">${maxD[i]?`/ ${maxD[i]}`:'No aplica'}</span></td></tr>`).join('');
  const tabla=`<table class="tabla-puntaje"><thead><tr><th>Dinámica</th>${comps.map((c,i)=>`<th class="col-puntaje" title="${esc(c.comp)}">${esc(cod(c,i))}</th>`).join('')}<th class="col-subtotal">Sub total</th></tr></thead><tbody>${filas}
   <tr class="fila-total"><td>TOTAL</td>${maxC.map(celdaMax).join('')}<td class="celda-puntaje"><span class="max">/ ${maxT}</span></td></tr>
   <tr class="fila-total"><td>PUNTAJE FINAL</td><td colspan="${comps.length+1}" class="celda-puntaje celda-formula"><span class="max">${formula}${maxT?` = ______ / ${MAXF}`:''}</span></td></tr></tbody></table>`;
