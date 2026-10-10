@@ -12,10 +12,17 @@ const Datos = (() => {
         try { clave ? sessionStorage.setItem('pruebas_clave', clave) : sessionStorage.removeItem('pruebas_clave'); } catch (e) { /* sin sessionStorage */ }
     };
 
+    // Diálogo con el mismo estilo de los demás modales de la app (clases mh / mb / campo / mf).
     function pedirClave(aviso) {
         return new Promise(resolver => {
             const d = document.createElement('dialog');
-            d.innerHTML = '<form style="display:grid;gap:10px;min-width:260px"><h2 style="margin:0;font-size:18px">Contraseña</h2><p class="sub" style="margin:0" data-a></p><input type="password" autocomplete="current-password" required><div style="display:flex;gap:8px;justify-content:flex-end"><button type="button" class="btn sec" data-c>Cancelar</button><button class="btn">Entrar</button></div></form>';
+            d.style.width = 'min(420px, calc(100vw - 24px))';
+            d.innerHTML = '<form>'
+                + '<div class="mh"><h2>Contraseña</h2></div>'
+                + '<div class="mb"><p class="sub" data-a></p>'
+                + '<label class="campo">Contraseña<input type="password" autocomplete="current-password" required></label></div>'
+                + '<div class="mf"><button type="button" class="btn sec" data-c>Cancelar</button><button class="btn">Entrar</button></div>'
+                + '</form>';
             d.querySelector('[data-a]').textContent = aviso || 'Para usar la aplicación hace falta la contraseña.';
             const inp = d.querySelector('input');
             let valor = null;
