@@ -1,0 +1,6 @@
+# La carpeta documentacion/ es interna: se responde 404 aunque el archivo exista.
+[[redirects]]
+  from = "/documentacion/*"
+  to = "/404.html"
+  status = 404
+  force = true
