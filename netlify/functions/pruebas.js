@@ -23,15 +23,15 @@ const baseValida = b => esObjeto(b) && esObjeto(b.areas) && esObjeto(b.cargos) &
 async function leerArchivo(nombre, conToken = false) {
   const r = await fetch(`${urlArchivo(nombre)}?ref=${RAMA}`, { headers: cab(conToken) });
   if (r.status === 404) return { falta: true };
-  if (r.status === 401) throw new Error('GitHub rechazó GITHUB_TOKEN_PRUEBAS_LLAMADOS_BD al leer ' + nombre + '.json. Verifica que el token de Netlify sea válido y tenga acceso al repositorio bd.');
-  if (!r.ok) throw new Error('GitHub respondió ' + r.status + ' al leer ' + nombre + '.json');
+  if (r.status === 401) { console.error('GitHub rechazó el token al leer ' + nombre + '.json: revisar GITHUB_TOKEN_PRUEBAS_LLAMADOS_BD y su acceso al repo'); throw new Error('No se pudo acceder a los datos (error de configuración del servidor).'); }
+  if (!r.ok) { console.error('GitHub respondió ' + r.status + ' al leer ' + nombre + '.json'); throw new Error('No se pudo leer ' + nombre + '.json (error ' + r.status + ').'); }
   const m = await r.json();
   return { sha: m.sha, datos: JSON.parse(Buffer.from(m.content, 'base64').toString('utf8')) };
 }
 
 async function leerTodo() {
   const partes = await Promise.all(ARCHIVOS.map(nombre => leerArchivo(nombre, Boolean(process.env.GITHUB_TOKEN_PRUEBAS_LLAMADOS_BD))));
-  if (partes.some(p => p.falta)) return resp(404, { error: `Faltan archivos en ${REPO}/${RUTA}` });
+  if (partes.some(p => p.falta)) return resp(404, { error: 'Faltan archivos en la base de datos.' });
   return resp(200, Object.fromEntries(ARCHIVOS.map((n, i) => [n, partes[i].datos])));
 }
 
@@ -45,7 +45,7 @@ async function guardarTodo(base) {
       method: 'PUT', headers: { ...cab(true), 'Content-Type': 'application/json' },
       body: JSON.stringify({ message: `pruebas_llamados: actualizar ${nombre}.json`, content: Buffer.from(contenido).toString('base64'), branch: RAMA, ...(actual.falta ? {} : { sha: actual.sha }) })
     });
-    if (!put.ok) throw new Error(`No se pudo guardar ${nombre}.json (GitHub ${put.status})`);
+    if (!put.ok) { console.error(`GitHub ${put.status} al guardar ${nombre}.json`); throw new Error(`No se pudo guardar ${nombre}.json (error ${put.status}).`); }
     escritos.push(nombre);
   }
   return resp(200, { ok: true, escritos });
@@ -110,12 +110,12 @@ async function guardarInforme(inf, reemplazar) {
     if (!p1.ok) {
       // 409/422: otro guardado simultáneo ocupó ese código. Se espera un instante y se vuelve a calcular.
       if ([409, 422].includes(p1.status) && intento < 5) { await new Promise(r => setTimeout(r, 120 * (intento + 1))); continue; }
-      throw new Error(`No se pudo guardar el informe ${codigo} (GitHub ${p1.status})`);
+      { console.error(`GitHub ${p1.status} al guardar el informe ${codigo}`); throw new Error(`No se pudo guardar el informe ${codigo} (error ${p1.status}).`); }
     }
     const nueva = existente ? lista.map(x => x.codigo === codigo ? entrada : x) : [...lista, entrada];
     const p2 = await escribir(INDICE, nueva, idx.falta ? null : idx.sha, `pruebas_llamados: índice de informes (${codigo})`);
     if (p2.ok) return resp(200, { ok: true, codigo, actualizado: Boolean(existente) });
-    if (![409, 422].includes(p2.status)) throw new Error(`No se pudo actualizar informes.json (GitHub ${p2.status})`);
+    if (![409, 422].includes(p2.status)) { console.error(`GitHub ${p2.status} al actualizar informes.json`); throw new Error(`No se pudo actualizar el índice de informes (error ${p2.status}).`); }
     await new Promise(r => setTimeout(r, 120 * (intento + 1)));
   }
   throw new Error('No se pudo guardar: otro guardado simultáneo ocupó el índice. Intente de nuevo.');
@@ -123,7 +123,7 @@ async function guardarInforme(inf, reemplazar) {
 
 exports.handler = async (ev) => {
   try {
-    if (!process.env.CLAVE_PRUEBAS) return resp(500, { error: 'Falta la variable CLAVE_PRUEBAS en Netlify' });
+    if (!process.env.CLAVE_PRUEBAS) return resp(500, { error: 'El servidor no tiene configurada la contraseña.' });
     if (ev.httpMethod === 'GET') {
       if (!claveOk((ev.headers || {})['x-clave'])) return resp(401, { error: 'Clave inválida' });
       const q = ev.queryStringParameters || {};
@@ -132,7 +132,7 @@ exports.handler = async (ev) => {
       return await leerTodo();
     }
     if (ev.httpMethod !== 'POST') return resp(405, { error: 'Método no permitido' });
-    if (!process.env.GITHUB_TOKEN_PRUEBAS_LLAMADOS_BD) return resp(500, { error: 'Falta la variable GITHUB_TOKEN_PRUEBAS_LLAMADOS_BD en Netlify; es necesaria para guardar datos' });
+    if (!process.env.GITHUB_TOKEN_PRUEBAS_LLAMADOS_BD) return resp(500, { error: 'El servidor no tiene configurado el guardado.' });
 
     const cuerpo = JSON.parse(ev.body || '{}');
     if (!claveOk(cuerpo.clave)) return resp(401, { error: 'Clave inválida' });
@@ -144,6 +144,7 @@ exports.handler = async (ev) => {
     if (!baseValida(cuerpo.base)) return resp(400, { error: 'Datos inválidos' });
     return await guardarTodo(cuerpo.base);
   } catch (e) {
+    console.error(e);
     return resp(500, { error: e.message || 'Error del servidor' });
   }
 };

@@ -86,7 +86,7 @@ const Datos = (() => {
     async function cargar() {
         const base = await pedir(API);
         if (!base.areas || !base.cargos || !Array.isArray(base.dinamicas)) {
-            throw new Error('La respuesta de bd/pruebas_llamados tiene un formato inválido.');
+            throw new Error('La respuesta del servidor tiene un formato inválido.');
         }
         origen = 'bd';
         return base;
