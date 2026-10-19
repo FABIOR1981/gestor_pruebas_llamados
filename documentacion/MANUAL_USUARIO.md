@@ -131,7 +131,10 @@ En **📂 Informes**, cada informe tiene el botón **✎ Corrección** (también
 - Los subtotales, totales y el puntaje final sobre 30 se calculan solos, con la misma fórmula del informe impreso. Un puntaje mayor al máximo de la celda queda marcado en rojo y no se guarda.
 - **Guardar borrador** permite seguir otro día. En la lista el informe aparece como *Corrección en borrador*.
 - **Finalizar corrección** cierra el informe: desde ese momento **no admite más cambios** (ni a la corrección ni al informe). Para finalizar, cada postulante debe estar completo (nombre y todos los puntajes) o totalmente vacío, si no se presentó.
-- Al abrir un informe con corrección, la vista previa permite elegir **En blanco** (el formulario vacío, como antes) o **Con corrección** (con nombres, puntajes, totales, observaciones y dictámenes) antes de **Imprimir A4**.
+- Al abrir un informe con corrección, la vista previa permite elegir antes de **Imprimir A4**:
+  - **En blanco**: el formulario original, con las hojas de trabajo, para reimprimirlo.
+  - **Con corrección**: el **informe de resultados**, con (1) el resumen de cada postulante (puntaje final y dictamen; los que quedaron vacíos figuran como *No se presentó*), (2) las dinámicas aplicadas como testigo, con la consigna que se entregó, (3) el detalle de puntaje de cada postulante en su propia página y (4) los comentarios finales con la línea de firma del evaluador. No lleva hojas de trabajo.
+- El campo opcional **Cargo / título** del evaluador (por ejemplo *Lic. en Psicología*) aparece en el encabezado y bajo la firma.
 - Un informe con corrección no se puede reemplazar desde el generador: si se guarda con el mismo nombre, la herramienta pide usar otro nombre.
 
 ---

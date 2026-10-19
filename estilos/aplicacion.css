@@ -146,6 +146,8 @@ a.ghost{text-decoration:none;display:inline-block}
 .cor-2{display:grid;grid-template-columns:minmax(0,1fr) 270px;gap:12px}
 .cor-2 .campo{margin:0}
 @media(max-width:560px){.cor-2{grid-template-columns:minmax(0,1fr)}.cor-ph{flex-wrap:wrap}}
+.cor-ev{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px}
+@media(max-width:560px){.cor-ev{grid-template-columns:minmax(0,1fr)}}
 .cor-msg{margin-right:auto;align-self:center;color:var(--suave);font-size:13px}
 .cor-cerrado{border-color:var(--acento);background:var(--acento-s)}
 #cConf ul{color:var(--tinta)}

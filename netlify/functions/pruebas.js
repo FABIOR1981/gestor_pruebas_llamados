@@ -142,6 +142,7 @@ const texto = (v, max) => typeof v === 'string' && v.length <= max;
 function limpiarCorreccion(inf, c, finalizar) {
   if (!esObjeto(c)) return { error: 'Corrección inválida' };
   if (!texto(c.evaluador ?? '', 80)) return { error: 'El nombre del evaluador admite hasta 80 caracteres' };
+  if (!texto(c.titulo_evaluador ?? '', 80)) return { error: 'El cargo o título del evaluador admite hasta 80 caracteres' };
   if (!texto(c.comentarios ?? '', 3000)) return { error: 'Los comentarios finales admiten hasta 3000 caracteres' };
   if (!Array.isArray(c.postulantes) || c.postulantes.length !== inf.postulantes) return { error: `La corrección debe tener ${inf.postulantes} postulante(s)` };
   const celdas = inf.dinamicas.map(d => ({ d, comps: competenciasDeDinamica(d, inf.cargo), max: puntajeMaximo(d) }));
@@ -171,7 +172,7 @@ function limpiarCorreccion(inf, c, finalizar) {
     postulantes.push({ nombre, observaciones: (p.observaciones || '').trim(), dictamen: p.dictamen || '', puntajes });
   }
   if (finalizar && !postulantes.some(p => p.nombre)) return { error: 'Para finalizar, cargue al menos un postulante completo' };
-  return { correccion: { evaluador: (c.evaluador || '').trim(), comentarios: (c.comentarios || '').trim(), postulantes } };
+  return { correccion: { evaluador: (c.evaluador || '').trim(), titulo_evaluador: (c.titulo_evaluador || '').trim(), comentarios: (c.comentarios || '').trim(), postulantes } };
 }
 
 async function guardarCorreccion(codigo, cor, finalizar) {

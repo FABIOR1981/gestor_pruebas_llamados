@@ -143,7 +143,7 @@ function abreCorreccion(inf){COR=inf;corSucio=false;
  $('#cTit').textContent=`Corrección · ${inf.nombre}`;
  $('#cSub').innerHTML=`<span class="cod-g">${esc(inf.codigo)}</span> · ${esc(bonito(car.nombre))} · ${esc(fecha(inf.fecha_evaluacion))}`;
  $('#cFinal').hidden=!fin;$('#cFinal').innerHTML=fin?`🔒 Corrección finalizada${c.finalizada?` (${esc(new Date(c.finalizada).toLocaleString('es-UY',{dateStyle:'short',timeStyle:'short'}))})`:''}. El informe ya no admite cambios; puedes verlo e imprimirlo en blanco o con estos datos.`:'';
- $('#cEval').value=c.evaluador||'';$('#cCom').value=c.comentarios||'';
+ $('#cEval').value=c.evaluador||'';$('#cTitEv').value=c.titulo_evaluador||'';$('#cCom').value=c.comentarios||'';
  const ps=c.postulantes||[];
  $('#cPost').innerHTML=Array.from({length:inf.postulantes},(_,i)=>{const p=ps[i]||{},v=(d,k)=>{const x=p.puntajes&&p.puntajes[d.id]&&p.puntajes[d.id][k];return typeof x==='number'?fmtPuntaje(x):''};
   return `<section class="cor-p" data-p="${i}"><div class="cor-ph"><b>Postulante #${i+1}</b><input class="cor-nom" data-nom maxlength="80" autocomplete="off" placeholder="Nombre del postulante" aria-label="Nombre del postulante #${i+1}" value="${esc(p.nombre||'')}"></div>
@@ -176,7 +176,7 @@ dc.addEventListener('change',e=>{if(e.target.matches('select'))corSucio=true});
 function leeCorreccion(){const ps=[];let error='';
  dc.querySelectorAll('.cor-p').forEach((s,i)=>{const pt=recalcula(s);if(!error&&s.querySelector('.cor-in.mal'))error=`Postulante #${i+1}: hay puntajes inválidos (marcados en rojo). Usa números entre 0 y el máximo de la celda.`;
   ps.push({nombre:s.querySelector('[data-nom]').value.trim(),observaciones:s.querySelector('[data-obs]').value.trim(),dictamen:s.querySelector('[data-dic]').value,puntajes:pt})});
- return {error,correccion:{evaluador:$('#cEval').value.trim(),comentarios:$('#cCom').value.trim(),postulantes:ps}}}
+ return {error,correccion:{evaluador:$('#cEval').value.trim(),titulo_evaluador:$('#cTitEv').value.trim(),comentarios:$('#cCom').value.trim(),postulantes:ps}}}
 // Para finalizar: cada postulante queda completo (nombre y todos los puntajes) o totalmente vacío; al menos uno completo.
 function faltasParaFinalizar(cor){const faltas=[];
  cor.postulantes.forEach((p,i)=>{const r=calcularPuntajes(COR.cargo,COR.dinamicas,p.puntajes),usado=p.nombre||r.cargadas;
