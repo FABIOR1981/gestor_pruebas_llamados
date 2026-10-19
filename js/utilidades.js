@@ -130,7 +130,7 @@ function calcularPuntajes(cargo, dinamicas, puntajes) {
 // 12.5 → "12,5"; redondea a 2 decimales.
 const fmtPuntaje = n => n === null || n === undefined ? '' : String(Math.round(n * 100) / 100).replace('.', ',');
 
-const DICTAMENES = ['Apto', 'Apto con reservas', 'No apto'];
+const DICTAMENES = ['Recomendable', 'Recomendable con observaciones', 'No recomendable'];
 
 // Frases (HTML ya escapado) para avisar del control anterior. Lista vacía = todo relacionado.
 function avisosRelaciones(cargo, dinamicas) {

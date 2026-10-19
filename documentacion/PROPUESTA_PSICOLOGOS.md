@@ -68,7 +68,7 @@ Cada cargo tiene definidas sus **competencias**. Por ejemplo, para *Jefe*: Visi�
 - cada **fila** es una dinámica y cada **columna** una competencia, puntuada **de 0 a 5**;
 - se calculan los totales por dinámica, por competencia y el total general;
 - hay un espacio para **observaciones y notas de conducta**;
-- el informe cierra con el **dictamen global**: *Apto / Apto con reservas / No apto*.
+- el informe cierra con el **dictamen global**: *Recomendable / Recomendable con observaciones / No recomendable*.
 
 Así, todos los candidatos se evalúan sobre las mismas competencias, con la misma escala y en el mismo formato. Eso facilita compararlos y fundamentar la decisión.
 

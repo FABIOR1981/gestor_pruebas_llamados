@@ -135,7 +135,7 @@ function competenciasDeDinamica(d, cargo) {
   return codigos.filter(c => !citados.length || citados.includes(c));
 }
 const puntajeMaximo = d => { const n = Number(d && d.puntaje_maximo); return Number.isFinite(n) && n > 0 ? n : 5; };
-const DICTAMENES = ['', 'Apto', 'Apto con reservas', 'No apto'];
+const DICTAMENES = ['', 'Recomendable', 'Recomendable con observaciones', 'No recomendable'];
 const texto = (v, max) => typeof v === 'string' && v.length <= max;
 
 // Devuelve { error } o { correccion } ya limpia: solo celdas que existen en el informe y con valores dentro del máximo.

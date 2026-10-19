@@ -54,7 +54,7 @@ No requiere usuario ni contraseña: se abre en el navegador con la dirección qu
 | **Guía de observación** | Qué indica un buen desempeño (*Éxito*) y qué indica dificultades (*Alerta*). |
 | **Corrector** | Respuestas correctas o esperadas de la prueba. |
 | **Hoja del postulante** | Consigna que se le entrega al candidato, con renglones para responder. |
-| **Dictamen global** | Conclusión final: *Apto / Apto con reservas / No apto*. |
+| **Dictamen global** | Conclusión final: *Recomendable / Recomendable con observaciones / No recomendable*. |
 
 Cada cargo y cada dinámica tienen un **código** que aparece en pantalla y en las hojas impresas (por ejemplo `CAR-ADM-GEN-01` para un cargo o `DIN-ADM-GEN-03` para una dinámica). Sirve para identificar sin dudas qué prueba se aplicó; la herramienta los crea sola.
 
@@ -106,7 +106,7 @@ Debajo hay un recuadro para **observaciones y notas de conducta** del postulante
 
 *Ejemplo:* con 3 competencias y 2 dinámicas, cada dinámica vale hasta 15 puntos, cada competencia hasta 10 y el total hasta 30.
 
-**3. Conclusión y dictamen general.** Espacio para marcar *Apto / Apto con reservas / No apto* y escribir comentarios finales.
+**3. Conclusión y dictamen general.** Espacio para marcar *Recomendable / Recomendable con observaciones / No recomendable* y escribir comentarios finales.
 
 **Hojas de trabajo del postulante.** Al final están las hojas para entregar a los candidatos: una por cada prueba y por cada postulante. Tienen lugar para nombre y fecha, el código de la prueba, el tiempo límite, la consigna y renglones para responder.
 
@@ -127,7 +127,7 @@ El interruptor **Guía y corrector** (encendido de fábrica) muestra u oculta la
 
 En **📂 Informes**, cada informe tiene el botón **✎ Corrección** (también aparece en la vista previa de un informe guardado).
 
-- Por cada postulante se carga el **nombre**, el **puntaje de cada dinámica en cada competencia** (solo las celdas que aplican; se aceptan decimales, por ejemplo `3,5`), las **observaciones** y el **dictamen** (Apto / Apto con reservas / No apto). También el **evaluador** y los **comentarios finales**.
+- Por cada postulante se carga el **nombre**, el **puntaje de cada dinámica en cada competencia** (solo las celdas que aplican; se aceptan decimales, por ejemplo `3,5`), las **observaciones** y el **dictamen** (Recomendable / Recomendable con observaciones / No recomendable). También el **evaluador** y los **comentarios finales**.
 - Los subtotales, totales y el puntaje final sobre 30 se calculan solos, con la misma fórmula del informe impreso. Un puntaje mayor al máximo de la celda queda marcado en rojo y no se guarda.
 - **Guardar borrador** permite seguir otro día. En la lista el informe aparece como *Corrección en borrador*.
 - **Finalizar corrección** cierra el informe: desde ese momento **no admite más cambios** (ni a la corrección ni al informe). Para finalizar, cada postulante debe estar completo (nombre y todos los puntajes) o totalmente vacío, si no se presentó.
