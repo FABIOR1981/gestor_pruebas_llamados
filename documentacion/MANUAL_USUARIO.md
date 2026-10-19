@@ -16,6 +16,7 @@ Versión 1.0 — Octubre 2026 · Versión para imprimir: [Manual_de_Usuario.pdf]
   - [3.2 Qué contiene el formulario](#32-qué-contiene-el-formulario)
   - [3.3 Botón "Guía y corrector"](#33-botón-guía-y-corrector)
   - [3.4 Imprimir o guardar en PDF](#34-imprimir-o-guardar-en-pdf)
+  - [3.5 Corrección de un informe guardado](#35-corrección-de-un-informe-guardado)
 - [4. Asistente "Directrices desde bases (IA)"](#4-asistente-directrices-desde-bases-ia)
   - [4.1 Paso a paso](#41-paso-a-paso)
   - [4.2 Qué hacer con la respuesta de la IA](#42-qué-hacer-con-la-respuesta-de-la-ia)
@@ -121,6 +122,17 @@ El interruptor **Guía y corrector** (encendido de fábrica) muestra u oculta la
 - Está preparado para **hoja A4**. Cada hoja del postulante sale en una página aparte.
 - Para guardar en PDF, elija *Guardar como PDF* en lugar de una impresora.
 - Para conservar los colores de los recuadros, active la opción *Gráficos de fondo* en la ventana de impresión.
+
+### 3.5 Corrección de un informe guardado
+
+En **📂 Informes**, cada informe tiene el botón **✎ Corrección** (también aparece en la vista previa de un informe guardado).
+
+- Por cada postulante se carga el **nombre**, el **puntaje de cada dinámica en cada competencia** (solo las celdas que aplican; se aceptan decimales, por ejemplo `3,5`), las **observaciones** y el **dictamen** (Apto / Apto con reservas / No apto). También el **evaluador** y los **comentarios finales**.
+- Los subtotales, totales y el puntaje final sobre 30 se calculan solos, con la misma fórmula del informe impreso. Un puntaje mayor al máximo de la celda queda marcado en rojo y no se guarda.
+- **Guardar borrador** permite seguir otro día. En la lista el informe aparece como *Corrección en borrador*.
+- **Finalizar corrección** cierra el informe: desde ese momento **no admite más cambios** (ni a la corrección ni al informe). Para finalizar, cada postulante debe estar completo (nombre y todos los puntajes) o totalmente vacío, si no se presentó.
+- Al abrir un informe con corrección, la vista previa permite elegir **En blanco** (el formulario vacío, como antes) o **Con corrección** (con nombres, puntajes, totales, observaciones y dictámenes) antes de **Imprimir A4**.
+- Un informe con corrección no se puede reemplazar desde el generador: si se guarda con el mismo nombre, la herramienta pide usar otro nombre.
 
 ---
 

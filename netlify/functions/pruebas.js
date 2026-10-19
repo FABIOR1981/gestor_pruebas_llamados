@@ -90,13 +90,16 @@ async function leerInforme(codigo) {
 }
 
 // El nombre identifica al informe: mismo nombre = mismo informe (conserva el código); otro nombre = informe nuevo.
+// Un informe con corrección cargada (borrador o final) ya no se puede reemplazar.
 async function guardarInforme(inf, reemplazar) {
   inf.nombre = inf.nombre.trim();
+  delete inf.correccion; // la corrección solo entra por 'guardar_correccion'
   for (let intento = 0; intento < 6; intento++) {
     const idx = await leerArchivo(INDICE, true);
     const lista = idx.falta ? [] : idx.datos;
     if (!Array.isArray(lista)) throw new Error('informes.json tiene un formato inválido');
     const existente = lista.find(x => norm(x.nombre) === norm(inf.nombre));
+    if (existente && existente.correccion) return resp(409, { error: 'informe_corregido', codigo: existente.codigo, nombre: existente.nombre, mensaje: `El informe "${existente.nombre}" (${existente.codigo}) ya tiene corrección y no se puede modificar.` });
     if (existente && !reemplazar) return resp(409, { error: 'nombre_existe', codigo: existente.codigo, nombre: existente.nombre, mensaje: `Ya existe el informe "${existente.nombre}" (${existente.codigo}).` });
     const ahora = new Date().toISOString();
     const prefijo = `INF-${ahora.slice(0, 4)}-`;
@@ -106,6 +109,7 @@ async function guardarInforme(inf, reemplazar) {
     const registro = { ...inf, codigo, creado, actualizado: ahora };
     const entrada = { codigo, nombre: inf.nombre, fecha_evaluacion: inf.fecha_evaluacion, creado, actualizado: ahora, area: inf.area.sigla, area_nombre: inf.area.nombre, cargo: inf.cargo.codigo, cargo_nombre: inf.cargo.nombre, dinamicas: inf.dinamicas.map(d => d.id), postulantes: inf.postulantes };
     const previo = await leerArchivo('informes/' + codigo, true);
+    if (!previo.falta && previo.datos && previo.datos.correccion) return resp(409, { error: 'informe_corregido', codigo, nombre: inf.nombre, mensaje: `El informe ${codigo} ya tiene corrección y no se puede modificar.` });
     const p1 = await escribir('informes/' + codigo, registro, previo.falta ? null : previo.sha, `pruebas_llamados: informe ${codigo}`);
     if (!p1.ok) {
       // 409/422: otro guardado simultáneo ocupó ese código. Se espera un instante y se vuelve a calcular.
@@ -119,6 +123,86 @@ async function guardarInforme(inf, reemplazar) {
     await new Promise(r => setTimeout(r, 120 * (intento + 1)));
   }
   throw new Error('No se pudo guardar: otro guardado simultáneo ocupó el índice. Intente de nuevo.');
+}
+
+// ---------- Corrección de un informe guardado ----------
+// Mismas reglas que js/utilidades.js (codigoCompetencia, competenciasDeDinamica, puntajeMaximoDinamica): mantenerlas iguales.
+const codigoCompetencia = (c, i) => c.codigo || 'C' + String(i + 1).padStart(2, '0');
+function competenciasDeDinamica(d, cargo) {
+  const codigos = cargo.competencias.map(codigoCompetencia);
+  if (Array.isArray(d.competencias)) return codigos.filter(c => d.competencias.includes(c));
+  const citados = [...String(d.caso_o_consigna || '').matchAll(/\b\d+\.\d+\b/g)].map(m => m[0]);
+  return codigos.filter(c => !citados.length || citados.includes(c));
+}
+const puntajeMaximo = d => { const n = Number(d && d.puntaje_maximo); return Number.isFinite(n) && n > 0 ? n : 5; };
+const DICTAMENES = ['', 'Apto', 'Apto con reservas', 'No apto'];
+const texto = (v, max) => typeof v === 'string' && v.length <= max;
+
+// Devuelve { error } o { correccion } ya limpia: solo celdas que existen en el informe y con valores dentro del máximo.
+function limpiarCorreccion(inf, c, finalizar) {
+  if (!esObjeto(c)) return { error: 'Corrección inválida' };
+  if (!texto(c.evaluador ?? '', 80)) return { error: 'El nombre del evaluador admite hasta 80 caracteres' };
+  if (!texto(c.comentarios ?? '', 3000)) return { error: 'Los comentarios finales admiten hasta 3000 caracteres' };
+  if (!Array.isArray(c.postulantes) || c.postulantes.length !== inf.postulantes) return { error: `La corrección debe tener ${inf.postulantes} postulante(s)` };
+  const celdas = inf.dinamicas.map(d => ({ d, comps: competenciasDeDinamica(d, inf.cargo), max: puntajeMaximo(d) }));
+  const postulantes = [];
+  for (let i = 0; i < c.postulantes.length; i++) {
+    const p = c.postulantes[i], n = i + 1;
+    if (!esObjeto(p)) return { error: `Postulante #${n} inválido` };
+    if (!texto(p.nombre ?? '', 80)) return { error: `Postulante #${n}: el nombre admite hasta 80 caracteres` };
+    if (!texto(p.observaciones ?? '', 3000)) return { error: `Postulante #${n}: las observaciones admiten hasta 3000 caracteres` };
+    if (!DICTAMENES.includes(p.dictamen ?? '')) return { error: `Postulante #${n}: dictamen inválido` };
+    const entrada = esObjeto(p.puntajes) ? p.puntajes : {}, puntajes = {};
+    let cargadas = 0, total = 0;
+    for (const { d, comps, max } of celdas) {
+      const fila = esObjeto(entrada[d.id]) ? entrada[d.id] : {};
+      for (const cc of comps) {
+        total++;
+        const v = fila[cc];
+        if (v === undefined || v === null || v === '') continue;
+        if (typeof v !== 'number' || !Number.isFinite(v) || v < 0 || v > max) return { error: `Postulante #${n}: puntaje fuera de rango en ${d.titulo} / ${cc} (0 a ${max})` };
+        (puntajes[d.id] = puntajes[d.id] || {})[cc] = v;
+        cargadas++;
+      }
+    }
+    const nombre = (p.nombre || '').trim();
+    const usado = nombre !== '' || cargadas > 0;
+    if (finalizar && usado && (!nombre || cargadas < total)) return { error: `Postulante #${n}: para finalizar, complete el nombre y todos los puntajes (o deje el postulante totalmente vacío)` };
+    postulantes.push({ nombre, observaciones: (p.observaciones || '').trim(), dictamen: p.dictamen || '', puntajes });
+  }
+  if (finalizar && !postulantes.some(p => p.nombre)) return { error: 'Para finalizar, cargue al menos un postulante completo' };
+  return { correccion: { evaluador: (c.evaluador || '').trim(), comentarios: (c.comentarios || '').trim(), postulantes } };
+}
+
+async function guardarCorreccion(codigo, cor, finalizar) {
+  if (!codigoOk(codigo)) return resp(400, { error: 'Código de informe inválido' });
+  for (let intento = 0; intento < 6; intento++) {
+    const a = await leerArchivo('informes/' + codigo, true);
+    if (a.falta) return resp(404, { error: `No existe el informe ${codigo}` });
+    const inf = a.datos;
+    if (inf.correccion && inf.correccion.estado === 'final') return resp(409, { error: 'correccion_final', mensaje: `El informe ${codigo} ya tiene la corrección finalizada y no admite cambios.` });
+    const r = limpiarCorreccion(inf, cor, finalizar);
+    if (r.error) return resp(400, { error: r.error });
+    const ahora = new Date().toISOString();
+    const correccion = { estado: finalizar ? 'final' : 'borrador', ...r.correccion, creada: (inf.correccion && inf.correccion.creada) || ahora, actualizada: ahora, ...(finalizar ? { finalizada: ahora } : {}) };
+    const p1 = await escribir('informes/' + codigo, { ...inf, correccion }, a.sha, `pruebas_llamados: corrección ${finalizar ? 'final' : 'borrador'} ${codigo}`);
+    if (!p1.ok) {
+      if ([409, 422].includes(p1.status) && intento < 5) { await new Promise(res => setTimeout(res, 120 * (intento + 1))); continue; }
+      console.error(`GitHub ${p1.status} al guardar la corrección de ${codigo}`); throw new Error(`No se pudo guardar la corrección (error ${p1.status}).`);
+    }
+    // Índice: se marca el estado de la corrección. Si falla, el informe ya quedó guardado (el índice es solo para la lista).
+    for (let k = 0; k < 6; k++) {
+      const idx = await leerArchivo(INDICE, true);
+      if (idx.falta || !Array.isArray(idx.datos)) break;
+      const lista = idx.datos.map(x => x.codigo === codigo ? { ...x, correccion: correccion.estado } : x);
+      const p2 = await escribir(INDICE, lista, idx.sha, `pruebas_llamados: índice de informes (corrección ${codigo})`);
+      if (p2.ok) break;
+      if (![409, 422].includes(p2.status)) { console.error(`GitHub ${p2.status} al marcar la corrección en informes.json`); break; }
+      await new Promise(res => setTimeout(res, 120 * (k + 1)));
+    }
+    return resp(200, { ok: true, codigo, correccion });
+  }
+  throw new Error('No se pudo guardar la corrección: otro guardado simultáneo. Intente de nuevo.');
 }
 
 exports.handler = async (ev) => {
@@ -141,6 +225,7 @@ exports.handler = async (ev) => {
       if (error) return resp(400, { error });
       return await guardarInforme(cuerpo.informe, Boolean(cuerpo.reemplazar));
     }
+    if (cuerpo.accion === 'guardar_correccion') return await guardarCorreccion(String(cuerpo.codigo || ''), cuerpo.correccion, cuerpo.finalizar === true);
     if (!baseValida(cuerpo.base)) return resp(400, { error: 'Datos inválidos' });
     return await guardarTodo(cuerpo.base);
   } catch (e) {

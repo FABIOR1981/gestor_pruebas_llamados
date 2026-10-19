@@ -50,7 +50,18 @@
 
 <dialog id="dInf" class="ancho"><div class="mh"><div><h2>Vista previa del informe</h2><p class="sub" id="subInf" style="margin:2px 0 0">Así saldrá en hoja A4. Revisa antes de imprimir.</p></div><button class="x" data-cerrar aria-label="Cerrar">✕</button></div>
  <div class="fondo"><article id="hoja" class="print-container"></article></div>
- <div class="mf"><label class="sw" style="margin-right:auto"><input type="checkbox" id="guia2" checked> Guía y corrector</label><button class="btn sec" data-cerrar>Volver a editar</button><button class="btn" onclick="print()">Imprimir A4</button></div></dialog>
+ <div class="mf"><label class="sw" style="margin-right:auto"><input type="checkbox" id="guia2" checked> Guía y corrector</label><div class="seg" id="segCor" role="group" aria-label="Contenido a imprimir" hidden><button type="button" data-m="blanco">En blanco</button><button type="button" data-m="cor">Con corrección</button></div><button type="button" class="btn sec" id="bCorInf" hidden>✎ Corrección</button><button class="btn sec" data-cerrar>Volver a editar</button><button class="btn" onclick="print()">Imprimir A4</button></div></dialog>
+
+<dialog id="dCor" class="ancho" data-fijo><div class="mh"><div><h2 id="cTit">Corrección</h2><p class="sub" id="cSub" style="margin:2px 0 0"></p></div><button type="button" class="x" id="cX" aria-label="Cerrar">✕</button></div>
+ <div class="mb" id="cCuerpo">
+  <div id="cFinal" class="aviso-box cor-cerrado" hidden></div>
+  <label class="campo">Evaluador(a)<input id="cEval" maxlength="80" autocomplete="off" placeholder="Nombre de quien evaluó"></label>
+  <div id="cPost"></div>
+  <label class="campo">Comentarios finales<textarea id="cCom" maxlength="3000" rows="3"></textarea></label>
+  <div id="cConf" class="aviso-box" hidden></div>
+  <p class="err" id="cErr"></p>
+ </div>
+ <div class="mf"><span class="cor-msg" id="cMsg"></span><button type="button" class="btn sec" id="cCerrar">Cerrar</button><button type="button" class="btn sec" id="cVer" hidden>Ver e imprimir</button><button type="button" class="btn sec" id="cBorr">Guardar borrador</button><button type="button" class="btn" id="cFin">Finalizar corrección</button></div></dialog>
 
 
 <dialog id="dGuardar"><form id="fGuardar"><div class="mh"><h2>Generar y guardar informe</h2><button type="button" class="x" data-cerrar aria-label="Cerrar">✕</button></div>

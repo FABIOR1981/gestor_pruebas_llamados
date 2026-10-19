@@ -396,3 +396,12 @@
 /* Impresión: el informe se copia a #zonaImpresion (fuera del modal) y es lo único que sale en papel. */
 #zonaImpresion{display:none}
 @media print{body>*:not(#zonaImpresion){display:none!important}#zonaImpresion{display:block!important}.pag{display:none}}
+/* Informe con corrección: valores cargados, nombres, dictámenes y conclusión */
+.print-container .val{color:#1a2530;font-size:.9375rem}
+.print-container .fila-total .val{font-size:1rem}
+.print-container .val-n{font-weight:700;color:#1a2530}
+.print-container .observations-box{white-space:normal}
+.print-container .dictamen-p{margin-top:.5rem;font-size:.8125rem}
+.print-container .conclusion-cor{border:1px solid var(--border);border-radius:.25rem;padding:.5rem .75rem;font-size:.8125rem}
+.print-container .conclusion-cor ul{margin:.25rem 0 .5rem;padding-left:1.25rem}
+.print-container .val-txt{margin-top:.25rem}

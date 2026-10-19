@@ -50,7 +50,8 @@ $('#menos').onclick=()=>{S.n=Math.max(1,S.n-1);pintaPanel()};$('#mas').onclick=(
 const sincGuia=v=>{S.guia=v;$('#guia').checked=v;$('#guia2').checked=v;$('#hoja').classList.toggle('ocultar-guia',!v)};
 $('#guia').onchange=e=>sincGuia(e.target.checked);$('#guia2').onchange=e=>sincGuia(e.target.checked);
 document.querySelectorAll('[data-cerrar]').forEach(b=>b.onclick=()=>b.closest('dialog').close());
-document.querySelectorAll('dialog').forEach(d=>d.addEventListener('click',e=>{if(e.target===d)d.close()}));
+// Clic fuera cierra el diálogo, salvo los marcados data-fijo (formularios largos: se perdería lo cargado).
+document.querySelectorAll('dialog:not([data-fijo])').forEach(d=>d.addEventListener('click',e=>{if(e.target===d)d.close()}));
 $('#tema').onclick=()=>{const r=document.documentElement,os=matchMedia('(prefers-color-scheme: dark)').matches;
  r.dataset.theme=(r.dataset.theme||(os?'dark':'light'))==='dark'?'light':'dark'};
 
@@ -73,12 +74,20 @@ const hoy=()=>new Date(Date.now()-new Date().getTimezoneOffset()*60000).toISOStr
 const fecha=f=>fmtFecha(f)||'';
 const snapshot=()=>{const car=D.cargos[S.cargo],ar=D.areas[S.area]||{nombre:car.area},sel=dinDe(S.cargo).filter(d=>S.sel.has(d.id));
  return JSON.parse(JSON.stringify({nombre:S.nombreInf||bonito(car.nombre),fecha_evaluacion:S.fechaInf,postulantes:S.n,tiempo_total:tiempoEfectivo(),guia:S.guia,area:{sigla:S.area,nombre:ar.nombre},cargo:{codigo:S.cargo,...car},dinamicas:sel}))};
-function mostrarInforme(snap,est={}){
- $('#hoja').innerHTML=construirInforme(snap.cargo.codigo,snap.cargo,snap.dinamicas,snap.postulantes,snap.tiempo_total,{codigo:est.codigo,nombre:snap.nombre,fecha:snap.fecha_evaluacion});sincGuia(snap.guia);
- $('#subInf').innerHTML=est.codigo?(est.reabierto?`Informe guardado <b class="cod-g">${esc(est.codigo)}</b>, tal como se generó. Así saldrá en hoja A4.`:`Guardado como <b class="cod-g">${esc(est.codigo)}</b>${est.actualizado?' (se actualizó el informe existente)':''}. Así saldrá en hoja A4.`)
+// Informe en pantalla y modo de impresión: 'cor' = con los datos de la corrección, 'blanco' = formulario vacío.
+let VISTA={snap:null,est:{},modo:'cor'};
+function pintaHoja(){const {snap,est,modo}=VISTA,cor=snap.correccion&&modo==='cor'?snap.correccion:null;
+ $('#hoja').innerHTML=construirInforme(snap.cargo.codigo,snap.cargo,snap.dinamicas,snap.postulantes,snap.tiempo_total,{codigo:est.codigo,nombre:snap.nombre,fecha:snap.fecha_evaluacion,correccion:cor});sincGuia(snap.guia);
+ const sg=$('#segCor');sg.hidden=!snap.correccion;sg.querySelectorAll('[data-m]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.m===modo))}
+function mostrarInforme(snap,est={},modo){VISTA={snap,est,modo:modo||(snap.correccion?'cor':'blanco')};pintaHoja();
+ const c=snap.correccion,estado=c?(c.estado==='final'?' · <b>corrección finalizada</b>: ya no admite cambios.':' · corrección en borrador.'):'';
+ $('#subInf').innerHTML=est.codigo?(est.reabierto?`Informe guardado <b class="cod-g">${esc(est.codigo)}</b>${estado||', tal como se generó.'} Así saldrá en hoja A4.`:`Guardado como <b class="cod-g">${esc(est.codigo)}</b>${est.actualizado?' (se actualizó el informe existente)':''}. Así saldrá en hoja A4.`)
   :`<span class="av-txt">⚠ No se pudo guardar: ${esc(est.error||'error desconocido')}.</span> <button type="button" class="link" id="reintGuardar">Reintentar</button>`;
  const b=$('#reintGuardar');if(b)b.onclick=()=>reintentar(snap);
+ const bc=$('#bCorInf');bc.hidden=!est.codigo;bc.textContent=c&&c.estado==='final'?'Ver corrección':'✎ Corrección';
  if(!$('#dInf').open)$('#dInf').showModal()}
+$('#segCor').onclick=e=>{const b=e.target.closest('[data-m]');if(!b)return;VISTA.modo=b.dataset.m;pintaHoja()};
+$('#bCorInf').onclick=()=>abreCorreccionDe(VISTA.est.codigo,$('#bCorInf'));
 async function reintentar(snap){const b=$('#reintGuardar');b.disabled=true;b.textContent='Guardando…';
  try{const r=await Datos.guardarInforme(snap,{clave:S.clave});mostrarInforme(snap,{codigo:r.codigo,actualizado:r.actualizado})}
  catch(x){if(x.status===401||x.status===409){$('#dInf').close();abreGuardar()}else mostrarInforme(snap,{error:x.message})}}
@@ -93,7 +102,10 @@ async function enviar(reemplazar){
  const snap=snapshot(),ok=$('#gOk');ok.disabled=true;ok.textContent='Guardando…';$('#gErr').textContent='';$('#gDup').hidden=true;
  try{const r=await Datos.guardarInforme(snap,{clave:S.clave,reemplazar});dg.close();mostrarInforme(snap,{codigo:r.codigo,actualizado:r.actualizado})}
  catch(x){
-  if(x.status===409&&x.detalle&&x.detalle.error==='nombre_existe'){const g=$('#gDup');
+  if(x.status===409&&x.detalle&&x.detalle.error==='informe_corregido'){const g=$('#gDup');
+   g.innerHTML=`El informe <b>${esc(x.detalle.nombre)}</b> (<span class="cod-g">${esc(x.detalle.codigo)}</span>) ya tiene corrección cargada y no se puede modificar. Guárdalo con otro nombre para crear un informe nuevo.<br><button type="button" class="btn sec" id="gCamb">Cambiar el nombre</button>`;g.hidden=false;
+   $('#gCamb').onclick=()=>{g.hidden=true;fg.nombre.focus();fg.nombre.select()}}
+  else if(x.status===409&&x.detalle&&x.detalle.error==='nombre_existe'){const g=$('#gDup');
    g.innerHTML=`Ya existe el informe <b>${esc(x.detalle.nombre)}</b> (<span class="cod-g">${esc(x.detalle.codigo)}</span>). Si lo actualizas, conserva su código y se reemplaza su contenido.<br><button type="button" class="btn" id="gAct">Actualizar ${esc(x.detalle.codigo)}</button><button type="button" class="btn sec" id="gCamb">Cambiar el nombre</button>`;g.hidden=false;
    $('#gAct').onclick=()=>enviar(true);$('#gCamb').onclick=()=>{g.hidden=true;fg.nombre.focus();fg.nombre.select()}}
   else if(x.status===401){$('#gClave').hidden=false;$('#gErr').textContent=S.clave?'La contraseña no es correcta.':'Para guardar hace falta la contraseña.';fg.clave.focus()}
@@ -104,7 +116,8 @@ $('#gen').onclick=()=>{const car=D.cargos[S.cargo],sel=dinDe(S.cargo).filter(d=>
 
 let INFS=[];
 function pintaInfs(){const q=norm($('#infBus').value),l=INFS.filter(x=>!q||norm([x.nombre,x.codigo,x.cargo_nombre,x.area_nombre].join(' ')).includes(q));
- $('#infLista').innerHTML=l.map(x=>`<button type="button" class="inf-item" data-c="${esc(x.codigo)}"><span><strong>${esc(x.nombre)}</strong><small>${esc(x.cargo_nombre)} · ${esc(x.area_nombre)} · ${esc(fecha(x.fecha_evaluacion))} · ${x.postulantes} postulante${x.postulantes>1?'s':''}</small></span><span class="idm-s">${esc(x.codigo)}</span></button>`).join('')||`<div class="vacio-box">${INFS.length?'Ningún informe coincide con la búsqueda.':'Todavía no hay informes guardados.'}</div>`}
+ const estado=x=>x.correccion==='final'?'<span class="est-cor fin">🔒 Corregido</span>':x.correccion==='borrador'?'<span class="est-cor">Corrección en borrador</span>':'';
+ $('#infLista').innerHTML=l.map(x=>`<div class="inf-item"><button type="button" class="inf-abrir" data-c="${esc(x.codigo)}"><span><strong>${esc(x.nombre)}</strong><small>${esc(x.cargo_nombre)} · ${esc(x.area_nombre)} · ${esc(fecha(x.fecha_evaluacion))} · ${x.postulantes} postulante${x.postulantes>1?'s':''}</small>${estado(x)}</span><span class="idm-s">${esc(x.codigo)}</span></button><button type="button" class="btn sec inf-cor" data-cor="${esc(x.codigo)}">${x.correccion==='final'?'Ver corrección':'✎ Corrección'}</button></div>`).join('')||`<div class="vacio-box">${INFS.length?'Ningún informe coincide con la búsqueda.':'Todavía no hay informes guardados.'}</div>`}
 async function abreInformes(){$('#infErr').textContent='';$('#infCod').value='';$('#infBus').value='';$('#infLista').innerHTML='<div class="vacio-box">Cargando…</div>';$('#dInfs').showModal();
  try{INFS=(await Datos.listarInformes()).slice().sort((a,b)=>String(b.actualizado).localeCompare(String(a.actualizado)));pintaInfs()}catch(x){$('#infLista').innerHTML='';$('#infErr').textContent=x.message}}
 async function abreGuardado(codigo){const c=String(codigo).trim().toUpperCase();if(!c)return;$('#infErr').textContent='';
@@ -112,7 +125,84 @@ async function abreGuardado(codigo){const c=String(codigo).trim().toUpperCase();
  catch(x){$('#infErr').textContent=x.status===404?`No existe el informe ${c}.`:x.message}}
 $('#bInformes').onclick=abreInformes;$('#infBus').oninput=pintaInfs;
 $('#infAbrir').onclick=()=>abreGuardado($('#infCod').value);$('#infCod').onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();abreGuardado(e.target.value)}};
-$('#infLista').onclick=e=>{const b=e.target.closest('[data-c]');if(b)abreGuardado(b.dataset.c)};
+$('#infLista').onclick=e=>{const k=e.target.closest('[data-cor]');if(k){abreCorreccionDe(k.dataset.cor,k);return}const b=e.target.closest('[data-c]');if(b)abreGuardado(b.dataset.c)};
+
+// ---------- Corrección de un informe guardado ----------
+// Se carga el puntaje de cada postulante en cada cruce dinámica × competencia. "Guardar borrador" permite seguir después;
+// "Finalizar" la cierra: desde ese momento el informe no admite más cambios (lo garantiza el servidor).
+let COR=null,corSucio=false;
+const dc=$('#dCor');
+// "3,5" o "3.5" → 3.5; vacío → null; texto inválido → NaN.
+const leeNum=t=>{const s=String(t||'').trim().replace(',','.');return s===''?null:/^\d+(\.\d+)?$/.test(s)?Number(s):NaN};
+async function abreCorreccionDe(codigo,boton){if(!codigo)return;const txt0=boton&&boton.textContent;if(boton){boton.disabled=true;boton.textContent='Abriendo…'}$('#infErr').textContent='';
+ try{const inf=await Datos.leerInforme(codigo);abreCorreccion(inf)}
+ catch(x){const m=x.status===404?`No existe el informe ${codigo}.`:x.message;if($('#dInfs').open)$('#infErr').textContent=m;else alert(m)}
+ finally{if(boton){boton.disabled=false;boton.textContent=txt0}}}
+function abreCorreccion(inf){COR=inf;corSucio=false;
+ const c=inf.correccion||{},fin=c.estado==='final',sel=inf.dinamicas,car=inf.cargo,E=esquemaPuntaje(car,sel),comps=car.competencias;
+ $('#cTit').textContent=`Corrección · ${inf.nombre}`;
+ $('#cSub').innerHTML=`<span class="cod-g">${esc(inf.codigo)}</span> · ${esc(bonito(car.nombre))} · ${esc(fecha(inf.fecha_evaluacion))}`;
+ $('#cFinal').hidden=!fin;$('#cFinal').innerHTML=fin?`🔒 Corrección finalizada${c.finalizada?` (${esc(new Date(c.finalizada).toLocaleString('es-UY',{dateStyle:'short',timeStyle:'short'}))})`:''}. El informe ya no admite cambios; puedes verlo e imprimirlo en blanco o con estos datos.`:'';
+ $('#cEval').value=c.evaluador||'';$('#cCom').value=c.comentarios||'';
+ const ps=c.postulantes||[];
+ $('#cPost').innerHTML=Array.from({length:inf.postulantes},(_,i)=>{const p=ps[i]||{},v=(d,k)=>{const x=p.puntajes&&p.puntajes[d.id]&&p.puntajes[d.id][k];return typeof x==='number'?fmtPuntaje(x):''};
+  return `<section class="cor-p" data-p="${i}"><div class="cor-ph"><b>Postulante #${i+1}</b><input class="cor-nom" data-nom maxlength="80" autocomplete="off" placeholder="Nombre del postulante" aria-label="Nombre del postulante #${i+1}" value="${esc(p.nombre||'')}"></div>
+  <div class="cor-tw"><table class="cor-t"><thead><tr><th>Dinámica</th>${comps.map((k,j)=>`<th title="${esc(k.comp)}">${esc(cod(k,j))}</th>`).join('')}<th>Sub total</th></tr></thead><tbody>
+  ${sel.map((d,a)=>`<tr><td class="cor-din"><span class="badge-d">D${a+1}</span>${esc(d.titulo)}</td>${comps.map((k,j)=>{const cc=cod(k,j);return E.aplicables[a].has(cc)?`<td><input class="cor-in" data-d="${esc(d.id)}" data-k="${esc(cc)}" data-max="${E.pm[a]}" inputmode="decimal" autocomplete="off" placeholder="/ ${E.pm[a]}" aria-label="${esc(d.titulo)}, ${esc(cc)} (0 a ${E.pm[a]})" value="${v(d,cc)}"></td>`:'<td class="na" aria-label="No aplica"></td>'}).join('')}<td class="cor-st" data-st="${a}">${E.maxD[a]?`— / ${E.maxD[a]}`:'No aplica'}</td></tr>`).join('')}
+  <tr class="cor-tot"><td>Total</td>${E.maxC.map((m,j)=>`<td data-ct="${j}">${m?`— / ${m}`:''}</td>`).join('')}<td data-tt>— / ${E.maxT}</td></tr></tbody></table></div>
+  <div class="cor-res"><span>Puntaje final: <b data-fin>—</b> / ${PUNTAJE_FINAL_MAX}</span><span class="cor-cnt" data-cnt></span></div>
+  <div class="cor-2"><label class="campo">Observaciones y notas de conducta<textarea data-obs maxlength="3000" rows="2">${esc(p.observaciones||'')}</textarea></label>
+  <label class="campo">Dictamen<select data-dic><option value="">—</option>${DICTAMENES.map(o=>`<option${p.dictamen===o?' selected':''}>${esc(o)}</option>`).join('')}</select></label></div></section>`}).join('');
+ dc.querySelectorAll('#cCuerpo input,#cCuerpo textarea,#cCuerpo select').forEach(el=>el.disabled=fin);
+ $('#cBorr').hidden=fin;$('#cFin').hidden=fin;$('#cVer').hidden=!fin;$('#cConf').hidden=true;$('#cErr').textContent='';
+ $('#cMsg').textContent=c.estado==='borrador'&&c.actualizada?`Borrador guardado el ${new Date(c.actualizada).toLocaleString('es-UY',{dateStyle:'short',timeStyle:'short'})}`:'';
+ dc.querySelectorAll('.cor-p').forEach(recalcula);
+ if($('#dInfs').open)$('#dInfs').close();
+ if($('#dInf').open)$('#dInf').close();
+ dc.showModal();$('#cCuerpo').scrollTop=0}
+// Totales en vivo de un postulante; marca las celdas con valores inválidos.
+function recalcula(sec){const sel=COR.dinamicas,car=COR.cargo,pt={};
+ sec.querySelectorAll('.cor-in').forEach(el=>{const n=leeNum(el.value),mal=Number.isNaN(n)||(n!==null&&n>Number(el.dataset.max));el.classList.toggle('mal',mal);el.setAttribute('aria-invalid',mal);if(n!==null&&!mal)(pt[el.dataset.d]=pt[el.dataset.d]||{})[el.dataset.k]=n});
+ const r=calcularPuntajes(car,sel,pt),E=r.esquema,f=(v,m)=>`${v===null?'—':`<b>${fmtPuntaje(v)}</b>`} / ${m}`;
+ sec.querySelectorAll('[data-st]').forEach(td=>{const a=+td.dataset.st;if(E.maxD[a])td.innerHTML=f(r.sub[a],E.maxD[a])});
+ sec.querySelectorAll('[data-ct]').forEach(td=>{const j=+td.dataset.ct;if(E.maxC[j])td.innerHTML=f(r.col[j],E.maxC[j])});
+ sec.querySelector('[data-tt]').innerHTML=f(r.total,E.maxT);
+ sec.querySelector('[data-fin]').textContent=r.final===null?'—':fmtPuntaje(r.final);
+ sec.querySelector('[data-cnt]').textContent=`${r.cargadas} de ${r.totalCeldas} puntajes cargados`;
+ return pt}
+dc.addEventListener('input',e=>{if(e.target.closest('#cCuerpo')){corSucio=true;$('#cConf').hidden=true;const s=e.target.closest('.cor-p');if(s)recalcula(s)}});
+dc.addEventListener('change',e=>{if(e.target.matches('select'))corSucio=true});
+// Lee el formulario. Devuelve {error} si hay celdas inválidas.
+function leeCorreccion(){const ps=[];let error='';
+ dc.querySelectorAll('.cor-p').forEach((s,i)=>{const pt=recalcula(s);if(!error&&s.querySelector('.cor-in.mal'))error=`Postulante #${i+1}: hay puntajes inválidos (marcados en rojo). Usa números entre 0 y el máximo de la celda.`;
+  ps.push({nombre:s.querySelector('[data-nom]').value.trim(),observaciones:s.querySelector('[data-obs]').value.trim(),dictamen:s.querySelector('[data-dic]').value,puntajes:pt})});
+ return {error,correccion:{evaluador:$('#cEval').value.trim(),comentarios:$('#cCom').value.trim(),postulantes:ps}}}
+// Para finalizar: cada postulante queda completo (nombre y todos los puntajes) o totalmente vacío; al menos uno completo.
+function faltasParaFinalizar(cor){const faltas=[];
+ cor.postulantes.forEach((p,i)=>{const r=calcularPuntajes(COR.cargo,COR.dinamicas,p.puntajes),usado=p.nombre||r.cargadas;
+  if(usado&&!p.nombre)faltas.push(`Postulante #${i+1}: falta el nombre.`);
+  if(usado&&!r.completo)faltas.push(`Postulante #${i+1}: faltan ${r.totalCeldas-r.cargadas} puntaje${r.totalCeldas-r.cargadas>1?'s':''}.`)});
+ if(!cor.postulantes.some(p=>p.nombre))faltas.push('Carga al menos un postulante.');
+ return faltas}
+async function guardaCorreccion(finalizar){const {error,correccion}=leeCorreccion();$('#cErr').textContent=error;if(error)return;
+ const b=finalizar?$('#cFin'):$('#cBorr'),t0=b.textContent;b.disabled=true;b.textContent='Guardando…';
+ try{const r=await Datos.guardarCorreccion(COR.codigo,correccion,finalizar);COR.correccion=r.correccion;corSucio=false;
+  const it=INFS.find(x=>x.codigo===COR.codigo);if(it)it.correccion=r.correccion.estado;
+  if(finalizar){dc.close();mostrarInforme(COR,{codigo:COR.codigo,reabierto:true},'cor')}
+  else $('#cMsg').textContent=`Borrador guardado ${new Date().toLocaleTimeString('es-UY',{timeStyle:'short'})}`}
+ catch(x){$('#cErr').textContent=x.message;if(x.detalle&&x.detalle.error==='correccion_final'){const inf=await Datos.leerInforme(COR.codigo).catch(()=>null);if(inf)abreCorreccion(inf)}}
+ finally{b.disabled=false;b.textContent=t0}}
+$('#cBorr').onclick=()=>guardaCorreccion(false);
+$('#cFin').onclick=()=>{const {error,correccion}=leeCorreccion();$('#cErr').textContent=error;if(error)return;
+ const faltas=faltasParaFinalizar(correccion),cf=$('#cConf');
+ cf.innerHTML=faltas.length?`<b>Todavía no se puede finalizar:</b><ul style="margin:6px 0 0;padding-left:18px">${faltas.map(f=>`<li>${esc(f)}</li>`).join('')}</ul><p style="margin:6px 0 0">Un postulante que no se presentó puede quedar totalmente vacío (sin nombre ni puntajes).</p>`
+  :`<b>¿Finalizar la corrección?</b> El informe <span class="cod-g">${esc(COR.codigo)}</span> quedará cerrado: no se podrán cambiar los puntajes ni el informe. Podrás imprimirlo en blanco o con la corrección.<br><button type="button" class="btn" id="cSi">Sí, finalizar</button><button type="button" class="btn sec" id="cNo">Seguir editando</button>`;
+ cf.hidden=false;cf.scrollIntoView({block:'nearest'});
+ if(!faltas.length){$('#cSi').onclick=()=>{cf.hidden=true;guardaCorreccion(true)};$('#cNo').onclick=()=>{cf.hidden=true}}};
+$('#cVer').onclick=()=>{dc.close();mostrarInforme(COR,{codigo:COR.codigo,reabierto:true},'cor')};
+const cierraCor=()=>{if(corSucio&&!confirm('Hay cambios sin guardar en la corrección. ¿Cerrar igual?'))return;corSucio=false;dc.close()};
+$('#cCerrar').onclick=cierraCor;$('#cX').onclick=cierraCor;
+dc.addEventListener('cancel',e=>{e.preventDefault();cierraCor()});
 
 async function iniciar(){
  $('#areas').innerHTML='<div class="vacio-box" style="grid-column:1/-1">Cargando catálogo…</div>';

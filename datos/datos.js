@@ -106,5 +106,11 @@ const Datos = (() => {
         cuerpo: { accion: 'guardar_informe', clave: claveIngresada, reemplazar, informe }
     });
 
-    return { cargar, guardar, listarInformes, leerInforme, guardarInforme, get origen() { return origen; } };
+    // Corrección: finalizar = true la deja cerrada (el informe ya no admite cambios).
+    const guardarCorreccion = (codigo, correccion, finalizar = false) => pedir(API, {
+        metodo: 'POST',
+        cuerpo: { accion: 'guardar_correccion', codigo, correccion, finalizar }
+    });
+
+    return { cargar, guardar, listarInformes, leerInforme, guardarInforme, guardarCorreccion, get origen() { return origen; } };
 })();

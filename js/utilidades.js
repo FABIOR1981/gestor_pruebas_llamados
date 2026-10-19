@@ -82,6 +82,56 @@ function controlRelaciones(cargo, dinamicas) {
     return { sinCompetencia, sinCubrir };
 }
 
+// ---- Esquema de puntaje de un informe ----
+// Máximos por celda (dinámica × competencia), por dinámica, por competencia y total, más la fórmula del puntaje final.
+const PUNTAJE_FINAL_MAX = 30;
+
+function esquemaPuntaje(cargo, dinamicas) {
+    const codigos = cargo.competencias.map(codigoCompetencia);
+    const pm = dinamicas.map(puntajeMaximoDinamica);
+    const aplicables = dinamicas.map(d => new Set(competenciasDeDinamica(d, cargo)));
+    const maxD = aplicables.map((s, i) => s.size * pm[i]);
+    const maxC = codigos.map(c => aplicables.reduce((a, s, i) => a + (s.has(c) ? pm[i] : 0), 0));
+    const maxT = maxD.reduce((a, b) => a + b, 0);
+    const pesos = dinamicas.map(d => Number(d.peso) > 0 ? Number(d.peso) : 1);
+    const pA = pesos.filter((_, i) => maxD[i] > 0);
+    const sumP = pA.reduce((a, b) => a + b, 0);
+    const iguales = pA.length > 0 && pA.every(p => p === pA[0]);
+    return { codigos, pm, aplicables, maxD, maxC, maxT, pesos, sumP, iguales };
+}
+
+// Puntaje de un postulante a partir de lo cargado en la corrección: puntajes[idDinamica][códigoCompetencia] = número.
+// Subtotales, totales y puntaje final quedan en null mientras falte alguna celda de lo que suman.
+function calcularPuntajes(cargo, dinamicas, puntajes) {
+    const e = esquemaPuntaje(cargo, dinamicas), p = puntajes || {};
+    const valor = (d, c) => { const v = p[d.id] && p[d.id][c]; return typeof v === 'number' && Number.isFinite(v) ? v : null; };
+    let cargadas = 0, totalCeldas = 0;
+    const sub = dinamicas.map((d, i) => {
+        let suma = 0, falta = false;
+        e.aplicables[i].forEach(c => { totalCeldas++; const v = valor(d, c); if (v === null) falta = true; else { cargadas++; suma += v; } });
+        return e.maxD[i] && !falta ? suma : null;
+    });
+    const col = e.codigos.map(c => {
+        let suma = 0, falta = false, aplica = false;
+        dinamicas.forEach((d, i) => { if (e.aplicables[i].has(c)) { aplica = true; const v = valor(d, c); if (v === null) falta = true; else suma += v; } });
+        return aplica && !falta ? suma : null;
+    });
+    const completo = totalCeldas > 0 && cargadas === totalCeldas;
+    const total = completo ? sub.reduce((a, s) => a + (s || 0), 0) : null;
+    let final = null;
+    if (completo && e.maxT > 0) {
+        final = e.iguales
+            ? total / e.maxT * PUNTAJE_FINAL_MAX
+            : sub.reduce((a, s, i) => a + (e.maxD[i] ? s / e.maxD[i] * e.pesos[i] : 0), 0) / e.sumP * PUNTAJE_FINAL_MAX;
+    }
+    return { esquema: e, valor, sub, col, total, final, cargadas, totalCeldas, completo };
+}
+
+// 12.5 → "12,5"; redondea a 2 decimales.
+const fmtPuntaje = n => n === null || n === undefined ? '' : String(Math.round(n * 100) / 100).replace('.', ',');
+
+const DICTAMENES = ['Apto', 'Apto con reservas', 'No apto'];
+
 // Frases (HTML ya escapado) para avisar del control anterior. Lista vacía = todo relacionado.
 function avisosRelaciones(cargo, dinamicas) {
     const { sinCompetencia, sinCubrir } = controlRelaciones(cargo, dinamicas), avisos = [];
